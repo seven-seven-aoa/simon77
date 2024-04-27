@@ -1,6 +1,9 @@
 import { Howl } from "howler";
 import { delay } from "./Timing";
-export { create, playStart, playFail, playButton, stop };
+import soundUrlOgg from "./Sound.tsx.ogg";
+import soundUrlMp3 from "./Sound.tsx.mp3";
+
+export { create, playButton, playFail, playStart, stop };
 
 let _sound: Howl;
 const _duration = {
@@ -11,10 +14,10 @@ const _duration = {
 
 function create() {
     _sound = new Howl({
-        src: ["./simon.mp3", "./simon.ogg"],
+        src: [soundUrlOgg, soundUrlMp3],
         sprite: {
             start: [0, _duration.start],
-            button0: [2000,  _duration.button],
+            button0: [2000, _duration.button],
             button1: [12000, _duration.button],
             button2: [22000, _duration.button],
             button3: [32000, _duration.button],

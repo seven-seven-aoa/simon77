@@ -3,12 +3,7 @@ import { getDomAll } from "./Dom";
 import { CompareResult, addUserStep, compareSequences } from "./Sequence";
 import { Events } from "./Events";
 
-export {
-    create,
-    getState,
-    enableInput,
-    trigger
-};
+export { create, enableInput, getState, trigger };
 
 let _buttons: any[] = [];
 const _state: any = {
@@ -17,7 +12,6 @@ const _state: any = {
 };
 
 function create(sound: any) {
-
     _buttons = getDomAll("button");
 
     _buttons.forEach((button: any, index: number) => {
@@ -66,12 +60,12 @@ function trigger(index: number, glow: number, sequenceStep: number) {
     setTimeout(() => animateTouchEnd(button), glow);
 }
 
-function animateTouchStart(button:any) {
+function animateTouchStart(button: any) {
     button.className = "glow";
     button.playSound();
 }
 
-function animateTouchEnd(button:any) {
+function animateTouchEnd(button: any) {
     button.stopSound();
     button.innerHTML = "&nbsp;";
     button.className = "";

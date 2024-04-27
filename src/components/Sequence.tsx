@@ -4,18 +4,18 @@ import { getDomSingle } from "./Dom";
 export {
     addSequenceStep,
     addUserStep,
-    getSequenceStep,
     clearUserSequence,
-    compareSequences
+    compareSequences,
+    getSequenceStep,
 };
 
 export const CompareResult = {
     PARTIAL: 0,
     MATCH: 1,
-    MISMATCH: 2
+    MISMATCH: 2,
 };
 
-const sequence:any[] = [];
+const sequence: any[] = [];
 
 function addSequenceStep() {
     sequence.push({ button: Math.floor(Math.random() * 4) });

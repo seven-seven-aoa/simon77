@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { setCSSVariable } from "./Dom";
 
-export {
-    create,
-    getNext
-};
+export { create, getNext };
 
-const levels:any[] = [];
+const levels: any[] = [];
 
 function create() {
-    const count = 12;
+    const count     = 12;
     const increment = 23;
-    let speed = 260;
-    let glow = 160;
+    let   speed     = 260;
+    let   glow      = 160;
 
     for (let i = 0; i < count; i++) {
         levels.push({ speed, glow });

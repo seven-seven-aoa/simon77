@@ -1,19 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
-import "./App.css";
-import * as buttons from "./Buttons";
-import * as dom from "./Dom";
-import * as levels from "./Levels";
-import * as seq from "./Sequence";
-import * as sound from "./Sound";
-import { delay } from "./Timing";
+import "./App.tsx.css";
+import { buttons, dom, levels, seq, sound, time } from "./components";
 
 export default function App() {
     levels.create();
 
     document.body.addEventListener("click", runGame);
     async function runGame() {
-
         document.body.removeEventListener("click", runGame);
         dom.getDomSingle(".title").style.display = "none";
         dom.getDomSingle(".loader").style.display = "grid";
@@ -25,14 +19,14 @@ export default function App() {
         dom.getDomSingle(".loader").style.display = "none";
         dom.getDomSingle(".game").style.display = "block";
 
-        await delay(1000);
+        await time.delay(1000);
 
         while (true) {
             const level = levels.getNext();
             if (!level) break;
             const gameOver = await runLevel(level);
             if (gameOver) break;
-            await delay(1000);
+            await time.delay(1000);
         }
     }
 
@@ -46,7 +40,7 @@ export default function App() {
 
             const { button } = step;
             buttons.trigger(button, level.glow, sequenceStep);
-            await delay(level.speed);
+            await time.delay(level.speed);
         }
 
         seq.clearUserSequence();
@@ -54,7 +48,7 @@ export default function App() {
 
         let state = null;
         while (state === null || state.inputEnabled) {
-            await delay(100);
+            await time.delay(100);
             state = buttons.getState();
         }
 

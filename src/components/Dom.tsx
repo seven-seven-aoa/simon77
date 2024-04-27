@@ -1,8 +1,4 @@
-export {
-    getDomSingle,
-    getDomAll,
-    setCSSVariable
-};
+export { getDomAll, getDomSingle, setCSSVariable };
 
 const dom = new Map();
 
