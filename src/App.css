@@ -1,42 +1,98 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+    --button_size: min(33vw, 33vh);
+    --button_margin: min(2vw, 2vh);
+    --game_display: none;
+    --glow_speed: 1000ms;
+    --loader_display: none;
+    --title_display: block;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+html {
+    font-size: 16px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+    background-color: #0000ff;
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+main {
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
 }
 
-.card {
-  padding: 2em;
+div.title {
+    display: var(--title_display);
+    font-size: 2em;
+    color: #ff0000;
+    margin: 0;
+    padding: 0;
 }
 
-.read-the-docs {
-  color: #888;
+div.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: var(--loader_display);
+    animation: l14 4s infinite;
+}
+
+    div.loader::before,
+    div.loader::after {
+        content: "";
+        grid-area: 1/1;
+        border: 8px solid;
+        border-radius: 50%;
+        border-color: red red #0000 #0000;
+        mix-blend-mode: darken;
+        animation: l14 1s infinite linear;
+    }
+
+    div.loader::after {
+        border-color: #0000 #0000 blue blue;
+        animation-direction: reverse;
+    }
+
+@keyframes l14 {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+div.game {
+    display: var(--game_display);
+}
+
+button {
+    background-color: #ff0000;
+    border-color: blueviolet;
+    border-radius: 5%;
+    color: white;
+    display: inline-block;
+    font-size: xx-large;
+    width: var(--button_size);
+    height: var(--button_size);
+    margin: var(--button_margin);
+    transition: var(--glow_speed);
+    min-width: var(--min_size);
+    min-height: var(--min_size);
+}
+
+    button.glow {
+        box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 200px #03e9f4;
+    }
+
+input {
+    display: block;
+    width: 100%;
+    background-color: #000000;
+    color: #ff0000;
+    padding: 2px;
+    margin: 2px;
 }
