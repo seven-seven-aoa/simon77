@@ -1,7 +1,9 @@
 import { Howl } from "howler";
 import { delay } from "./Timing";
-import soundUrlOgg from "./Sound.tsx.ogg";
-import soundUrlMp3 from "./Sound.tsx.mp3";
+import soundUrlOgg from "./Sound.ogg";
+import soundUrlMp3 from "./Sound.mp3";
+import zplay1 from "./zapsplat_multimedia_game_retro_musical_positive.wav";
+import zplay2 from "./zapsplat_multimedia_game_retro_musical_negative_003.wav";
 
 export { create, playButton, playFail, playStart, stop };
 
@@ -26,14 +28,12 @@ function create() {
     });
 }
 
-async function playStart() {
-    _sound.play("start");
-    await delay(_duration.start);
+function playStart() {
+    new Howl({ src: [zplay1] }).play();
 }
 
-async function playFail() {
-    _sound.play("fail");
-    await delay(_duration.fail);
+function playFail() {
+    new Howl({ src: [zplay2] }).play();
 }
 
 function playButton(id: number) {

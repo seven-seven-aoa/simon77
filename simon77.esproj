@@ -7,9 +7,13 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+    <BuildCommand>npm run dev</BuildCommand>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove=".vscode\**" />
-    <TypeScriptConfiguration Remove=".vscode\**" />
+    <None Remove="dist\**" />
+    <TypeScriptConfiguration Remove="dist\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\azure-static-web-apps-red-field-0aef9e010.yml" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-export { getDomAll, getDomSingle, setCSSVariable };
+export { game, loader, title, getDomAll, getDomSingle, setCSSVariable };
 
 const dom = new Map();
 
@@ -26,4 +26,16 @@ function getDomAll(query: string) {
 
 function setCSSVariable(name: string, value: string) {
     getDomSingle(":root").style.setProperty(`--${name}`, value);
+}
+
+function game() {
+    return getDomSingle(".game");
+}
+
+function loader() {
+    return getDomSingle(".loader");
+}
+
+function title() {
+    return getDomSingle(".title");
 }

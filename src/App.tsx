@@ -1,25 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
-import "./App.tsx.css";
+import "./App.css";
+import { useState, useEffect } from "react";
 import { buttons, dom, levels, seq, sound, time } from "./components";
+import { setCSSVariable } from "./components/Dom";
 
 export default function App() {
-    levels.create();
+    const fadeSpeed = 900;
+    const [screen, setScreen] = useState("screen show transparent");
+    const [title, setTitle] = useState("title show opaque");
+    const [game, setGame] = useState("game hide transparent");
 
-    document.body.addEventListener("click", runGame);
+    useEffect(sound.playStart, []);
+
+    
     async function runGame() {
-        document.body.removeEventListener("click", runGame);
-        dom.getDomSingle(".title").style.display = "none";
-        dom.getDomSingle(".loader").style.display = "grid";
-
+        setCSSVariable("fade_speed", `${900}ms`);
+        setScreen("screen hide transparent");
+        setTitle("title fade transparent");
+        await time.delay(fadeSpeed);
+        setTitle("title hide transparent");
+        
+        levels.create();
         sound.create();
-        await sound.playStart();
-
         buttons.create(sound);
-        dom.getDomSingle(".loader").style.display = "none";
-        dom.getDomSingle(".game").style.display = "block";
-
-        await time.delay(1000);
+        
+        setGame("game show transparent");
+        await time.delay(fadeSpeed / 4);
+        setGame("game fade opaque");
 
         while (true) {
             const level = levels.getNext();
@@ -54,7 +63,7 @@ export default function App() {
 
         if (state.compareResult === seq.CompareResult.MISMATCH) {
             sound.stop();
-            await sound.playFail();
+            sound.playFail();
             dom.getDomSingle(".game").style.display = "none";
             return true;
         }
@@ -64,9 +73,9 @@ export default function App() {
 
     return (
         <main>
-            <div className="title">Touch to start.</div>
-            <div className="loader"></div>
-            <div className="game">
+            <div className={title}>Touch to start.</div>
+            <div className={screen} onClick={runGame}></div>
+            <div className={game}>
                 <section>
                     <button id="button_0">&nbsp;</button>
                     <button id="button_1">&nbsp;</button>
