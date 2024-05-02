@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { setCSSVariable } from "./Dom";
 
-export { create, getNext };
+export { init, next };
 
 const levels: any[] = [];
 
-function create() {
+function init() {
     const count     = 12;
     const increment = 23;
     let   speed     = 260;
@@ -18,7 +18,7 @@ function create() {
     }
 }
 
-function getNext() {
+function next() {
     const level = levels.pop();
     if (level) {
         setCSSVariable("glow_speed", `${level.speed}ms`);

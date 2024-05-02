@@ -7,31 +7,32 @@ import { buttons, dom, levels, seq, sound, time } from "./components";
 import { setCSSVariable } from "./components/Dom";
 
 export default function App() {
-    const fadeSpeed = 900;
+    const fadeSpeed = 0.9;
     const [screen, setScreen] = useState("screen show transparent");
     const [title, setTitle] = useState("title show opaque");
     const [game, setGame] = useState("game hide transparent");
 
-    useEffect(sound.playStart, []);
+    //useEffect(sound.playStart, []);
 
-    
     async function runGame() {
-        setCSSVariable("fade_speed", `${900}ms`);
+        await playStartMusic();
+
+        setCSSVariable("fade_speed", `${fadeSpeed}s`);
         setScreen("screen hide transparent");
         setTitle("title fade transparent");
         await time.delay(fadeSpeed);
         setTitle("title hide transparent");
-        
-        levels.create();
-        sound.create();
-        buttons.create(sound);
-        
+        return;
+
+        levels.init();
+        buttons.init(sound);
+
         setGame("game show transparent");
         await time.delay(fadeSpeed / 4);
         setGame("game fade opaque");
 
         while (true) {
-            const level = levels.getNext();
+            const level = levels.next();
             if (!level) break;
             const gameOver = await runLevel(level);
             if (gameOver) break;
@@ -39,6 +40,28 @@ export default function App() {
         }
     }
 
+    async function playStartMusic() {
+        const duration: number = 0.5;
+        const oscillator: OscillatorType = "triangle";
+
+        let gain: number = 0.16;
+        const gainAdjust: number = 0.05;
+
+        const notes = ["C3", "C4", "C5", "G5"];
+        for (const note of notes) {
+            const { ctx, osc, vol } = sound.playNote({
+                gain,
+                note,
+                oscillator,
+            });
+            await time.delay(duration);
+            osc.stop();
+            osc.disconnect();
+            vol.disconnect();
+            ctx.close();
+            gain -= gainAdjust;
+        }
+    }
     async function runLevel(level: any) {
         seq.addSequenceStep();
 
@@ -62,8 +85,8 @@ export default function App() {
         }
 
         if (state.compareResult === seq.CompareResult.MISMATCH) {
-            sound.stop();
-            sound.playFail();
+            // sound.stop();
+            // sound.playFail();
             dom.getDomSingle(".game").style.display = "none";
             return true;
         }

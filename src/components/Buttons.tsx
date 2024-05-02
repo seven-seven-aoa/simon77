@@ -3,7 +3,7 @@ import { getDomAll } from "./Dom";
 import { CompareResult, addUserStep, compareSequences } from "./Sequence";
 import { Events } from "./Events";
 
-export { create, enableInput, getState, trigger };
+export { init, enableInput, getState, trigger };
 
 let _buttons: any[] = [];
 const _state: any = {
@@ -11,7 +11,7 @@ const _state: any = {
     compareResult: null,
 };
 
-function create(sound: any) {
+function init(sound: any) {
     _buttons = getDomAll("button");
 
     _buttons.forEach((button: any, index: number) => {
