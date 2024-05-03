@@ -1,48 +1,74 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { delay } from "./Timing";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export { playNote };
+const ctx = new window.AudioContext();
+export type RampType = "none" | "exponential" | "liner";
+
+export function playNote(props: PlayNote) {
+    props.note ??= "A4";
+    props.wave ??= "triangle";
+    props.gain ??= [];
+    props.nostop ??= false;
+    props.startGain ??= 0;
+
+    const volume = ctx.createGain();
+
+    const startTime = ctx.currentTime;
+    volume.gain.setValueAtTime(props.startGain, startTime);
+
+    let endTime = startTime;
+    for (const node of props.gain) {
+        node.value ??= .33;
+        node.value = Math.max(node.value, 0);
+
+        node.time ??= 0;
+        endTime = startTime + node.time;
+
+        node.ramp ??= "none";
+        switch (node.ramp) {
+            case "exponential":
+                node.value = Math.max(node.value, minExponentialValue);
+                volume.gain.exponentialRampToValueAtTime(node.value, endTime);
+                break;
+            case "liner":
+                volume.gain.linearRampToValueAtTime(node.value, endTime);
+                break;
+            default:
+                console.debug({ node, endTime });
+                volume.gain.setValueAtTime(node.value, endTime);
+                break;
+        }
+    }
+
+    const osc = ctx.createOscillator();
+    osc.type = props.wave;
+    osc.frequency.value = noteFreq(props.note);
+
+    volume.connect(ctx.destination);
+    osc.connect(volume);
+    osc.start(startTime);
+    if (!props.nostop) {
+        osc.stop(endTime);
+    }
+    return osc;
+}
+
+const minExponentialValue: number = 0.000001;
 
 interface PlayNote {
-    gain: number;
     note?: string;
-    oscillator?: OscillatorType;
+    wave?: OscillatorType;
+    gain?: EnvelopeNode[];
+    nostop?: boolean;
+    startGain?: number;
 }
 
-interface Audio {
-    ctx: AudioContext;
-    osc: OscillatorNode;
-    vol: GainNode;
+interface EnvelopeNode {
+    value?: number;
+    time?: number;
+    ramp?: RampType;
 }
 
-function createOscillator(type: OscillatorType, gain: number) {
-    const ctx = new window.AudioContext();
-    const vol: GainNode = ctx.createGain();
-
-    if (gain < 0) gain = 0;
-    gain = Math.round((gain + Number.EPSILON) * 100) / 100
-    console.debug({ gain });
-    vol.gain.value = gain;
-
-    const osc: OscillatorNode = ctx.createOscillator();
-    osc.type = type;
-    osc.connect(vol);
-    vol.connect(ctx.destination);
-    return { ctx, osc, vol } as Audio;
-}
-
-function playNote({ gain, note, oscillator }: PlayNote) {
-    note ||= "A4";
-    oscillator ||= "sine";
-
-    const { ctx, osc, vol } = createOscillator(oscillator, gain);
-
-    osc.frequency.value = noteFreq(note);
-    osc.start();
-    return { ctx, osc, vol } as Audio;
-}
+//    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 
 function noteFreq(note: string) {
     if (note.length === 1) note += "_";

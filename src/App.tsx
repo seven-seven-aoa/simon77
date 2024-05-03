@@ -1,34 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
+import splash from "./simon77.png";
 import "./App.css";
 import { useState, useEffect } from "react";
 import { buttons, dom, levels, seq, sound, time } from "./components";
 import { setCSSVariable } from "./components/Dom";
+import { RampType } from "./components/Sound";
 
 export default function App() {
-    const fadeSpeed = 0.9;
+    const fadeSpeed = 420;
     const [screen, setScreen] = useState("screen show transparent");
-    const [title, setTitle] = useState("title show opaque");
+    const [title, setTitle] = useState("title show transparent");
     const [game, setGame] = useState("game hide transparent");
 
-    //useEffect(sound.playStart, []);
+    useEffect(() => {
+        setTimeout(() => {
+            setTitle("title fade opaque");
+        }, fadeSpeed);
+    }, []);
 
     async function runGame() {
-        await playStartMusic();
 
-        setCSSVariable("fade_speed", `${fadeSpeed}s`);
+        setCSSVariable("fade_speed", `${fadeSpeed}ms`);
         setScreen("screen hide transparent");
         setTitle("title fade transparent");
+        playStartMusic();
         await time.delay(fadeSpeed);
         setTitle("title hide transparent");
-        return;
 
         levels.init();
-        buttons.init(sound);
+        buttons.init();
 
         setGame("game show transparent");
-        await time.delay(fadeSpeed / 4);
+        await time.delay(fadeSpeed * 3);
         setGame("game fade opaque");
 
         while (true) {
@@ -40,26 +45,26 @@ export default function App() {
         }
     }
 
-    async function playStartMusic() {
-        const duration: number = 0.5;
-        const oscillator: OscillatorType = "triangle";
+    function playStartMusic() {
+        const notes: string[] = ["C3", "C4", "C5", "C6"];
+        const gains: number[] = [0.62, 0.42, 0.24, 0.12];
 
-        let gain: number = 0.16;
-        const gainAdjust: number = 0.05;
+        let time: number = 0;
+        const duration: number = 2.2;
+        const space: number = 0.11;
+        const ramp: RampType = "exponential";
+        const wave: OscillatorType = "sine";
 
-        const notes = ["C3", "C4", "C5", "G5"];
-        for (const note of notes) {
-            const { ctx, osc, vol } = sound.playNote({
-                gain,
-                note,
-                oscillator,
+        for (let i = 0; i < notes.length; i++) {
+            sound.playNote({
+                wave,
+                note: notes[i],
+                gain: [
+                    { value: gains[i], time: time, ramp },
+                    { value: 0, time: time + duration, ramp },
+                ],
             });
-            await time.delay(duration);
-            osc.stop();
-            osc.disconnect();
-            vol.disconnect();
-            ctx.close();
-            gain -= gainAdjust;
+            time += space;
         }
     }
     async function runLevel(level: any) {
@@ -82,6 +87,7 @@ export default function App() {
         while (state === null || state.inputEnabled) {
             await time.delay(100);
             state = buttons.getState();
+            console.debug({ state });
         }
 
         if (state.compareResult === seq.CompareResult.MISMATCH) {
@@ -96,7 +102,9 @@ export default function App() {
 
     return (
         <main>
-            <div className={title}>Touch to start.</div>
+            <div className={title}>
+                <img src={splash} alt="Simon `77" />
+            </div>
             <div className={screen} onClick={runGame}></div>
             <div className={game}>
                 <section>

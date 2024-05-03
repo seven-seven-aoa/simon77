@@ -55,16 +55,14 @@ main {
 div.title {
     margin: 0;
     padding: 0;
-    color: #ff0000;
-    width: 50px;
-    animation: l14 4s infinite;
+    width: 100vw;
     display: grid;
 }
 
-@keyframes l14 {
-    100% {
-        transform: rotate(1turn);
-    }
+img {
+    width: 80vw;
+    height: auto;
+    margin: 0 auto;
 }
 
 div.screen {
