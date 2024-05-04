@@ -1,8 +1,19 @@
 :root {
     --button_size: min(33vw, 33vh);
-    --button_margin: min(2vw, 2vh);
-    --glow_speed: 1000ms;
+    --button_margin: min(2.5vw, 2.5vh);
+
     --fade_speed: 600ms;
+    --glow_speed: 1000ms;
+
+    --glow_color_0: #000000;
+    --glow_color_1: #000000;
+    --glow_color_2: #000000;
+    --glow_color_3: #000000;
+
+    --box_shadow_a: 0 0 5px;
+    --box_shadow_b: 0 0 25px;
+    --box_shadow_c: 0 0 50px;
+    --box_shadow_d: 0 0 200px;
 }
 
 * {
@@ -13,26 +24,6 @@
 
 html {
     font-size: 16px;
-}
-
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
-}
-
-.transparent {
-    opacity: 0;
-}
-
-.opaque {
-    opacity: 1;
-}
-
-.fade {
-    transition: opacity var(--fade_speed) linear;
 }
 
 body {
@@ -52,50 +43,109 @@ main {
     width: 100vw;
 }
 
-div.title {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
+.transparent {
+    opacity: 0;
+}
+
+.opaque {
+    opacity: 1;
+}
+
+.fade {
+    transition: opacity var(--fade_speed) linear;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.title.show {
     display: grid;
 }
 
-img {
+.title {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+}
+
+.title > img {
     width: 80vw;
     height: auto;
     margin: 0 auto;
 }
 
-div.screen {
+.game > img {
+    width: 8vw;
+    opacity: 0.4;
+    height: auto;
+    position: absolute;
+    left: 2vw;
+    top: 2vw;
+    opacity: 0;
+    /* margin: 1.3vw 2vh; */
+}
+
+img#pause {
+    opacity: .23;
+}
+img#restart {
+    opacity: .23;
+    left: calc(100vw - 8vw - 2vw);
+}
+
+.screen {
     position: absolute;
     width: 100vw;
     height: 100vh;
 }
 
 button {
-    background-color: #ff0000;
-    border-color: blueviolet;
     border-radius: 5%;
-    color: white;
     display: inline-block;
-    font-size: xx-large;
-    width: var(--button_size);
-    height: var(--button_size);
-    margin: var(--button_margin);
-    transition: var(--glow_speed);
+
     min-width: var(--min_size);
     min-height: var(--min_size);
+
+    width: var(--button_size);
+    height: var(--button_size);
+
+    margin: var(--button_margin);
+    transition: var(--glow_speed);
+
+    position: relative;
+    left: .8vw;
 }
 
-button.glow {
-    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
-        0 0 200px #03e9f4;
+#button_0.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_0),
+        var(--box_shadow_b) var(--glow_color_0),
+        var(--box_shadow_c) var(--glow_color_0),
+        var(--box_shadow_d) var(--glow_color_0);
+}
+#button_1.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_1),
+        var(--box_shadow_b) var(--glow_color_1),
+        var(--box_shadow_c) var(--glow_color_1),
+        var(--box_shadow_d) var(--glow_color_1);
+}
+#button_2.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_2),
+        var(--box_shadow_b) var(--glow_color_2),
+        var(--box_shadow_c) var(--glow_color_2),
+        var(--box_shadow_d) var(--glow_color_2);
+}
+#button_3.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_3),
+        var(--box_shadow_b) var(--glow_color_3),
+        var(--box_shadow_c) var(--glow_color_3),
+        var(--box_shadow_d) var(--glow_color_3);
 }
 
 input {
-    display: block;
-    width: 100%;
-    background-color: #000000;
-    color: #ff0000;
-    padding: 2px;
-    margin: 2px;
+    position: absolute;
 }

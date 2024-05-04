@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
-import splash from "./simon77.png";
+import splash from "./images/simon77.png";
+import play from "./images/play.png";
+import pause from "./images/pause.png";
+import restart from "./images/restart.png";
+
 import "./App.css";
 import { useState, useEffect } from "react";
 import { buttons, dom, levels, seq, sound, time } from "./components";
@@ -10,32 +14,36 @@ import { RampType } from "./components/Sound";
 
 export default function App() {
     const fadeSpeed = 420;
+    setCSSVariable("fade_speed", `${fadeSpeed}ms`);
+
     const [screen, setScreen] = useState("screen show transparent");
     const [title, setTitle] = useState("title show transparent");
     const [game, setGame] = useState("game hide transparent");
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             setTitle("title fade opaque");
         }, fadeSpeed);
+
+        return () => clearTimeout(timeout);
     }, []);
 
     async function runGame() {
-
-        setCSSVariable("fade_speed", `${fadeSpeed}ms`);
         setScreen("screen hide transparent");
         setTitle("title fade transparent");
+        await time.delay(fadeSpeed / 4);
         playStartMusic();
-        await time.delay(fadeSpeed);
+        await time.delay(fadeSpeed/4);
         setTitle("title hide transparent");
 
         levels.init();
         buttons.init();
-
+        await time.delay(fadeSpeed * 4);
+        
         setGame("game show transparent");
-        await time.delay(fadeSpeed * 3);
         setGame("game fade opaque");
-
+        await time.delay(fadeSpeed * 4);
+        
         while (true) {
             const level = levels.next();
             if (!level) break;
@@ -87,7 +95,6 @@ export default function App() {
         while (state === null || state.inputEnabled) {
             await time.delay(100);
             state = buttons.getState();
-            console.debug({ state });
         }
 
         if (state.compareResult === seq.CompareResult.MISMATCH) {
@@ -115,6 +122,12 @@ export default function App() {
                     <button id="button_2">&nbsp;</button>
                     <button id="button_3">&nbsp;</button>
                 </section>
+
+                <img src={pause} alt="Pause" id="pause" />
+                <img src={play} alt="Play" id="play" />
+                <img src={restart} alt="Restart" id="restart" />
+
+
                 <input type="hidden" id="game_sequence" />
                 <input type="hidden" id="user_sequence" />
             </div>

@@ -33,7 +33,6 @@ export function playNote(props: PlayNote) {
                 volume.gain.linearRampToValueAtTime(node.value, endTime);
                 break;
             default:
-                console.debug({ node, endTime });
                 volume.gain.setValueAtTime(node.value, endTime);
                 break;
         }
