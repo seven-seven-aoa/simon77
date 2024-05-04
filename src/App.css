@@ -51,7 +51,13 @@ main {
     opacity: 1;
 }
 
-.fade {
+.opaque.fade {
+    opacity: 1;
+    transition: opacity var(--fade_speed) linear;
+}
+
+.transparent.fade {
+    opacity: 0;
     transition: opacity var(--fade_speed) linear;
 }
 

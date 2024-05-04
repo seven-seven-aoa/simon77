@@ -13,7 +13,9 @@ import { setCSSVariable } from "./components/Dom";
 import { RampType } from "./components/Sound";
 
 export default function App() {
-    const fadeSpeed = 420;
+    const newLevelPause: number = 1000;
+    const fadeSpeed: number = 720;
+    const inputLoop: number = 100;
     setCSSVariable("fade_speed", `${fadeSpeed}ms`);
 
     const [screen, setScreen] = useState("screen show transparent");
@@ -21,6 +23,9 @@ export default function App() {
     const [game, setGame] = useState("game hide transparent");
 
     useEffect(() => {
+        levels.init();
+        buttons.init();
+
         const timeout = setTimeout(() => {
             setTitle("title fade opaque");
         }, fadeSpeed);
@@ -31,25 +36,21 @@ export default function App() {
     async function runGame() {
         setScreen("screen hide transparent");
         setTitle("title fade transparent");
-        await time.delay(fadeSpeed / 4);
-        playStartMusic();
-        await time.delay(fadeSpeed/4);
+        await time.delay(fadeSpeed * 0.25);
         setTitle("title hide transparent");
-
-        levels.init();
-        buttons.init();
-        await time.delay(fadeSpeed * 4);
+        playStartMusic();
+        await time.delay(fadeSpeed * 0.75);
         
-        setGame("game show transparent");
-        setGame("game fade opaque");
-        await time.delay(fadeSpeed * 4);
+        
+        setGame("game show opaque");
+        await time.delay(fadeSpeed);
         
         while (true) {
+            await time.delay(newLevelPause);
             const level = levels.next();
             if (!level) break;
             const gameOver = await runLevel(level);
             if (gameOver) break;
-            await time.delay(1000);
         }
     }
 
@@ -93,7 +94,7 @@ export default function App() {
 
         let state = null;
         while (state === null || state.inputEnabled) {
-            await time.delay(100);
+            await time.delay(inputLoop);
             state = buttons.getState();
         }
 
@@ -126,7 +127,6 @@ export default function App() {
                 <img src={pause} alt="Pause" id="pause" />
                 <img src={play} alt="Play" id="play" />
                 <img src={restart} alt="Restart" id="restart" />
-
 
                 <input type="hidden" id="game_sequence" />
                 <input type="hidden" id="user_sequence" />
