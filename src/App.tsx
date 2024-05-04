@@ -18,40 +18,61 @@ export default function App() {
     const inputLoop: number = 100;
     setCSSVariable("fade_speed", `${fadeSpeed}ms`);
 
-    const [screen, setScreen] = useState("screen show transparent");
-    const [title, setTitle] = useState("title show transparent");
-    const [game, setGame] = useState("game hide transparent");
+    const [titleLayer, setTitleLayer] = useState("title");
+    const [gameLayer, setGameLayer] = useState("game");
+    const [controlLayer, setControlLayer] = useState("control");
+    const [runButton, setRunButton] = useState(false);
 
     useEffect(() => {
         levels.init();
         buttons.init();
 
-        const timeout = setTimeout(() => {
-            setTitle("title fade opaque");
+        const timeout = setTimeout(async () => {
+            setTitleLayer("title fade_in");
+            setRunButton(true);
         }, fadeSpeed);
 
         return () => clearTimeout(timeout);
     }, []);
 
     async function runGame() {
-        setScreen("screen hide transparent");
-        setTitle("title fade transparent");
-        await time.delay(fadeSpeed * 0.25);
-        setTitle("title hide transparent");
-        playStartMusic();
+        if (!runButton) {
+            return;
+        }
+
+        setRunButton(false);
+        setTitleLayer("title fade_out");
+
         await time.delay(fadeSpeed * 0.75);
-        
-        
-        setGame("game show opaque");
-        await time.delay(fadeSpeed);
-        
+        playStartMusic();
+
+        setGameLayer("game fade_in");
+        await time.delay(fadeSpeed * 0.75);
+
+        setControlLayer("control fade_in");
+        await time.delay(newLevelPause * 0.5);
+
+        let winner: boolean = false;
         while (true) {
             await time.delay(newLevelPause);
             const level = levels.next();
-            if (!level) break;
+            console.info(level);
+            if (!level) {
+                winner = true;
+                break;
+            }
             const gameOver = await runLevel(level);
-            if (gameOver) break;
+            if (gameOver) {
+                winner = false;
+                break;
+            }
         }
+
+        dom.getDomAll(".button").forEach((button: any) => {
+            button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
+        });
+        await playGameOver(winner);
+        restartClick();
     }
 
     function playStartMusic() {
@@ -76,6 +97,40 @@ export default function App() {
             time += space;
         }
     }
+
+    async function playGameOver(winner: boolean) {
+        const notes: string[] = winner
+            ? [
+                  "C3",
+                  "E3",
+                  "G3",
+                  "C4",
+                  "E4",
+                  "G4",
+                  "C5",
+                  "E5",
+                  "G5",
+                  "C6",
+                  "E6",
+                  "G6",
+                  "C7",
+              ]
+            : ["F#2", "F#2", "F#2", "F#1", "F#2", "F#2", "F#2", "F#1", "F#1"];
+
+        const delay = winner ? 50 : 75;
+        for (let j = 0; j < notes.length; j++) {
+            const osc = sound.playNote({
+                wave: "sawtooth",
+                note: notes[j],
+                nostop: true,
+                startGain: 0.4,
+            });
+            await time.delay(delay);
+            osc.stop();
+            await time.delay(delay);
+        }
+    }
+
     async function runLevel(level: any) {
         seq.addSequenceStep();
 
@@ -101,35 +156,54 @@ export default function App() {
         if (state.compareResult === seq.CompareResult.MISMATCH) {
             // sound.stop();
             // sound.playFail();
-            dom.getDomSingle(".game").style.display = "none";
+
             return true;
         }
 
         return false;
     }
 
-    return (
-        <main>
-            <div className={title}>
-                <img src={splash} alt="Simon `77" />
-            </div>
-            <div className={screen} onClick={runGame}></div>
-            <div className={game}>
-                <section>
-                    <button id="button_0">&nbsp;</button>
-                    <button id="button_1">&nbsp;</button>
-                </section>
-                <section>
-                    <button id="button_2">&nbsp;</button>
-                    <button id="button_3">&nbsp;</button>
-                </section>
+    function restartClick() {
+        setGameLayer("game fade_out");
+        setControlLayer("control fade_out");
+        window.location.reload();
+    }
 
-                <img src={pause} alt="Pause" id="pause" />
-                <img src={play} alt="Play" id="play" />
-                <img src={restart} alt="Restart" id="restart" />
+    return (
+        <main onClick={runGame}>
+            <div className={gameLayer}>
+                <section>
+                    <span className="button" id="button_0">
+                        &nbsp;
+                    </span>
+                    <span className="button" id="button_1">
+                        &nbsp;
+                    </span>
+                </section>
+                <section>
+                    <span className="button" id="button_2">
+                        &nbsp;
+                    </span>
+                    <span className="button" id="button_3">
+                        &nbsp;
+                    </span>
+                </section>
 
                 <input type="hidden" id="game_sequence" />
                 <input type="hidden" id="user_sequence" />
+            </div>
+            <div className={controlLayer}>
+                <img src={pause} alt="Pause" id="pause" />
+                <img src={play} alt="Play" id="play" />
+                <img
+                    src={restart}
+                    alt="Restart"
+                    id="restart"
+                    onClick={restartClick}
+                />
+            </div>
+            <div className={titleLayer}>
+                <img src={splash} alt="Simon `77" />
             </div>
         </main>
     );

@@ -17,7 +17,7 @@ export function playNote(props: PlayNote) {
 
     let endTime = startTime;
     for (const node of props.gain) {
-        node.value ??= .33;
+        node.value ??= 0.33;
         node.value = Math.max(node.value, 0);
 
         node.time ??= 0;
@@ -70,12 +70,13 @@ interface EnvelopeNode {
 //    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 
 function noteFreq(note: string) {
+    const octave: number = parseInt(note[note.length - 1]);
     if (note.length === 1) note += "_";
-    if (note.indexOf("C#") === 0) note = "Db4";
-    if (note.indexOf("D#") === 0) note = "Eb4";
-    if (note.indexOf("F#") === 0) note = "Gb4";
-    if (note.indexOf("G#") === 0) note = "Ab4";
-    if (note.indexOf("A#") === 0) note = "Bb4";
+    if (note.indexOf("C#") === 0) note = "Db" + octave;
+    if (note.indexOf("D#") === 0) note = "Eb" + octave;
+    if (note.indexOf("F#") === 0) note = "Gb" + octave;
+    if (note.indexOf("G#") === 0) note = "Ab" + octave;
+    if (note.indexOf("A#") === 0) note = "Bb" + octave;
     return notes[note];
 }
 

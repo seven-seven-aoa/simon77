@@ -6,14 +6,16 @@ import * as sound from "./Sound";
 
 export { init, enableInput, getState, trigger };
 
+const MIN_SOUND = 200;
 let _buttons: any[] = [];
 const _state: any = {
     inputEnabled: false,
     compareResult: null,
+    lastTouch: null,
 };
 
 function init() {
-    _buttons = getDomAll("button");
+    _buttons = getDomAll(".button");
     const backColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
     const borderColors = ["#800000", "#008000", "#000080", "#808000"];
 
@@ -55,13 +57,18 @@ function init() {
 }
 
 function handleTouchStart(event: Event) {
-    //   if (!_state.inputEnabled) return;
+    if (!_state.inputEnabled) {
+        return;
+    }
     event.preventDefault();
+    _state.lastTouch = new Date().getTime();
     animateTouchStart(event.target);
 }
 
 function handleTouchEnd(event: any) {
-    // if (!_state.inputEnabled) return;
+    if (!_state.inputEnabled) {
+        return;
+    }
     event.preventDefault();
     animateTouchEnd(event.target);
     addUserStep(event.target.gameId);
@@ -85,12 +92,21 @@ function trigger(index: number, glow: number, sequenceStep: number) {
 }
 
 function animateTouchStart(button: any) {
-    button.className = "glow";
+    button.className = "button glow";
     button.playSound();
 }
 
 function animateTouchEnd(button: any) {
-    button.stopSound();
     button.innerHTML = "&nbsp;";
-    button.className = "";
+    const elapsed = new Date().getTime() - _state.lastTouch;
+
+    if (elapsed >= MIN_SOUND) {
+        button.className = "button";
+        button.stopSound();
+        return;
+    }
+    setTimeout(() => {
+        button.className = "button";
+        button.stopSound();
+    }, MIN_SOUND - elapsed);
 }

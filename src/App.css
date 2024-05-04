@@ -2,7 +2,9 @@
     --button_size: min(33vw, 33vh);
     --button_margin: min(2.5vw, 2.5vh);
 
-    --fade_speed: 600ms;
+    --fade_speed: 1000ms;
+    --fade_tansition: opacity var(--fade_speed) linear;
+
     --glow_speed: 1000ms;
 
     --glow_color_0: #000000;
@@ -43,74 +45,46 @@ main {
     width: 100vw;
 }
 
-.transparent {
-    opacity: 0;
-}
-
-.opaque {
-    opacity: 1;
-}
-
-.opaque.fade {
-    opacity: 1;
-    transition: opacity var(--fade_speed) linear;
-}
-
-.transparent.fade {
-    opacity: 0;
-    transition: opacity var(--fade_speed) linear;
-}
-
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
-}
-
-.title.show {
-    display: grid;
-}
-
 .title {
-    margin: 0;
-    padding: 0;
+    opacity: 0;
+    position: absolute;
     width: 100vw;
 }
 
 .title > img {
     width: 80vw;
-    height: auto;
-    margin: 0 auto;
 }
 
-.game > img {
-    width: 8vw;
-    opacity: 0.4;
-    height: auto;
-    position: absolute;
-    left: 2vw;
-    top: 2vw;
+.control {
     opacity: 0;
-    /* margin: 1.3vw 2vh; */
-}
-
-img#pause {
-    opacity: .23;
-}
-img#restart {
-    opacity: .23;
-    left: calc(100vw - 8vw - 2vw);
-}
-
-.screen {
     position: absolute;
+    left: 0;
+    top: 0;
     width: 100vw;
-    height: 100vh;
 }
 
-button {
+.control > img {
+    margin: 2vw;
+    opacity: 0.5;
+    width: 8vw;
+}
+
+.control > img#restart {
+    float: right;
+}
+.control > img#pause,
+.control > img#play {
+    float: left;
+}
+.control > img#play {
+    display: none;
+}
+
+.game {
+    opacity: 0;
+}
+
+.button {
     border-radius: 5%;
     display: inline-block;
 
@@ -124,7 +98,7 @@ button {
     transition: var(--glow_speed);
 
     position: relative;
-    left: .8vw;
+    left: 0.8vw;
 }
 
 #button_0.glow {
@@ -154,4 +128,31 @@ button {
 
 input {
     position: absolute;
+    display: block;
+}
+
+.transparent {
+    opacity: 0;
+}
+
+.opaque {
+    opacity: 1;
+}
+
+.fade_out {
+    opacity: 0;
+    transition: var(--fade_tansition);
+}
+
+.fade_in {
+    opacity: 1;
+    transition: var(--fade_tansition);
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
 }

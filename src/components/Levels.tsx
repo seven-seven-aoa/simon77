@@ -6,7 +6,7 @@ export { init, next };
 const levels: any[] = [];
 
 function init() {
-    const count     = 12;
+    const count     = 10;
     const increment = 23;
     let   speed     = 260;
     let   glow      = 160;
