@@ -66,9 +66,9 @@ function handleTouchStart(event: Event) {
 }
 
 function handleTouchEnd(event: any) {
-    if (!_state.inputEnabled) {
-        return;
-    }
+    //if (!_state.inputEnabled) {
+        //return;
+    //}
     event.preventDefault();
     animateTouchEnd(event.target, true);
     addUserStep(event.target.gameId);
