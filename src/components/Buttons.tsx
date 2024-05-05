@@ -70,7 +70,7 @@ function handleTouchEnd(event: any) {
         return;
     }
     event.preventDefault();
-    animateTouchEnd(event.target);
+    animateTouchEnd(event.target, true);
     addUserStep(event.target.gameId);
     _state.compareResult = compareSequences();
     _state.inputEnabled = _state.compareResult === CompareResult.PARTIAL;
@@ -88,7 +88,7 @@ function trigger(index: number, glow: number, sequenceStep: number) {
     const button = _buttons[index];
     button.innerHTML = sequenceStep;
     animateTouchStart(button);
-    setTimeout(() => animateTouchEnd(button), glow);
+    setTimeout(() => animateTouchEnd(button, false), glow);
 }
 
 function animateTouchStart(button: any) {
@@ -96,11 +96,11 @@ function animateTouchStart(button: any) {
     button.playSound();
 }
 
-function animateTouchEnd(button: any) {
+function animateTouchEnd(button: any, isUser: boolean) {
     button.innerHTML = "&nbsp;";
     const elapsed = new Date().getTime() - _state.lastTouch;
 
-    if (elapsed >= MIN_SOUND) {
+    if (!isUser || elapsed >= MIN_SOUND) {
         button.className = "button";
         button.stopSound();
         return;
