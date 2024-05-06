@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getDomSingle } from "./Dom";
+import * as dom from "./GameDom";
 
 export {
     addSequenceStep,
@@ -18,16 +18,15 @@ export const CompareResult = {
 const sequence: any[] = [];
 
 function addSequenceStep() {
-    console.log(sequence.length);
     sequence.push({ button: Math.floor(Math.random() * 4) });
-    getDomSingle("#game_sequence").value = sequence
+    dom.Hidden.gameSequence().value = sequence
         .map((step) => step.button)
         .join(",");
 }
 
 function compareSequences() {
-    const game = getGameSequence().value;
-    const user = getUserSequence().value;
+    const game = dom.Hidden.gameSequence().value;
+    const user = dom.Hidden.userSequence().value;
     if (game === user) {
         return CompareResult.MATCH;
     }
@@ -42,20 +41,12 @@ function getSequenceStep(index: number) {
 }
 
 function clearUserSequence() {
-    getDomSingle("#user_sequence").value = "";
+    dom.Hidden.userSequence().value = "";
 }
 
 function addUserStep(buttonId: number) {
-    if (getDomSingle("#user_sequence").value.length > 0) {
-        getDomSingle("#user_sequence").value += ",";
+    if (dom.Hidden.userSequence().value.length > 0) {
+        dom.Hidden.userSequence().value += ",";
     }
-    getDomSingle("#user_sequence").value += buttonId;
-}
-
-function getGameSequence() {
-    return getDomSingle("#game_sequence");
-}
-
-function getUserSequence() {
-    return getDomSingle("#user_sequence");
+    dom.Hidden.userSequence().value += buttonId;
 }

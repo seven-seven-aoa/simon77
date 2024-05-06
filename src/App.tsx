@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
 import splash from "./images/simon77.png";
@@ -8,17 +7,18 @@ import restart from "./images/restart.png";
 
 import "./App.css";
 import { useState, useEffect } from "react";
-import { buttons, dom, levels, music, seq, time } from "./components";
+import * as dom from "./game/GameDom";
+import * as time from "./game/GameTiming";
+import * as music from "./game/GameMusic";
+import * as buttons from "./game/Buttons";
+import * as levels from "./game/Levels";
 
 export default function App() {
-    const newLevelPause: number = 1000;
-    const fadeSpeed: number = 720;
-    const inputLoop: number = 100;
-    dom.setCSSVariable("fade_speed", `${fadeSpeed}ms`);
+    dom.setFadeSpeed(time.WaitTime.fadeSpeed);
 
-    const [titleLayer, setTitleLayer] = useState("title");
-    const [gameLayer, setGameLayer] = useState("game");
-    const [controlLayer, setControlLayer] = useState("control");
+    const [titleClass, setTitleClass] = useState(dom.Class.title);
+    const [gameClass, setGameClass] = useState(dom.Class.game);
+    const [controlClass, setControlClass] = useState(dom.Class.control);
     const [runButton, setRunButton] = useState(false);
 
     useEffect(() => {
@@ -26,9 +26,9 @@ export default function App() {
         buttons.init();
 
         const timeout = setTimeout(async () => {
-            setTitleLayer("title fade_in");
+            setTitleClass(dom.FadeIn.title);
             setRunButton(true);
-        }, fadeSpeed);
+        }, time.WaitTime.fadeSpeed);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -37,53 +37,49 @@ export default function App() {
         if (!runButton) {
             return;
         }
-
         setRunButton(false);
-        setTitleLayer("title fade_out");
-
-        await time.delay(fadeSpeed * 0.75);
+        setTitleClass(dom.FadeOut.title);
         music.startup();
+        await time.Delay.fadeSpeed(1);
+        
+        setGameClass(dom.FadeIn.game);
+        await time.Delay.fadeSpeed(0.25);
 
-        setGameLayer("game fade_in");
-        await time.delay(fadeSpeed * 0.75);
-
-        setControlLayer("control fade_in");
-        await time.delay(newLevelPause * 0.5);
+        setControlClass(dom.FadeIn.control);
+        await time.Delay.newLevelDelay(1);
+        dom.toggleOverlay(false);
 
         let winner: boolean = false;
         while (true) {
-            await time.delay(newLevelPause);
+            await time.Delay.newLevelDelay(1);
             const level = levels.next();
-            console.info(level);
             if (!level) {
                 winner = true;
                 break;
             }
-            const gameOver = await levels.run(level, buttons, inputLoop, seq, time);
+            const gameOver = await levels.run(level, buttons);
             if (gameOver) {
                 winner = false;
                 break;
             }
         }
 
-        dom.getDomAll(".button").forEach((button: any) => {
+        dom.Layer.buttons().forEach((button: any) => {
             button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
         });
         await music.gameOver(winner);
         restartClick();
     }
 
-    
-
     function restartClick() {
-        setGameLayer("game fade_out");
-        setControlLayer("control fade_out");
+        setGameClass(dom.FadeOut.game);
+        setControlClass(dom.FadeOut.control);
         window.location.reload();
     }
 
     return (
-        <main onClick={runGame}>
-            <div className={gameLayer}>
+        <main>
+            <div className={gameClass}>
                 <section>
                     <span className="button" id="button_0">
                         &nbsp;
@@ -104,7 +100,7 @@ export default function App() {
                 <input type="hidden" id="game_sequence" />
                 <input type="hidden" id="user_sequence" />
             </div>
-            <div className={controlLayer}>
+            <div className={controlClass}>
                 <img src={pause} alt="Pause" id="pause" />
                 <img src={play} alt="Play" id="play" />
                 <img
@@ -114,9 +110,10 @@ export default function App() {
                     onClick={restartClick}
                 />
             </div>
-            <div className={titleLayer}>
+            <div className={titleClass}>
                 <img src={splash} alt="Simon `77" />
             </div>
+            <div className="overlay" onClick={runGame}></div>
         </main>
     );
 }

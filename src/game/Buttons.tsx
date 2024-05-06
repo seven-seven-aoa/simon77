@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getDomAll, setCSSVariable } from "./Dom";
-import { CompareResult, addUserStep, compareSequences } from "./Sequence";
-import { Events } from "./Events";
-import * as sound from "./Sound";
+import { InputEvents } from "../lib/Events";
+import { playNote } from "../lib/Sound";
+import * as dom from "./GameDom";
+import * as time from "./GameTiming";
+import * as seq from "./Sequence";
 
 export { init, enableInput, getState, trigger };
 
-const MIN_SOUND = 200;
 let _buttons: any[] = [];
 const _state: any = {
     inputEnabled: false,
@@ -15,16 +15,13 @@ const _state: any = {
 };
 
 function init() {
-    _buttons = getDomAll(".button");
+    _buttons = dom.Layer.buttons();
     const backColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
     const borderColors = ["#800000", "#008000", "#000080", "#808000"];
 
     const glowColors = ["#FF8080", "#80FF80", "#8080FF", "#FFFF80"];
     glowColors.forEach((color: string, index: number) => {
-        setCSSVariable(`glow_color_${index}`, color);
-        setCSSVariable(`glow_color_${index}`, color);
-        setCSSVariable(`glow_color_${index}`, color);
-        setCSSVariable(`glow_color_${index}`, color);
+        dom.setGlowColor(index, color);
     });
 
     const notes = ["C4", "Eb4", "G4", "Bb4"];
@@ -37,7 +34,7 @@ function init() {
 
         button.sound = null;
         button.playSound = () => {
-            button.sound = sound.playNote({
+            button.sound = playNote({
                 wave: "triangle",
                 note: notes[index],
                 nostop: true,
@@ -49,31 +46,32 @@ function init() {
             button.sound.stop();
         };
 
-        button.addEventListener(Events.TOUCH_START, handleTouchStart);
-        button.addEventListener(Events.TOUCH_END, handleTouchEnd);
-        button.addEventListener(Events.MOUSE_DOWN, handleTouchStart);
-        button.addEventListener(Events.MOUSE_UP, handleTouchEnd);
+        button.addEventListener(InputEvents.MOUSE_DOWN, handleTouchStart);
+        button.addEventListener(InputEvents.MOUSE_UP, handleTouchEnd);
+        
+        button.addEventListener(InputEvents.TOUCH_START, handleTouchStart);
+        button.addEventListener(InputEvents.TOUCH_END, handleTouchEnd);
     });
 }
 
 function handleTouchStart(event: Event) {
+    event.preventDefault();
     if (!_state.inputEnabled) {
         return;
     }
-    event.preventDefault();
     _state.lastTouch = new Date().getTime();
     animateTouchStart(event.target);
 }
 
 function handleTouchEnd(event: any) {
-    //if (!_state.inputEnabled) {
-        //return;
-    //}
     event.preventDefault();
+    if (_state.lastTouch === null) {
+        return;
+    }
     animateTouchEnd(event.target, true);
-    addUserStep(event.target.gameId);
-    _state.compareResult = compareSequences();
-    _state.inputEnabled = _state.compareResult === CompareResult.PARTIAL;
+    seq.addUserStep(event.target.gameId);
+    _state.compareResult = seq.compareSequences();
+    _state.inputEnabled = _state.compareResult === seq.CompareResult.PARTIAL;
 }
 
 function getState() {
@@ -99,8 +97,9 @@ function animateTouchStart(button: any) {
 function animateTouchEnd(button: any, isUser: boolean) {
     button.innerHTML = "&nbsp;";
     const elapsed = new Date().getTime() - _state.lastTouch;
+    _state.lastTouch = null;
 
-    if (!isUser || elapsed >= MIN_SOUND) {
+    if (!isUser || elapsed >= time.WaitTime.minButtonHold) {
         button.className = "button";
         button.stopSound();
         return;
@@ -108,5 +107,5 @@ function animateTouchEnd(button: any, isUser: boolean) {
     setTimeout(() => {
         button.className = "button";
         button.stopSound();
-    }, MIN_SOUND - elapsed);
+    }, time.WaitTime.minButtonHold - elapsed);
 }

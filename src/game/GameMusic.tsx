@@ -1,5 +1,5 @@
-import { sound, time } from ".";
-import { RampType } from "./Sound";
+import { delay } from "../lib/Timing";
+import { playNote, RampType } from "../lib/Sound";
 
 export { startup, gameOver };
 
@@ -14,7 +14,7 @@ function startup() {
     const wave: OscillatorType = "sine";
 
     for (let i = 0; i < notes.length; i++) {
-        sound.playNote({
+        playNote({
             wave,
             note: notes[i],
             gain: [
@@ -45,16 +45,16 @@ async function gameOver(winner: boolean) {
           ]
         : ["F#2", "F#2", "F#2", "F#1", "F#2", "F#2", "F#2", "F#1", "F#1"];
 
-    const delay = winner ? 50 : 75;
+    const delayValue = winner ? 50 : 75;
     for (let j = 0; j < notes.length; j++) {
-        const osc = sound.playNote({
+        const osc = playNote({
             wave: "sawtooth",
             note: notes[j],
             nostop: true,
             startGain: 0.4,
         });
-        await time.delay(delay);
+        await delay(delayValue);
         osc.stop();
-        await time.delay(delay);
+        await delay(delayValue);
     }
 }

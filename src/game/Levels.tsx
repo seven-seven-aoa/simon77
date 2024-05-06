@@ -1,16 +1,18 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { setCSSVariable } from "./Dom";
+import * as dom from "./GameDom";
+import * as time from "./GameTiming";
+import * as seq from "./Sequence";
 
 export { init, next, run };
 
 const levels: any[] = [];
 
 function init() {
-    const count     = 10;
-    const increment = 23;
-    let   speed     = 260;
-    let   glow      = 160;
+    const count: number = 10;
+    const increment: number = 23;
+    let speed: number = 260;
+    let glow: number = 160;
 
     for (let i = 0; i < count; i++) {
         levels.push({ speed, glow });
@@ -22,23 +24,24 @@ function init() {
 function next() {
     const level = levels.pop();
     if (level) {
-        setCSSVariable("glow_speed", `${level.speed}ms`);
+        dom.setGlowSpeed(level.speed);
     }
     return level;
 }
 
-async function run(level: any, 
-    buttons: any, inputLoop: number, seq: any, time: any) {
+async function run(level: any, buttons: any) {
     seq.addSequenceStep();
 
     let sequenceStep = -1;
     while (true) {
         const step = seq.getSequenceStep(++sequenceStep);
-        if (!step) { break; }
+        if (!step) {
+            break;
+        }
 
         const { button } = step;
         buttons.trigger(button, level.glow, sequenceStep);
-        await time.delay(level.speed);
+        await time.Delay.levelSpeed(level);
     }
 
     seq.clearUserSequence();
@@ -46,10 +49,10 @@ async function run(level: any,
 
     let state = null;
     while (state === null || state.inputEnabled) {
-        await time.delay(inputLoop);
+        await time.Delay.inputLoopThrottle();
         state = buttons.getState();
     }
 
-    const isGameOver = (state.compareResult === seq.CompareResult.MISMATCH);
+    const isGameOver = state.compareResult === seq.CompareResult.MISMATCH;
     return isGameOver;
 }

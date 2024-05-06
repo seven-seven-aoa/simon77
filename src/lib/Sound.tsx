@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const ctx = new window.AudioContext();
 export type RampType = "none" | "exponential" | "liner";

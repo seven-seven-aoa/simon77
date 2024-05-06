@@ -43,6 +43,17 @@ main {
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
+}
+
+.overlay {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
 .title {
