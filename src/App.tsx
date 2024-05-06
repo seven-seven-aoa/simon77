@@ -41,7 +41,7 @@ export default function App() {
         setTitleClass(dom.FadeOut.title);
         music.startup();
         await time.Delay.fadeSpeed(1);
-        
+
         setGameClass(dom.FadeIn.game);
         await time.Delay.fadeSpeed(0.25);
 
@@ -57,7 +57,7 @@ export default function App() {
                 winner = true;
                 break;
             }
-            const gameOver = await levels.run(level, buttons);
+            const gameOver: boolean = await levels.run(level);
             if (gameOver) {
                 winner = false;
                 break;

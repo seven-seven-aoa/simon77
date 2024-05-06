@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InputEvents } from "../lib/Events";
 import { playNote } from "../lib/Sound";
@@ -5,11 +6,12 @@ import * as dom from "./GameDom";
 import * as time from "./GameTiming";
 import * as seq from "./Sequence";
 
-export { init, enableInput, getState, trigger };
+export { init, waitForUserInput, trigger };
 
 let _buttons: any[] = [];
 const _state: any = {
     inputEnabled: false,
+    inputCompleted: false,
     compareResult: null,
     lastTouch: null,
 };
@@ -48,7 +50,7 @@ function init() {
 
         button.addEventListener(InputEvents.MOUSE_DOWN, handleTouchStart);
         button.addEventListener(InputEvents.MOUSE_UP, handleTouchEnd);
-        
+
         button.addEventListener(InputEvents.TOUCH_START, handleTouchStart);
         button.addEventListener(InputEvents.TOUCH_END, handleTouchEnd);
     });
@@ -65,28 +67,39 @@ function handleTouchStart(event: Event) {
 
 function handleTouchEnd(event: any) {
     event.preventDefault();
-    if (_state.lastTouch === null) {
-        return;
-    }
-    animateTouchEnd(event.target, true);
-    seq.addUserStep(event.target.gameId);
-    _state.compareResult = seq.compareSequences();
-    _state.inputEnabled = _state.compareResult === seq.CompareResult.PARTIAL;
+    _state.inputEnabled = false;
+    const minDelay: number = new Date().getTime() - _state.lastTouch;
+
+    setTimeout(() => {
+        animateTouchEnd(event.target);
+        seq.addUserStep(event.target.gameId);
+
+        _state.compareResult = seq.compareSequences();
+        _state.inputEnabled =
+            _state.compareResult === seq.CompareResult.PARTIAL;
+        _state.inputCompleted = !_state.inputEnabled;
+    }, minDelay);
 }
 
-function getState() {
-    return _state;
-}
-
-function enableInput() {
+async function waitForUserInput() {
     _state.inputEnabled = true;
+    _state.inputCompleted = false;
+
+    while (!_state.inputCompleted) {
+        await time.Delay.inputLoopThrottle();
+    }
+
+    const isGameOver: boolean =
+        _state.compareResult === seq.CompareResult.MISMATCH;
+    return isGameOver;
 }
 
 function trigger(index: number, glow: number, sequenceStep: number) {
     const button = _buttons[index];
-    button.innerHTML = sequenceStep;
     animateTouchStart(button);
-    setTimeout(() => animateTouchEnd(button, false), glow);
+    setTimeout(() => {
+        animateTouchEnd(button);
+    }, glow);
 }
 
 function animateTouchStart(button: any) {
@@ -94,18 +107,7 @@ function animateTouchStart(button: any) {
     button.playSound();
 }
 
-function animateTouchEnd(button: any, isUser: boolean) {
-    button.innerHTML = "&nbsp;";
-    const elapsed = new Date().getTime() - _state.lastTouch;
-    _state.lastTouch = null;
-
-    if (!isUser || elapsed >= time.WaitTime.minButtonHold) {
-        button.className = "button";
-        button.stopSound();
-        return;
-    }
-    setTimeout(() => {
-        button.className = "button";
-        button.stopSound();
-    }, time.WaitTime.minButtonHold - elapsed);
+function animateTouchEnd(button: any) {
+    button.className = "button";
+    button.stopSound();
 }

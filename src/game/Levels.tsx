@@ -3,6 +3,7 @@
 import * as dom from "./GameDom";
 import * as time from "./GameTiming";
 import * as seq from "./Sequence";
+import * as buttons from "./Buttons";
 
 export { init, next, run };
 
@@ -29,7 +30,7 @@ function next() {
     return level;
 }
 
-async function run(level: any, buttons: any) {
+async function run(level: any) {
     seq.addSequenceStep();
 
     let sequenceStep = -1;
@@ -45,14 +46,6 @@ async function run(level: any, buttons: any) {
     }
 
     seq.clearUserSequence();
-    buttons.enableInput();
-
-    let state = null;
-    while (state === null || state.inputEnabled) {
-        await time.Delay.inputLoopThrottle();
-        state = buttons.getState();
-    }
-
-    const isGameOver = state.compareResult === seq.CompareResult.MISMATCH;
+    const isGameOver: boolean = await buttons.waitForUserInput();
     return isGameOver;
 }
