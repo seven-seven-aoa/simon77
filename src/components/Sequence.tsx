@@ -18,6 +18,7 @@ export const CompareResult = {
 const sequence: any[] = [];
 
 function addSequenceStep() {
+    console.log(sequence.length);
     sequence.push({ button: Math.floor(Math.random() * 4) });
     getDomSingle("#game_sequence").value = sequence
         .map((step) => step.button)
