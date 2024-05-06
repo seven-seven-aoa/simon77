@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Gomarice Game Music Love";
+    src: url("./assets/gomarice_game_music_love.ttf") format("truetype");
+}
+
 :root {
     --button_size: min(33vw, 33vh);
     --button_margin: min(2.5vw, 2.5vh);
@@ -64,6 +69,14 @@ main {
 
 .title > img {
     width: 80vw;
+}
+
+.title > h1 {
+    color: #ffff00;
+    font-family: "Gomarice Game Music Love", sans-serif;
+    font-size: 16.75vw;
+    font-weight: normal;
+    margin: 0;
 }
 
 .control {

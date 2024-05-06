@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
-import splash from "./images/simon77.png";
-import play from "./images/play.png";
-import pause from "./images/pause.png";
-import restart from "./images/restart.png";
-
+import play from "./assets/play.png";
+import pause from "./assets/pause.png";
+import restart from "./assets/restart.png";
 import "./App.css";
 import { useState, useEffect } from "react";
 import * as dom from "./game/GameDom";
@@ -111,7 +109,7 @@ export default function App() {
                 />
             </div>
             <div className={titleClass}>
-                <img src={splash} alt="Simon `77" />
+                <h1>Ximon '77</h1>
             </div>
             <div className="overlay" onClick={runGame}></div>
         </main>
