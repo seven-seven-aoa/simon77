@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InputEvents } from "../lib/Events";
 import { playNote } from "../lib/Sound";
@@ -94,7 +93,7 @@ async function waitForUserInput() {
     return isGameOver;
 }
 
-function trigger(index: number, glow: number, sequenceStep: number) {
+function trigger(index: number, glow: number) {
     const button = _buttons[index];
     animateTouchStart(button);
     setTimeout(() => {

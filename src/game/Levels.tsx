@@ -41,7 +41,7 @@ async function run(level: any) {
         }
 
         const { button } = step;
-        buttons.trigger(button, level.glow, sequenceStep);
+        buttons.trigger(button, level.glow);
         await time.Delay.levelSpeed(level);
     }
 
