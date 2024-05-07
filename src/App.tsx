@@ -113,7 +113,7 @@ export default function App() {
                 <h1>Ximon '77</h1>
             </div>
             <div className="overlay" onClick={runGame}>
-                DEPLOYED ON [$22024-05-07 12:22:02]$3
+                DEPLOYED ON [2024-05-07 12:26:37]
             </div>
         </main>
     );

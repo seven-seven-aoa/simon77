@@ -37,11 +37,11 @@ git add .;
 [StringBuilder] $sb = [StringBuilder]::new();
 [string] $app_tsx = $PSScriptRoot + "/src/App.tsx";
 [File]::ReadAllLines($app_tsx) | ForEach-Object {
-    if ($regex.IsMatch($_)) {
-        $sb.AppendLine($regex.Replace($_, "`$1DEPLOYED ON [`$2" + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") + "]`$3"));
-    } else {
-        $sb.AppendLine($_);
+    if (!($regex.IsMatch($_))) {
+        $sb.AppendLine($_) > $null;
+        return;
     }
+    $sb.AppendLine($regex.Replace($_, "`$1DEPLOYED ON [" + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") + "]`$2")) > $null;
 };
 [File]::WriteAllText($app_tsx, $sb.ToString());
 
