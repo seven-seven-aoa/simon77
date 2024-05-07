@@ -13,7 +13,7 @@ function Add-LocalChanges {
 
 function Get-Confirmation {
     $title = "== Confirm Production Deployment ==";
-    $question = "`nExisting local changes will be applied.`n`nAre you sure you want to continue?`n";
+    $question = "`nExisting local changes will be applied.`nAre you sure you want to continue?`n`n";
     $choices = "&Yes", "&No";
     
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
