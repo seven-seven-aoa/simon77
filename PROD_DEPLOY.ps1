@@ -1,8 +1,10 @@
 using namespace System.IO;
 using namespace System.Text;
 
-function Add-LocalChanges {
-    git status;
+Clear-Host;
+Write-Host "== Production Deployment ==`n" -ForegroundColor Cyan;
+
+function Add-LocalChanges {    
     if ($true -eq $(Get-Confirmation)) {
         git add .;
         git commit -m "Existing local changes added by PROD_DEPLOY.ps1";
@@ -19,10 +21,10 @@ function Get-Confirmation {
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
 
     if ($decision -eq 0) {
-        Write-Host "Proceeding with production deployment..." -ForegroundColor Green;
+        Write-Host "`nProceeding with production deployment..." -ForegroundColor Green;
         return $true;
     }
-    Write-Host "Production deployment aborted." -ForegroundColor Yellow;
+    Write-Host "`nProduction deployment aborted." -ForegroundColor Yellow;
     return $false;
 }
 
@@ -40,7 +42,7 @@ function Write-DeploymentStamp {
     [File]::WriteAllText($app_tsx, $sb.ToString());
 }
 
-Clear-Host;
+
 if ($true -eq $(Add-LocalChanges)) {
     Write-DeploymentStamp;
     git add .;
