@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
 import play from "./assets/play.png";
@@ -21,10 +20,8 @@ export default function App() {
     const [runButton, setRunButton] = useState(false);
 
     useEffect(() => {
-        // levels.init();
-        // buttons.init();
-
-        console.info("XIMON77 - DEPLOYED ON [date]");
+        levels.init();
+        buttons.init();
 
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
@@ -35,6 +32,7 @@ export default function App() {
     }, []);
 
     async function runGame() {
+        return;
         if (!runButton) {
             return;
         }
@@ -80,8 +78,43 @@ export default function App() {
 
     return (
         <main>
-            <aside>DEPLOYED ON [date]</aside>
-            <h1>Ximon '77</h1>
+            <div className={gameClass}>
+                <section>
+                    <span className="button" id="button_0">
+                        &nbsp;
+                    </span>
+                    <span className="button" id="button_1">
+                        &nbsp;
+                    </span>
+                </section>
+                <section>
+                    <span className="button" id="button_2">
+                        &nbsp;
+                    </span>
+                    <span className="button" id="button_3">
+                        &nbsp;
+                    </span>
+                </section>
+
+                <input type="hidden" id="game_sequence" />
+                <input type="hidden" id="user_sequence" />
+            </div>
+            <div className={controlClass}>
+                <img src={pause} alt="Pause" id="pause" />
+                <img src={play} alt="Play" id="play" />
+                <img
+                    src={restart}
+                    alt="Restart"
+                    id="restart"
+                    onClick={restartClick}
+                />
+            </div>
+            <div className={titleClass}>
+                <h1>Ximon '77</h1>
+            </div>
+            <div className="overlay" onClick={runGame}>
+                DEPLOYED ON [2024-05-07 13:10:14]
+            </div>
         </main>
     );
 }
