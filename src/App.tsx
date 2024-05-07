@@ -83,6 +83,7 @@ export default function App() {
         <main>
             <aside>DEPLOYED ON [2024-05-07 13:57:12]</aside>
             <h1>Ximon '77</h1>
+            <div className="overlay"></div>
         </main>
     );
 }
