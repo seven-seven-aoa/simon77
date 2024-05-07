@@ -55,6 +55,7 @@ aside {
     color: #ff1493;
     font-size: 3vmin;
     font-weight: bold;
+    top: calc(100vh - 3vmin);
 }
 
 h1 {
