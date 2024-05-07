@@ -5,7 +5,9 @@
 
 :root {
     --button_size: 33svw;
-    --button_margin: 3svw;
+    --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
+    --button_border: 4px;
+    --button_margin: 12px;
 
     --fade_speed: 1000ms;
     --fade_tansition: opacity var(--fade_speed) linear;
@@ -48,12 +50,17 @@ main {
     background-color: #000000;
 }
 
-.overlay {
-    background-color: #ff1493;
+.title {
     opacity: 0;
 }
 
-aside {
+.title > h1 {
+    color: #ffff00;
+    font-size: 10svh;
+    top: calc(50% - 5svh);
+}
+
+.title > aside {
     color: #ff1493;
     font-family: monospace;
     font-size: 2.3svh;
@@ -61,8 +68,78 @@ aside {
     top: calc(100svh - 3svh);
 }
 
-h1 {
-    color: #ffff00;
-    font-size: 10svh;
-    top: calc(50% - 8svh);
+.control {
+    opacity: 0;
+}
+
+.control > img {
+    opacity: 0.25;
+    width: 6svh;
+    height: 6svh;
+
+    left: 2svh;
+    top: 2svh;
+}
+
+#play {
+    opacity: 0;
+}
+
+#restart {
+    left: calc(100% - 8svh);
+}
+
+.game {
+    opacity: 0;
+}
+
+.game > b {
+    width: var(--button_size);
+    height: var(--button_size);
+    
+    left: var(--button_pos);
+    top: var(--button_pos);
+
+    display: inline-block;
+    border-style: solid;
+    border-width: var(--button_border);
+}
+
+.game > #button_0 {
+    left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
+    top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
+}
+
+.game > #button_1 {
+    left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+    top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
+}
+
+.game > #button_2 {
+    left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
+    top: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+}
+
+.game > #button_3 {
+    left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+    top:  calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+}
+
+.overlay {
+    background-color: #ff1493;
+    opacity: 0;
+}
+
+.fade_in {
+    opacity: 1;
+    transition: var(--fade_tansition);
+}
+
+.fade_out {
+    opacity: 0;
+    transition: var(--fade_tansition);
+}
+
+.hide {
+    display: none;
 }

@@ -200,34 +200,3 @@ main {
         var(--box_shadow_c) var(--glow_color_3),
         var(--box_shadow_d) var(--glow_color_3);
 }
-
-input {
-    position: absolute;
-    display: block;
-}
-
-.transparent {
-    opacity: 0;
-}
-
-.opaque {
-    opacity: 1;
-}
-
-.fade_out {
-    opacity: 0;
-    transition: var(--fade_tansition);
-}
-
-.fade_in {
-    opacity: 1;
-    transition: var(--fade_tansition);
-}
-
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
-}

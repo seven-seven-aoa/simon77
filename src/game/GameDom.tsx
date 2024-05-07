@@ -29,7 +29,7 @@ export namespace FadeOut {
 }
 
 export namespace Query {
-    export const buttons:string = ".button";
+    export const buttons:string = "b";
     export const control:string = `.${Class.control}`;
     export const game   :string = `.${Class.game}`;
     export const title  :string = `.${Class.title}`;
@@ -38,14 +38,12 @@ export namespace Query {
     export const gameSequence:string = "#game_sequence";
     export const userSequence:string = "#user_sequence";
 }
-
 export namespace Layer {
     export function buttons() { return  dom.getDomAll(Query.buttons);    }
     export function control() { return  dom.getDomSingle(Query.control); }
     export function game   () { return  dom.getDomSingle(Query.game);    }
     export function title  () { return  dom.getDomSingle(Query.title);   }
 }
-
 export namespace Hidden {
     export function gameSequence() { return dom.getDomSingle(Query.gameSequence); }
     export function userSequence() { return dom.getDomSingle(Query.userSequence); }

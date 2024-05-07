@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { InputEvents } from "../lib/Events";
 import { playNote } from "../lib/Sound";
+
 import * as dom from "./GameDom";
-import * as time from "./GameTiming";
 import * as seq from "./Sequence";
+import * as time from "./GameTiming";
 
 export { init, waitForUserInput, trigger };
 
 let _buttons: any[] = [];
 const _state: any = {
-    inputEnabled: false,
-    inputCompleted: false,
     compareResult: null,
+    inputCompleted: false,
+    inputEnabled: false,
     lastTouch: null,
 };
 

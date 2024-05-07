@@ -96,8 +96,6 @@ export default function App() {
                     </span>
                 </section>
 
-                <input type="hidden" id="game_sequence" />
-                <input type="hidden" id="user_sequence" />
             </div>
             <div className={controlClass}>
                 <img src={pause} alt="Pause" id="pause" />
