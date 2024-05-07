@@ -25,7 +25,7 @@ export default function App() {
         // buttons.init();
 
         console.info({titleClass, runButton});
-        console.info("XIMON77 - DEPLOYED ON [2024-05-07 13:57:12]");
+        console.info("XIMON77 - DEPLOYED ON [2024-05-07 14:06:51]");
 
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
@@ -81,7 +81,7 @@ export default function App() {
 
     return (
         <main>
-            <aside>DEPLOYED ON [2024-05-07 13:57:12]</aside>
+            <aside>DEPLOYED ON [2024-05-07 14:06:51]</aside>
             <h1>Ximon '77</h1>
             <div className="overlay"></div>
         </main>
