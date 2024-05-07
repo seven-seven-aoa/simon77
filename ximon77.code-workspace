@@ -14,7 +14,7 @@
             "**/.vscode": true,
             "**/CVS": true,
             "**/Thumbs.db": true,
-            "**/dist": true,
+            "**/dist": false,
             "**/node_modules": true,
             "**/obj": true,
             "package-lock.json": true
