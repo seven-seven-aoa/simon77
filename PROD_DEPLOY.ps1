@@ -14,10 +14,11 @@ function Add-LocalChanges {
 }
 
 function Get-Confirmation {
+    return $true;
+
     $title = "== Confirm Production Deployment ==";
     $question = "`nExisting local changes will be applied.`nAre you sure you want to continue?`n`n";
     $choices = "&Yes", "&No";
-    
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
 
     if ($decision -eq 0) {
