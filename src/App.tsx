@@ -24,7 +24,7 @@ export default function App() {
         // levels.init();
         // buttons.init();
 
-        console.info("XIMON77 - DEPLOYED ON [2024-05-07 13:36:25]");
+        console.info("XIMON77 - DEPLOYED ON [2024-05-07 13:39:12]");
 
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
@@ -80,7 +80,7 @@ export default function App() {
 
     return (
         <main>
-            <aside>DEPLOYED ON [2024-05-07 13:36:25]</aside>
+            <aside>DEPLOYED ON [2024-05-07 13:39:12]</aside>
             <h1>Ximon '77</h1>
         </main>
     );
