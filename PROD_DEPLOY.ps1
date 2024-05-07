@@ -2,11 +2,10 @@ using namespace System.IO;
 using namespace System.Text;
 
 function Add-LocalChanges {
-    [string] $message = "Existing local changes "
     git status;
-    if (Get-Confirmation) {
+    if ($true -eq (Get-Confirmation)) {
         git add .;
-        git commit -m "Added by PROD_DEPLOY.ps1";
+        git commit -m "Existing local changes added by PROD_DEPLOY.ps1";
         return $true;
     }
     return $false;
@@ -14,7 +13,7 @@ function Add-LocalChanges {
 
 function Get-Confirmation {
     $title = "== Confirm Production Deployment ==";
-    $question = "Existing local changes will be applied. Are you sure you want to continue?";
+    $question = "`nExisting local changes will be applied.`n`nAre you sure you want to continue?`n";
     $choices = "&Yes", "&No";
     
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
@@ -43,7 +42,7 @@ function Write-DeploymentStamp {
 }
 
 Clear-Host;
-if (Add-LocalChanges) {
+if ($true -eq (Add-LocalChanges)) {
     Write-DeploymentStamp;
     git add .;
     git commit -m "Time-stamped by PROD_DEPLOY.ps1";
