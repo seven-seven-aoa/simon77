@@ -62,7 +62,8 @@ main {
 
 .overlay {
     background-color: transparent;
-    background-color: red;
+    background-color: #8b008b;
+    color: #ffff00;
     opacity: .25;
 
     position: absolute;
