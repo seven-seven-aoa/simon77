@@ -32,6 +32,7 @@ export default function App() {
     }, []);
 
     async function runGame() {
+        return;
         if (!runButton) {
             return;
         }
