@@ -3,7 +3,7 @@ using namespace System.Text;
 
 function Add-LocalChanges {
     git status;
-    if ($true -eq (Get-Confirmation)) {
+    if ($true -eq $(Get-Confirmation)) {
         git add .;
         git commit -m "Existing local changes added by PROD_DEPLOY.ps1";
         return $true;
@@ -17,7 +17,6 @@ function Get-Confirmation {
     $choices = "&Yes", "&No";
     
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
-    Write-Host  "DDDD"  + $decision;
 
     if ($decision -eq 0) {
         Write-Host "Proceeding with production deployment..." -ForegroundColor Green;
@@ -42,7 +41,7 @@ function Write-DeploymentStamp {
 }
 
 Clear-Host;
-if ($true -eq (Add-LocalChanges)) {
+if ($true -eq $(Add-LocalChanges)) {
     Write-DeploymentStamp;
     git add .;
     git commit -m "Time-stamped by PROD_DEPLOY.ps1";
