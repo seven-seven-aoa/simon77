@@ -42,7 +42,7 @@ function Write-DeploymentStamp {
     [File]::WriteAllText($app_tsx, $sb.ToString());
 }
 
-
+git status;
 if ($true -eq $(Add-LocalChanges)) {
     Write-DeploymentStamp;
     git add .;
