@@ -26,7 +26,9 @@
 * {
     margin: 0;
     font-weight: normal;
-    font-size: 16vmin;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -49,5 +51,10 @@ aside {
 h1 {
     color: #ffff00;
     font-family: ximon77;
+    font-size: 16vmin;
     text-align: center;
+    
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
