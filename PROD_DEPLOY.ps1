@@ -17,7 +17,7 @@ function Get-Confirmation {
     $choices = "&Yes", "&No";
     
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
-    Write-Host;
+    Write-Host  "DDDD"  + $decision;
 
     if ($decision -eq 0) {
         Write-Host "Proceeding with production deployment..." -ForegroundColor Green;
