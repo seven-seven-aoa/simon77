@@ -1,9 +1,20 @@
 using namespace System.IO;
 using namespace System.Text;
 
+function Add-LocalChanges {
+    [string] $message = "Existing local changes "
+    git status;
+    if (Get-Confirmation) {
+        git add .;
+        git commit -m "Added by PROD_DEPLOY.ps1";
+        return $true;
+    }
+    return $false;
+}
+
 function Get-Confirmation {
     $title = "== Confirm Production Deployment ==";
-    $question = "Are you sure you want to proceed?";
+    $question = "Existing local changes will be applied. Are you sure you want to continue?";
     $choices = "&Yes", "&No";
     
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1);
@@ -31,17 +42,11 @@ function Write-DeploymentStamp {
     [File]::WriteAllText($app_tsx, $sb.ToString());
 }
 
-
 Clear-Host;
-git status;
-
-if (!(Get-Confirmation)) {
-    exit;
+if (Add-LocalChanges) {
+    Write-DeploymentStamp;
+    git add .;
+    git commit -m "Time-stamped by PROD_DEPLOY.ps1";
+    git push;
+    Write-Host "Production deployment initiated." -ForegroundColor Green;
 }
-
-Write-Host; git add .;
-Write-DeploymentStamp;
-Write-Host; git add .;
-Write-Host; git commit -m "Added by PROD_DEPLOY.ps1";
-Write-Host; git push;
-Write-Host; Write-Host "Production deployment initiated." -ForegroundColor Green;
