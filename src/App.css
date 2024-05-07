@@ -30,15 +30,24 @@
 }
 
 body {
-    background-color: #0000FF;
+    background-color: #0000ff;
 }
 
 main {
     background-color: #000000;
 }
 
+aside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: monospace;
+    color: #ff1493;
+    font-size: 3vmin;
+}
+
 h1 {
-    color: #FFFF00;
+    color: #ffff00;
     font-family: ximon77;
     text-align: center;
 }
