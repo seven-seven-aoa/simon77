@@ -24,3 +24,4 @@ dist
 dist-ssr
 node_modules
 obj
+build.success
