@@ -14,7 +14,6 @@ const _state: any = {
     compareResult: null,
     inputCompleted: false,
     inputEnabled: false,
-    lastTouch: null,
 };
 
 function init() {
@@ -62,24 +61,19 @@ function handleTouchStart(event: Event) {
     if (!_state.inputEnabled) {
         return;
     }
-    _state.lastTouch = new Date().getTime();
     animateTouchStart(event.target);
 }
 
 function handleTouchEnd(event: any) {
     event.preventDefault();
     _state.inputEnabled = false;
-    const minDelay: number = new Date().getTime() - _state.lastTouch;
 
-    setTimeout(() => {
-        animateTouchEnd(event.target);
-        seq.addUserStep(event.target.gameId);
+    animateTouchEnd(event.target);
+    seq.addUserStep(event.target.gameId);
 
-        _state.compareResult = seq.compareSequences();
-        _state.inputEnabled =
-            _state.compareResult === seq.CompareResult.PARTIAL;
-        _state.inputCompleted = !_state.inputEnabled;
-    }, minDelay);
+    _state.compareResult  = seq.compareSequences();
+    _state.inputEnabled   = _state.compareResult === seq.CompareResult.PARTIAL;
+    _state.inputCompleted = !_state.inputEnabled;
 }
 
 async function waitForUserInput() {
@@ -90,17 +84,14 @@ async function waitForUserInput() {
         await time.Delay.inputLoopThrottle();
     }
 
-    const isGameOver: boolean =
-        _state.compareResult === seq.CompareResult.MISMATCH;
+    const isGameOver: boolean = _state.compareResult === seq.CompareResult.MISMATCH;
     return isGameOver;
 }
 
 function trigger(index: number, glow: number) {
     const button = _buttons[index];
     animateTouchStart(button);
-    setTimeout(() => {
-        animateTouchEnd(button);
-    }, glow);
+    setTimeout(() => { animateTouchEnd(button); }, glow);
 }
 
 function animateTouchStart(button: any) {
