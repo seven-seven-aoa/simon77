@@ -67,12 +67,12 @@ export default function App() {
                 winner = true;
                 break;
             }
-            setLevelNumber(level.number);
             const gameOver: boolean = await levels.run(level);
             if (gameOver) {
                 winner = false;
                 break;
             }
+            setLevelNumber(level.number);
         }
 
         dom.Layer.buttons().forEach((button: any) => {
