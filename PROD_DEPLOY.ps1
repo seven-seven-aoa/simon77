@@ -1,7 +1,7 @@
 using namespace System.IO;
 using namespace System.Text;
 
-[bool] $no_confirm = $false;
+[bool] $no_confirm = $true;
 Clear-Host;
 Write-Host "== Production Deployment ==`n" -ForegroundColor Cyan;
 
