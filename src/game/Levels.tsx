@@ -10,7 +10,7 @@ export { init, next, run };
 const levels: any[] = [];
 
 function init() {
-    const count: number = 10;
+    const count: number = 4;
     const increment: number = 23;
     let speed: number = 260;
     let glow: number = 160;
