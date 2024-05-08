@@ -46,7 +46,7 @@ function Write-DeploymentStamp {
     [File]::WriteAllText($app_tsx, $sb.ToString());
 }
 
-npm run build;
+npm run release;
 [bool] $build_success = (Test-Path "$PSScriptRoot/build.success");
 if (!($build_success)) {
     Write-Host "`nProduction deployment stopped due to build error." -ForegroundColor Red;
