@@ -6,8 +6,11 @@
 :root {
     --button_size: 33svw;
     --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
-    --button_border: 4px;
-    --button_margin: 12px;
+    --button_border: 2svw;
+    --button_margin: 4svw;
+
+    --control_image_size: 6svh;
+    --control_image_margin: 2svh;
 
     --fade_speed: 1000ms;
     --fade_tansition: opacity var(--fade_speed) linear;
@@ -70,6 +73,7 @@ main {
 
 .control {
     opacity: 0;
+    height: calc(var(--control_image_size) + var(--control_image_margin));
 }
 
 .control > img {
@@ -81,11 +85,11 @@ main {
     top: 2svh;
 }
 
-#play {
+.control > img#play {
     opacity: 0;
 }
 
-#restart {
+.control > img#restart {
     left: calc(100% - 8svh);
 }
 
@@ -124,9 +128,34 @@ main {
     left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
     top:  calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
 }
+#button_0.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_0),
+        var(--box_shadow_b) var(--glow_color_0),
+        var(--box_shadow_c) var(--glow_color_0),
+        var(--box_shadow_d) var(--glow_color_0);
+}
+#button_1.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_1),
+        var(--box_shadow_b) var(--glow_color_1),
+        var(--box_shadow_c) var(--glow_color_1),
+        var(--box_shadow_d) var(--glow_color_1);
+}
+#button_2.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_2),
+        var(--box_shadow_b) var(--glow_color_2),
+        var(--box_shadow_c) var(--glow_color_2),
+        var(--box_shadow_d) var(--glow_color_2);
+}
+#button_3.glow {
+    box-shadow: var(--box_shadow_a) var(--glow_color_3),
+        var(--box_shadow_b) var(--glow_color_3),
+        var(--box_shadow_c) var(--glow_color_3),
+        var(--box_shadow_d) var(--glow_color_3);
+}
+
 
 .overlay {
-    background-color: #ff1493;
+    background-color: #ff69b4;
     opacity: 0;
 }
 

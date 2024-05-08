@@ -20,9 +20,9 @@ const _state: any = {
 function init() {
     _buttons = dom.Layer.buttons();
     const backColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
-    const borderColors = ["#800000", "#008000", "#000080", "#808000"];
+    const borderColors = ["#A00000", "#00A000", "#0000A0", "#A0A000"];
 
-    const glowColors = ["#FF8080", "#80FF80", "#8080FF", "#FFFF80"];
+    const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
     glowColors.forEach((color: string, index: number) => {
         dom.setGlowColor(index, color);
     });
