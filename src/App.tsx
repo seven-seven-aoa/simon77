@@ -25,7 +25,7 @@ export default function App() {
     const [titleClass, setTitleClass]     = useState(dom.Class.title);
 
     useEffect(() => {
-        console.info("XIMON77 - DEPLOYED ON [2024-05-08 06:24:03]");
+        console.info("XIMON77 - DEPLOYED ON [2024-05-08 07:34:50]");
         buttons.init();
         levels.init();
 
@@ -86,7 +86,7 @@ export default function App() {
         <main>
             <section className={titleClass}>
                 <h1>Ximon '77</h1>
-                <aside>DEPLOYED ON [2024-05-08 06:24:03]</aside>
+                <aside>DEPLOYED ON [2024-05-08 07:34:50]</aside>
             </section>
 
             <section className={gameClass}>
