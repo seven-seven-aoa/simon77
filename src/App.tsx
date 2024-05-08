@@ -30,6 +30,7 @@ export default function App() {
         levels.init();
 
         const timeout = setTimeout(async () => {
+            setOverlayClass(dom.Class.overlay);
             setTitleClass(dom.FadeIn.title);
             setEnableRunButton(true);
         }, time.WaitTime.fadeSpeed);
