@@ -1,10 +1,11 @@
 using namespace System.IO;
 using namespace System.Text;
 
+[bool] $no_confirm = $false;
 Clear-Host;
 Write-Host "== Production Deployment ==`n" -ForegroundColor Cyan;
 
-function Add-LocalChanges {    
+function Add-LocalChanges {
     if ($true -eq $(Get-Confirmation)) {
         git add .;
         git commit -m "Existing local changes added by PROD_DEPLOY.ps1";
@@ -14,7 +15,9 @@ function Add-LocalChanges {
 }
 
 function Get-Confirmation {
-    return $true;
+    if ($no_confirm) {
+        return $true;
+    }
 
     $title = "== Confirm Production Deployment ==";
     $question = "`nExisting local changes will be applied.`nAre you sure you want to continue?`n`n";
@@ -41,6 +44,13 @@ function Write-DeploymentStamp {
         $sb.AppendLine($regex.Replace($_, "`$1DEPLOYED ON [" + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") + "]`$2")) > $null;
     };
     [File]::WriteAllText($app_tsx, $sb.ToString());
+}
+
+npm run build;
+[bool] $build_success = (Test-Path "$PSScriptRoot/build.success");
+if (!($build_success)) {
+    Write-Host "`nProduction deployment stopped due to build error." -ForegroundColor Red;
+    exit;
 }
 
 git status;
