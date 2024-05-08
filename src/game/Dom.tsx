@@ -28,6 +28,11 @@ export namespace FadeOut {
     export const title  :string = Class.title   + dir;
 }
 
+export namespace Hide {
+    const hide = " hide";
+    export const overlay:string = Class.overlay + hide;
+}
+
 export namespace Query {
     export const buttons:string = "b";
     export const control:string = `.${Class.control}`;
@@ -38,12 +43,14 @@ export namespace Query {
     export const gameSequence:string = "#game_sequence";
     export const userSequence:string = "#user_sequence";
 }
+
 export namespace Layer {
     export function buttons() { return  dom.getDomAll(Query.buttons);    }
     export function control() { return  dom.getDomSingle(Query.control); }
     export function game   () { return  dom.getDomSingle(Query.game);    }
     export function title  () { return  dom.getDomSingle(Query.title);   }
 }
+
 export namespace Hidden {
     export function gameSequence() { return dom.getDomSingle(Query.gameSequence); }
     export function userSequence() { return dom.getDomSingle(Query.userSequence); }
@@ -60,8 +67,4 @@ export function setGlowSpeed(ms: number) {
 
 export function setFadeSpeed(ms: number) {
     dom.setCssVar("fade_speed", `${ms}ms`);
-}
-
-export function toggleOverlay(show: boolean) {
-    Hidden.overlay().style.display = show ? "block" : "none";
 }

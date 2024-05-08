@@ -30,7 +30,6 @@ export default function App() {
         levels.init();
 
         const timeout = setTimeout(async () => {
-            setOverlayClass(dom.Class.overlay);
             setTitleClass(dom.FadeIn.title);
             setEnableRunButton(true);
         }, time.WaitTime.fadeSpeed);
@@ -52,7 +51,7 @@ export default function App() {
 
         setControlClass(dom.FadeIn.control);
         await time.Delay.newLevelDelay(1);
-        dom.toggleOverlay(false);
+        setOverlayClass(dom.Hide.overlay);
 
         let winner: boolean = false;
         while (true) {
