@@ -5,14 +5,14 @@
 import { useState, useEffect } from "react";
 
 import * as buttons from "./game/Buttons";
-import * as dom from "./game/GameDom";
-import * as levels from "./game/Levels";
-import * as music from "./game/GameMusic";
-import * as time from "./game/GameTiming";
+import * as dom     from "./game/Dom";
+import * as levels  from "./game/Levels";
+import * as music   from "./game/Music";
+import * as time    from "./game/Timing";
 
 import "./App.css";
-import playImage from "./assets/play.png";
-import pauseImage from "./assets/pause.png";
+import playImage    from "./assets/play.png";
+import pauseImage   from "./assets/pause.png";
 import restartImage from "./assets/restart.png";
 
 export default function App() {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as dom from "./GameDom";
+import * as dom from "./Dom";
 
 export {
     addSequenceStep,

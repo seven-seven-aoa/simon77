@@ -3,9 +3,9 @@
 import { InputEvents } from "../lib/Events";
 import { playNote } from "../lib/Sound";
 
-import * as dom from "./GameDom";
+import * as dom from "./Dom";
 import * as seq from "./Sequence";
-import * as time from "./GameTiming";
+import * as time from "./Timing";
 
 export { init, waitForUserInput, trigger };
 
@@ -104,11 +104,11 @@ function trigger(index: number, glow: number) {
 }
 
 function animateTouchStart(button: any) {
-    button.className = "button glow";
+    button.className = "glow";
     button.playSound();
 }
 
 function animateTouchEnd(button: any) {
-    button.className = "button";
+    button.className = "";
     button.stopSound();
 }

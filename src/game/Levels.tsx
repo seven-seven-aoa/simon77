@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as dom from "./GameDom";
-import * as time from "./GameTiming";
+import * as dom from "./Dom";
+import * as time from "./Timing";
 import * as seq from "./Sequence";
 import * as buttons from "./Buttons";
 

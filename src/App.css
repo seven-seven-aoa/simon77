@@ -6,7 +6,7 @@
 :root {
     --button_size: 33svw;
     --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
-    --button_border: 2svw;
+    --button_border: 1svw;
     --button_margin: 4svw;
 
     --control_image_size: 6svh;
@@ -22,10 +22,10 @@
     --glow_color_2: #000000;
     --glow_color_3: #000000;
 
-    --box_shadow_a: 0 0 5px;
-    --box_shadow_b: 0 0 25px;
-    --box_shadow_c: 0 0 50px;
-    --box_shadow_d: 0 0 200px;
+    --box_shadow_a: 0 0 1svw;
+    --box_shadow_b: 0 0 2svw;
+    --box_shadow_c: 0 0 4svw;
+    --box_shadow_d: 0 0 8svw;
 }
 
 * {
@@ -64,10 +64,9 @@ main {
 }
 
 .title > aside {
-    color: #ff1493;
+    color: #000000;
     font-family: monospace;
     font-size: 2.3svh;
-    opacity: 0.33;
     top: calc(100svh - 3svh);
 }
 
@@ -105,54 +104,52 @@ main {
     top: var(--button_pos);
 
     display: inline-block;
+    border-radius: 3%;
     border-style: solid;
     border-width: var(--button_border);
 }
 
-.game > #button_0 {
+.game > b#button_0 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-
-.game > #button_1 {
+.game > b#button_1 {
     left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-
-.game > #button_2 {
+.game > b#button_2 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
 }
-
-.game > #button_3 {
+.game > b#button_3 {
     left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
     top:  calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
 }
-#button_0.glow {
+
+.game > b#button_0.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_0),
         var(--box_shadow_b) var(--glow_color_0),
         var(--box_shadow_c) var(--glow_color_0),
         var(--box_shadow_d) var(--glow_color_0);
 }
-#button_1.glow {
+.game > b#button_1.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_1),
         var(--box_shadow_b) var(--glow_color_1),
         var(--box_shadow_c) var(--glow_color_1),
         var(--box_shadow_d) var(--glow_color_1);
 }
-#button_2.glow {
+.game > b#button_2.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_2),
         var(--box_shadow_b) var(--glow_color_2),
         var(--box_shadow_c) var(--glow_color_2),
         var(--box_shadow_d) var(--glow_color_2);
 }
-#button_3.glow {
+.game > b#button_3.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_3),
         var(--box_shadow_b) var(--glow_color_3),
         var(--box_shadow_c) var(--glow_color_3),
         var(--box_shadow_d) var(--glow_color_3);
 }
-
 
 .overlay {
     background-color: #ff69b4;
