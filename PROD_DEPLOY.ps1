@@ -59,5 +59,8 @@ if ($true -eq $(Add-LocalChanges)) {
     git add .;
     git commit -m "Time-stamped by PROD_DEPLOY.ps1";
     git push;
+
+    git log -2;
+    git status;
     Write-Host "`nProduction deployment initiated." -ForegroundColor Green;
 }
