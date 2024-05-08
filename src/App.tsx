@@ -21,7 +21,7 @@ export default function App() {
     
     dom.setFadeSpeed(time.WaitTime.fadeSpeed);
     const [enableRunButton, setEnableRunButton] = useState(false);
-    const [levelNumber, setLevelNumber]         = useState(1);
+    const [levelNumber, setLevelNumber]         = useState(0);
 
     const [controlClass, setControlClass] = useState(dom.Class.control);
     const [gameClass, setGameClass]       = useState(dom.Class.game);
