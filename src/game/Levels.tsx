@@ -1,24 +1,22 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as dom from "./Dom";
-import * as time from "./Timing";
-import * as seq from "./Sequence";
 import * as buttons from "./Buttons";
+import * as dom from "./Dom";
+import * as seq from "./Sequence";
+import * as time from "./Timing";
 
 export { init, next, run };
 
 const levels: any[] = [];
 
 function init() {
-    const count: number = 4;
-    const increment: number = 23;
-    let speed: number = 260;
-    let glow: number = 160;
+    const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
 
-    for (let i = 0; i < count; i++) {
-        levels.push({ speed, glow });
-        speed += increment;
-        glow += increment;
+    for (let i = 0; i < speeds.length; i++) {
+        const speed = speeds[i];
+        levels.push({ speed, glow: speed * 0.40, number: speeds.length - i });
     }
 }
 
@@ -31,7 +29,7 @@ function next() {
 }
 
 async function run(level: any) {
-    seq.addSequenceStep();
+    seq.addSequenceStep(1);
 
     let sequenceStep = -1;
     while (true) {

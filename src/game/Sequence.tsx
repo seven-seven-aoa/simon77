@@ -17,8 +17,10 @@ export const CompareResult = {
 
 const sequence: any[] = [];
 
-function addSequenceStep() {
-    sequence.push({ button: Math.floor(Math.random() * 4) });
+function addSequenceStep(count: number = 1) {
+    for (let i = 0; i < count; i++) {
+        sequence.push({ button: Math.floor(Math.random() * 4) });
+    }
     dom.Hidden.gameSequence().value = sequence
         .map((step) => step.button)
         .join(",");

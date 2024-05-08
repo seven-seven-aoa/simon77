@@ -8,20 +8,24 @@
     --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
     --button_border: 1svw;
     --button_margin: 4svw;
-
+}
+:root {
     --control_image_size: 6svh;
     --control_image_margin: 2svh;
-
+    --score-font-size: 6svh;
+}
+:root {
     --fade_speed: 1000ms;
-    --fade_tansition: opacity var(--fade_speed) linear;
-
     --glow_speed: 1000ms;
-
+    --fade_tansition: opacity var(--fade_speed) linear;
+}
+:root {
     --glow_color_0: #000000;
     --glow_color_1: #000000;
     --glow_color_2: #000000;
     --glow_color_3: #000000;
-
+}
+:root {
     --box_shadow_a: 0 0 1svw;
     --box_shadow_b: 0 0 2svw;
     --box_shadow_c: 0 0 4svw;
@@ -37,7 +41,6 @@
     position: fixed;
     text-align: center;
 }
-
 * {
     left: 0;
     top: 0;
@@ -149,6 +152,15 @@ main {
         var(--box_shadow_b) var(--glow_color_3),
         var(--box_shadow_c) var(--glow_color_3),
         var(--box_shadow_d) var(--glow_color_3);
+}
+
+.score {
+    background-color: #000000;
+    color: #FFFF00;
+    opacity: 0;
+    font-size: var(--score-font-size);
+    height: var(--score-font-size);
+    top: calc(100% - calc(var(--score-font-size) * 2));
 }
 
 .overlay {

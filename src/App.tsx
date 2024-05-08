@@ -15,20 +15,23 @@ import playImage    from "./assets/play.png";
 import pauseImage   from "./assets/pause.png";
 import restartImage from "./assets/restart.png";
 
+console.info("XIMON77 - DEPLOYED ON [2024-05-08 11:16:28]");
+levels.init();
 export default function App() {
+    
     dom.setFadeSpeed(time.WaitTime.fadeSpeed);
     const [enableRunButton, setEnableRunButton] = useState(false);
+    const [levelNumber, setLevelNumber]         = useState(1);
 
     const [controlClass, setControlClass] = useState(dom.Class.control);
     const [gameClass, setGameClass]       = useState(dom.Class.game);
     const [overlayClass, setOverlayClass] = useState(dom.Class.overlay);
+    const [scoreClass, setScoreClass]     = useState(dom.Class.score);
     const [titleClass, setTitleClass]     = useState(dom.Class.title);
 
     useEffect(() => {
-        console.info("XIMON77 - DEPLOYED ON [2024-05-08 11:16:28]");
+        
         buttons.init();
-        levels.init();
-
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
             setEnableRunButton(true);
@@ -50,6 +53,9 @@ export default function App() {
         await time.Delay.fadeSpeed(0.25);
 
         setControlClass(dom.FadeIn.control);
+        await time.Delay.newLevelDelay(.50);
+
+        setScoreClass(dom.FadeIn.score);
         await time.Delay.newLevelDelay(1);
         setOverlayClass(dom.Hide.overlay);
 
@@ -61,6 +67,7 @@ export default function App() {
                 winner = true;
                 break;
             }
+            setLevelNumber(level.number);
             const gameOver: boolean = await levels.run(level);
             if (gameOver) {
                 winner = false;
@@ -103,6 +110,8 @@ export default function App() {
                 <img src={playImage}    id="play" />
                 <img src={restartImage} id="restart" onClick={restartClick} />
             </section>
+
+            <section className={scoreClass}>Score: {levelNumber}</section>
 
             <section className={overlayClass} onClick={runGame}></section>
         </main>
