@@ -10,14 +10,19 @@ import * as time from "./Timing";
 export { init, waitForUserInput, trigger };
 
 let _buttons: any[] = [];
-const _state: any = {
-    compareResult: null,
-    inputCompleted: false,
-    allowTouchStart: false,
-    allowTouchEnd: false,
-    lastGlow: 0,
-    lastTouch: 0,
+
+const _state: GameState = {
+    compareResult: seq.CompareResult.None,
+    inputEnabled: false,
+    turnCompleted: false,
+    gameOver: false,
 };
+interface GameState {
+    compareResult: seq.CompareResult;
+    inputEnabled: boolean;
+    turnCompleted: boolean;
+    gameOver: boolean;
+}
 
 function init() {
     const backColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
@@ -61,71 +66,48 @@ function init() {
 
 function handleTouchStart(event: any) {
     event.preventDefault();
-    if (!_state.allowTouchStart) {
+    if (!_state.inputEnabled) {
         return;
     }
-
-    _state.allowTouchStart = false;
-    _state.lastTouch = Date.now();
+    _state.inputEnabled = false;
     animateTouchStart(event.target);
-
-    seq.addUserStep(event.target.gameId);
-    _state.compareResult = seq.compareSequences();
-
-    if (_state.compareResult === seq.CompareResult.MISMATCH) {
-        setTimeout(() => {
-            animateTouchEnd(event.target);
-            _state.inputCompleted = true;
-        }, _state.lastGlow);
-        return;
-    }
-
-    _state.allowTouchEnd = true;
 }
 
 function handleTouchEnd(event: any) {
     event.preventDefault();
-    if (!_state.allowTouchEnd) {
+    animateTouchEnd(event.target);
+
+    seq.addUserStep(event.target.gameId);
+    _state.compareResult = seq.compareSequences();
+
+    if (_state.compareResult === seq.CompareResult.Partial) {
+        _state.inputEnabled = true;
         return;
     }
-
-    _state.allowTouchEnd = false;
-    let animationWait: number = 1;
-    if (Date.now() - _state.lastTouch < _state.lastGlow) {
-        animationWait = _state.lastGlow;
-    }
-
-    setTimeout(() => {
-        animateTouchEnd(event.target);
-    }, animationWait);
-
-    if (_state.compareResult === seq.CompareResult.MATCH) {
-        _state.inputCompleted = true;
-        return;
-    }
-
-    _state.allowTouchStart = true;
+    _state.turnCompleted = true;
 }
 
 async function waitForUserInput() {
-    _state.inputCompleted = false;
-    _state.allowTouchEnd = false;
-    _state.allowTouchStart = true;
+    _state.turnCompleted = false;
+    _state.compareResult = seq.CompareResult.None;
+    _state.gameOver = false;
+    _state.inputEnabled = true;
 
-    while (!_state.inputCompleted) {
+    while (!_state.turnCompleted) {
         await time.Delay.inputLoopThrottle();
     }
 
-    const isGameOver: boolean =
-        _state.compareResult === seq.CompareResult.MISMATCH;
-    return isGameOver;
+    if (_state.compareResult === seq.CompareResult.None) {
+        throw new Error("No comparison result");
+    }
+    _state.gameOver = _state.compareResult === seq.CompareResult.Mismatch;
+    return _state.gameOver;
 }
 
 function trigger(index: number, glow: number) {
     const button = _buttons[index];
-    _state.lastGlow = glow;
     animateTouchStart(button);
-    setTimeout(() => {
+    button.timeout = setTimeout(() => {
         animateTouchEnd(button);
     }, glow);
 }

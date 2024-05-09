@@ -9,11 +9,12 @@ export {
     getSequenceStep,
 };
 
-export const CompareResult = {
-    PARTIAL: 0,
-    MATCH: 1,
-    MISMATCH: 2,
-};
+export enum CompareResult {
+    None = 0,
+    Match = 1,
+    Partial = 2,
+    Mismatch = 3,
+}
 
 const sequence: any[] = [];
 
@@ -29,13 +30,16 @@ function addSequenceStep(count: number = 1) {
 function compareSequences() {
     const game = dom.Hidden.gameSequence().value;
     const user = dom.Hidden.userSequence().value;
+
     if (game === user) {
-        return CompareResult.MATCH;
+        return CompareResult.Match;
     }
+    
     if (game.indexOf(user) === 0) {
-        return CompareResult.PARTIAL;
+        return CompareResult.Partial;
     }
-    return CompareResult.MISMATCH;
+
+    return CompareResult.Mismatch;
 }
 
 function getSequenceStep(index: number) {
