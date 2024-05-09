@@ -52,6 +52,7 @@ export namespace Layer {
     export function buttons() { return  dom.getDomAll(Query.buttons);    }
     export function control() { return  dom.getDomSingle(Query.control); }
     export function game   () { return  dom.getDomSingle(Query.game);    }
+    export function overlay() { return  dom.getDomSingle(Query.overlay); }
     export function score  () { return  dom.getDomSingle(Query.score);   }
     export function title  () { return  dom.getDomSingle(Query.title);   }
 }
@@ -59,7 +60,6 @@ export namespace Layer {
 export namespace Hidden {
     export function gameSequence() { return dom.getDomSingle(Query.gameSequence); }
     export function userSequence() { return dom.getDomSingle(Query.userSequence); }
-    export function overlay()      { return dom.getDomSingle(Query.overlay); }
 }
 
 export function setGlowColor(index: number, color: string) {
