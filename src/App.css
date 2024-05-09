@@ -201,5 +201,5 @@ main {
 }
 
 .hide {
-    top: var(--score-font-top);
+    /* top: var(--score-font-top); */
 }
