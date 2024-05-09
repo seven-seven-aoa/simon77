@@ -113,7 +113,7 @@ export default function App() {
 
             <section className={scoreClass}>Score: {levelNumber}</section>
 
-            <section className={overlayClass} onClick={runGame}></section>
+            <canvas className={overlayClass} onClick={runGame}></canvas>
         </main>
     );
 }

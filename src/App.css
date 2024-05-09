@@ -4,15 +4,29 @@
 }
 
 :root {
-    --button_size: 33svw;
+    --button_size: 39svmin;
+    --score-font-top-offset: 1.85;
+}
+
+@media (orientation: landscape) {
+    :root {
+        --button_size: 33svmin;
+        --score-font-top-offset: 1.05;
+    }
+}
+
+:root {
     --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
-    --button_border: 1svw;
-    --button_margin: 4svw;
+    --button_border: 1svmin;
+    --button_margin: 4svmin;
 }
 :root {
-    --control_image_size: 6svh;
-    --control_image_margin: 2svh;
-    --score-font-size: 6svh;
+    --control_image_size: 4svmax;
+    --control_image_margin: 2svmax;
+    --score-font-size: 4svmax;
+    --score-font-top: calc(
+        100% - calc(var(--score-font-size) * var(--score-font-top-offset))
+    );
 }
 :root {
     --fade_speed: 1000ms;
@@ -26,10 +40,10 @@
     --glow_color_3: #000000;
 }
 :root {
-    --box_shadow_a: 0 0 1svw;
-    --box_shadow_b: 0 0 2svw;
-    --box_shadow_c: 0 0 4svw;
-    --box_shadow_d: 0 0 8svw;
+    --box_shadow_a: 0 0 1svmin;
+    --box_shadow_b: 0 0 2svmin;
+    --box_shadow_c: 0 0 4svmin;
+    --box_shadow_d: 0 0 8svmin;
 }
 
 * {
@@ -62,15 +76,15 @@ main {
 
 .title > h1 {
     color: #ffff00;
-    font-size: 10svh;
-    top: calc(50% - 5svh);
+    font-size: 10svmax;
+    top: calc(50% - 5svmax);
 }
 
 .title > aside {
     color: #000000;
     font-family: monospace;
-    font-size: 2.3svh;
-    top: calc(100svh - 3svh);
+    font-size: 2.3svmax;
+    top: calc(100svmax - 3svmax);
 }
 
 .control {
@@ -80,11 +94,11 @@ main {
 
 .control > img {
     opacity: 0.25;
-    width: 6svh;
-    height: 6svh;
+    width: 6svmax;
+    height: 6svmax;
 
-    left: 2svh;
-    top: 2svh;
+    left: 2svmax;
+    top: 2svmax;
 }
 
 .control > img#play {
@@ -92,7 +106,7 @@ main {
 }
 
 .control > img#restart {
-    left: calc(100% - 8svh);
+    left: calc(100% - 8svmax);
 }
 
 .game {
@@ -102,7 +116,7 @@ main {
 .game > b {
     width: var(--button_size);
     height: var(--button_size);
-    
+
     left: var(--button_pos);
     top: var(--button_pos);
 
@@ -117,16 +131,24 @@ main {
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
 .game > b#button_1 {
-    left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+    left: calc(
+        calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
+    );
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
 .game > b#button_2 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
-    top: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+    top: calc(
+        calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
+    );
 }
 .game > b#button_3 {
-    left: calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
-    top:  calc(calc(var(--button_pos) + var(--button_size)) + var(--button_margin));
+    left: calc(
+        calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
+    );
+    top: calc(
+        calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
+    );
 }
 
 .game > b#button_0.glow {
@@ -156,16 +178,16 @@ main {
 
 .score {
     background-color: #000000;
-    color: #FFFF00;
+    color: #ffff00;
     opacity: 0;
     font-size: var(--score-font-size);
     height: var(--score-font-size);
-    top: calc(100% - calc(var(--score-font-size) * 2));
+    top: var(--score-font-top);
 }
 
 .overlay {
     background-color: #ff69b4;
-    opacity: 0;
+    opacity: 0.25;
 }
 
 .fade_in {
@@ -179,5 +201,5 @@ main {
 }
 
 .hide {
-    display: none;
+    top: var(--score-font-top);
 }
