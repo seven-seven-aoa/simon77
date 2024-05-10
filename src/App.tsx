@@ -15,7 +15,7 @@ import playImage from "./assets/play.png";
 import pauseImage from "./assets/pause.png";
 import restartImage from "./assets/restart.png";
 
-console.info("XIMON77 - DEPLOYED ON [2024-05-09 19:24:27]");
+console.info("XIMON77 - DEPLOYED ON [2024-05-10 10:42:47]");
 levels.init();
 export default function App() {
     dom.setFadeSpeed(time.WaitTime.fadeSpeed);
@@ -94,7 +94,7 @@ export default function App() {
         <main>
             <section className={titleClass}>
                 <h1>Ximon '77</h1>
-                <aside>DEPLOYED ON [2024-05-09 19:24:27]</aside>
+                <aside>DEPLOYED ON [2024-05-10 10:42:47]</aside>
             </section>
 
             <section className={gameClass}>
