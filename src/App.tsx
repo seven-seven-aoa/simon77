@@ -15,7 +15,7 @@ import playImage from "./assets/play.png";
 import pauseImage from "./assets/pause.png";
 import restartImage from "./assets/restart.png";
 
-console.info("XIMON77 - DEPLOYED ON [2024-05-10 10:42:47]");
+console.info("XIMON77 - DEPLOYED ON [2024-05-10 12:59:41]");
 levels.init();
 
 let enableRunButton: boolean = false;
@@ -99,7 +99,7 @@ export default function App() {
         <main>
             <section className={titleClass}>
                 <h1>Ximon '77</h1>
-                <aside>DEPLOYED ON [2024-05-10 10:42:47]</aside>
+                <aside>DEPLOYED ON [2024-05-10 12:59:41]</aside>
             </section>
 
             <section className={gameClass}>
