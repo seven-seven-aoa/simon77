@@ -97,7 +97,7 @@ export function init() {
     bind(
         [...Layer.buttons(), Layer.control(), Layer.overlay()],
         [
-            InputEvents.CLICK,
+            // InputEvents.CLICK,
             InputEvents.DBL_CLICK,
             InputEvents.MOUSE_DOWN,
             InputEvents.POINTER_DOWN,
@@ -112,7 +112,6 @@ export function init() {
 
 export function bindRunGame(runGame: () => void) {
     bind([Layer.overlay()], [InputEvents.CLICK], (_handler: any) => {
-        _handler.preventDefault();
         runGame();
         return false;
     });
