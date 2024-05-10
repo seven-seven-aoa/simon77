@@ -3,7 +3,6 @@
 /* eslint-disable no-constant-condition */
 
 import { useState, useEffect } from "react";
-import { bind, InputEvents } from "./lib/Events";
 
 import * as buttons from "./game/Buttons";
 import * as dom from "./game/Dom";
@@ -30,17 +29,7 @@ export default function App() {
     const [titleClass, setTitleClass] = useState(dom.Class.title);
 
     useEffect(() => {
-        bind(
-            dom.Layer.overlay(),
-            [
-                InputEvents.CLICK,
-                InputEvents.TOUCH_START,
-                InputEvents.DBL_CLICK,
-                InputEvents.MOUSE_DOWN,
-                InputEvents.POINTER_DOWN,
-            ],
-            (event: Event) => event.preventDefault()
-        );
+        dom.init();
         buttons.init();
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
@@ -51,12 +40,15 @@ export default function App() {
     }, []);
 
     async function runGame() {
+        console.info("runGame #1");
         if (!enableRunButton) {
             return;
         }
+        console.info("runGame #2");
+        music.startup();
+        console.info("runGame #3");
         setEnableRunButton(false);
         setTitleClass(dom.FadeOut.title);
-        music.startup();
         await time.Delay.fadeSpeed(1);
 
         setGameClass(dom.FadeIn.game);
@@ -122,8 +114,7 @@ export default function App() {
             </section>
 
             <section className={scoreClass}>Score: {levelNumber}</section>
-
-            <canvas className={overlayClass} onClick={runGame}></canvas>
+            <section className={overlayClass} onPointerDown={runGame}></section>
         </main>
     );
 }

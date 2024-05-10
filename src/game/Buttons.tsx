@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { InputEvents } from "../lib/Events";
 import { playNote } from "../lib/Sound";
-
 import * as dom from "./Dom";
 import * as seq from "./Sequence";
 import * as time from "./Timing";
@@ -55,12 +53,9 @@ function init() {
         button.stopSound = () => {
             button.sound.stop();
         };
-
-        button.addEventListener(InputEvents.MOUSE_DOWN, handleTouchStart);
-        button.addEventListener(InputEvents.MOUSE_UP, handleTouchEnd);
-
-        button.addEventListener(InputEvents.TOUCH_START, handleTouchStart);
-        button.addEventListener(InputEvents.TOUCH_END, handleTouchEnd);
+        
+        dom.bindButtonDown(button, handleTouchStart);
+        dom.bindButtonUp(button, handleTouchEnd);
     });
 }
 
@@ -85,6 +80,7 @@ function handleTouchEnd(event: any) {
         return;
     }
     _state.turnCompleted = true;
+    return false;
 }
 
 async function waitForUserInput() {
