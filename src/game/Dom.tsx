@@ -104,6 +104,7 @@ export function init() {
             InputEvents.TOUCH_START,
         ],
         (_handler: any) => {
+            _handler.preventDefault();
             return false;
         }
     );
@@ -111,6 +112,7 @@ export function init() {
 
 export function bindRunGame(runGame: () => void) {
     bind([Layer.overlay()], [InputEvents.CLICK], (_handler: any) => {
+        _handler.preventDefault();
         runGame();
         return false;
     });

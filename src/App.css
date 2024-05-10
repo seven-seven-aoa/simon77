@@ -125,7 +125,7 @@ main {
     border-style: solid;
     border-width: var(--button_border);
 
-    z-index: 101;
+    /* z-index: 101; */
 }
 
 .game > b#button_0 {
@@ -190,7 +190,7 @@ main {
 .overlay {
     background-color: #ff69b4;
     opacity: 0.25;
-    z-index: 100;
+    /* z-index: 100; */
 }
 
 .fade_in {
