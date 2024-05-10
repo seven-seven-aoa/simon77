@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-namespace */
 import * as dom from "../lib/Dom";
@@ -102,22 +103,29 @@ export function init() {
             InputEvents.POINTER_DOWN,
             InputEvents.TOUCH_START,
         ],
-        (event: Event) => {
-            event.preventDefault();
+        (_handler: any) => {
+            return false;
         }
     );
 }
 
+export function bindRunGame(runGame: () => void) {
+    bind([Layer.overlay()], [InputEvents.CLICK], (_handler: any) => {
+        runGame();
+        return false;
+    });
+}
+
 export function bindButtonDown(
-    button: HTMLElement,
-    callback: (event: any) => void
+    _button: HTMLElement,
+    _callback: (event: any) => void
 ) {
-    bind([button], [InputEvents.MOUSE_DOWN, InputEvents.TOUCH_START], callback);
+    // bind([button], [InputEvents.MOUSE_DOWN, InputEvents.TOUCH_START], callback);
 }
 
 export function bindButtonUp(
-    button: HTMLElement,
-    callback: (event: any) => void
+    _button: HTMLElement,
+    _callback: (event: any) => void
 ) {
-    bind([button], [InputEvents.MOUSE_UP, InputEvents.TOUCH_END], callback);
+    // bind([button], [InputEvents.MOUSE_UP, InputEvents.TOUCH_END], callback);
 }
