@@ -3,7 +3,7 @@
 /* eslint-disable no-constant-condition */
 
 import { useState, useEffect } from "react";
-import { InputEvents } from "./lib/Events";
+import { bind, InputEvents } from "./lib/Events";
 
 import * as buttons from "./game/Buttons";
 import * as dom from "./game/Dom";
@@ -30,10 +30,17 @@ export default function App() {
     const [titleClass, setTitleClass] = useState(dom.Class.title);
 
     useEffect(() => {
-        dom.Layer.overlay().addEventListener(
-            InputEvents.SELECT_START, () => {
-            return false;
-        });
+        bind(
+            dom.Layer.overlay(),
+            [
+                InputEvents.CLICK,
+                InputEvents.TOUCH_START,
+                InputEvents.DBL_CLICK,
+                InputEvents.MOUSE_DOWN,
+                InputEvents.POINTER_DOWN,
+            ],
+            (event: Event) => event.preventDefault()
+        );
         buttons.init();
         const timeout = setTimeout(async () => {
             setTitleClass(dom.FadeIn.title);
