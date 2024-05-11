@@ -29,3 +29,9 @@ body {
 main {
     background-color: #000000;
 }
+
+input {
+    width: 100px;
+    height: 50px;
+    position: relative;
+}

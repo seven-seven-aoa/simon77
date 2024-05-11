@@ -23,6 +23,9 @@ import restartImage from "./assets/restart.png";
 console.info("XIMON77 - DEPLOYED ON [2024-05-11 02:37:35]");
 levels.init();
 
+const hiddenInputs: string = "hidden";
+// const hiddenInputs: string = "text";
+
 export default function App() {
     const [enableRunButton, setEnableRunButton] = useState(false);
     const [levelNumber, setLevelNumber] = useState(0);
@@ -92,10 +95,10 @@ export default function App() {
             <b
                 key={i}
                 id={`button_${i}`}
-                onTouchStart={buttons.handleTouchStart}
-                onTouchEnd={buttons.handleTouchEnd}
-                onMouseDown={buttons.handleTouchStart}
-                onMouseUp={buttons.handleTouchEnd}
+                onPointerDown={buttons.handleTouchStart}
+                onPointerUp={buttons.handleTouchEnd}
+                // onMouseDown={buttons.handleTouchStart}
+                // onMouseUp={buttons.handleTouchEnd}
             ></b>
         );
     }
@@ -109,8 +112,8 @@ export default function App() {
 
             <section className="gameArea">
                 {buttonElements}
-                <input type="hidden" id="gameSequence" />
-                <input type="hidden" id="userSequence" />
+                <input type={hiddenInputs} id="gameSequence" />
+                <input type={hiddenInputs} id="userSequence" />
             </section>
 
             <section className="controlArea">
