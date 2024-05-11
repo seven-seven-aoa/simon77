@@ -16,7 +16,7 @@ function init() {
 
     for (let i = 0; i < speeds.length; i++) {
         const speed = speeds[i];
-        levels.push({ speed, glow: speed * 0.40, number: speeds.length - i });
+        levels.push({ speed, glow: speed * 0.65, number: speeds.length - i });
     }
 }
 

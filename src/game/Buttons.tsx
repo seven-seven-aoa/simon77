@@ -56,15 +56,20 @@ function init() {
     });
 }
 
+// let touchStartTimeMs: number;
+
 function handleTouchStart(event: any) {
     if (!_state.inputEnabled) {
         return;
     }
     _state.inputEnabled = false;
     animateTouchStart(event.target);
+    // touchStartTimeMs = Date.now();
 }
 
-function handleTouchEnd(event: any) {
+async function handleTouchEnd(event: any) {
+
+    await time.Delay.inputLoopThrottle();
     animateTouchEnd(event.target);
 
     seq.addUserStep(event.target.gameId);

@@ -4,7 +4,7 @@ import { delay } from "../lib/Timing";
 
 export namespace WaitTime {
     export const fadeSpeed        :number = 800;
-    export const inputLoopThrottle:number = 100;
+    export const inputLoopThrottle:number = 10;
     export const newLevelDelay    :number = 1000;
 }
 

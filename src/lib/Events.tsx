@@ -22,7 +22,7 @@ export function bind(
     elements.forEach((element) => {
         events.forEach((eventName) => {
             element.addEventListener(eventName, (event: any) => {
-                // console.debug({ element, eventName, event });
+                console.debug({ element, eventName, event });
                 return handler(event);
             });
         });

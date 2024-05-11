@@ -94,6 +94,8 @@ export default function App() {
                 id={`button_${i}`}
                 onTouchStart={buttons.handleTouchStart}
                 onTouchEnd={buttons.handleTouchEnd}
+                onMouseDown={buttons.handleTouchStart}
+                onMouseUp={buttons.handleTouchEnd}
             ></b>
         );
     }
