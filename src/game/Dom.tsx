@@ -22,7 +22,7 @@ export function init(varFadeSpeedMs: number) {
             scoreArea(),
             titleArea(),
         ],
-        [InputEvents.DBL_CLICK, InputEvents.SELECT_START],
+        [InputEvents.DBL_CLICK, InputEvents.SELECT_START, InputEvents.TOUCH_MOVE],
         (_handler: any) => {
             _handler.preventDefault();
             return false;

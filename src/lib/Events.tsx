@@ -12,6 +12,7 @@ export namespace InputEvents {
     export const SELECT_START: string = "selectstart";
     export const TOUCH_END: string = "touchend";
     export const TOUCH_START: string = "touchstart";
+    export const TOUCH_MOVE: string = "touchmove";
 }
 
 export function bind(
