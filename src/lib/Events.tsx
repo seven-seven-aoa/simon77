@@ -9,6 +9,7 @@ export namespace InputEvents {
     export const MOUSE_UP: string = "mouseup";
     export const POINTER_DOWN: string = "pointerdown";
     export const POINTER_UP: string = "pointerup";
+    export const SELECT_START: string = "selectstart";
     export const TOUCH_END: string = "touchend";
     export const TOUCH_START: string = "touchstart";
 }
@@ -21,7 +22,7 @@ export function bind(
     elements.forEach((element) => {
         events.forEach((eventName) => {
             element.addEventListener(eventName, (event: any) => {
-                console.info({ element, eventName, event });
+                // console.debug({ element, eventName, event });
                 return handler(event);
             });
         });

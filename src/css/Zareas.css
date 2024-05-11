@@ -1,0 +1,12 @@
+.titleArea {
+    z-index: 400;
+}
+.controlArea {
+    z-index: 300;
+}
+.gameArea {
+    z-index: 200;
+}
+.scoreArea {
+    z-index: 100;
+}

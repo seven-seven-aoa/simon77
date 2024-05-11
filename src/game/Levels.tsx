@@ -23,7 +23,7 @@ function init() {
 function next() {
     const level = levels.pop();
     if (level) {
-        dom.setGlowSpeed(level.speed);
+        dom.setVarGlowSpeed(level.speed);
     }
     return level;
 }

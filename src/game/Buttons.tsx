@@ -5,7 +5,7 @@ import * as dom from "./Dom";
 import * as seq from "./Sequence";
 import * as time from "./Timing";
 
-export { init, waitForUserInput, trigger };
+export { init, waitForUserInput, trigger, handleTouchStart, handleTouchEnd };
 
 let _buttons: any[] = [];
 
@@ -28,10 +28,10 @@ function init() {
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
 
     glowColors.forEach((color: string, index: number) => {
-        dom.setGlowColor(index, color);
+        dom.setVarGlowColor(index, color);
     });
 
-    _buttons = dom.Layer.buttons();
+    _buttons = dom.buttons();
     const notes = ["C4", "Eb4", "G4", "Bb4"];
 
     _buttons.forEach((button: any, index: number) => {
@@ -53,14 +53,10 @@ function init() {
         button.stopSound = () => {
             button.sound.stop();
         };
-        
-        dom.bindButtonDown(button, handleTouchStart);
-        dom.bindButtonUp(button, handleTouchEnd);
     });
 }
 
 function handleTouchStart(event: any) {
-    event.preventDefault();
     if (!_state.inputEnabled) {
         return;
     }
@@ -69,7 +65,6 @@ function handleTouchStart(event: any) {
 }
 
 function handleTouchEnd(event: any) {
-    event.preventDefault();
     animateTouchEnd(event.target);
 
     seq.addUserStep(event.target.gameId);

@@ -10,7 +10,12 @@ import * as levels from "./game/Levels";
 import * as music from "./game/Music";
 import * as time from "./game/Timing";
 
-import "./App.css";
+import "./css/Vars.css";
+import "./css/Universal.css";
+import "./css/Areas.css";
+import "./css/Zareas.css";
+import "./css/Xforms.css";
+
 import playImage from "./assets/play.png";
 import pauseImage from "./assets/pause.png";
 import restartImage from "./assets/restart.png";
@@ -18,108 +23,103 @@ import restartImage from "./assets/restart.png";
 console.info("XIMON77 - DEPLOYED ON [2024-05-10 13:41:22]");
 levels.init();
 
-let enableRunButton: boolean = false;
-function setEnableRunButton(value: boolean) {
-    enableRunButton = value;
-}
-
 export default function App() {
-    dom.setFadeSpeed(time.WaitTime.fadeSpeed);
-    // const [enableRunButton, setEnableRunButton] = useState(false);
+    const [enableRunButton, setEnableRunButton] = useState(false);
     const [levelNumber, setLevelNumber] = useState(0);
 
-    const [controlClass, setControlClass] = useState(dom.Class.control);
-    const [gameClass, setGameClass] = useState(dom.Class.game);
-    const [overlayClass, setOverlayClass] = useState(dom.Class.overlay);
-    const [scoreClass, setScoreClass] = useState(dom.Class.score);
-    const [titleClass, setTitleClass] = useState(dom.Class.title);
-
     useEffect(() => {
-        dom.init();
+        dom.init(time.WaitTime.fadeSpeed);
         buttons.init();
-        
+
         const timeout = setTimeout(async () => {
-            setTitleClass(dom.FadeIn.title);
+            dom.titleArea().fadeIn();
             setEnableRunButton(true);
-            dom.bindRunGame(runGame);
         }, time.WaitTime.fadeSpeed);
-
-        async function runGame() {
-            if (!enableRunButton) {
-                return;
-            }
-            music.startup();
-            setEnableRunButton(false);
-            setTitleClass(dom.FadeOut.title);
-            await time.Delay.fadeSpeed(1);
-
-            setGameClass(dom.FadeIn.game);
-            await time.Delay.fadeSpeed(0.25);
-
-            setControlClass(dom.FadeIn.control);
-            await time.Delay.newLevelDelay(0.5);
-
-            setScoreClass(dom.FadeIn.score);
-            await time.Delay.newLevelDelay(1);
-            setOverlayClass(dom.Hide.overlay);
-
-            let winner: boolean = false;
-            while (true) {
-                await time.Delay.newLevelDelay(1);
-                const level = levels.next();
-                if (!level) {
-                    winner = true;
-                    break;
-                }
-                const gameOver: boolean = await levels.run(level);
-                if (gameOver) {
-                    winner = false;
-                    break;
-                }
-                setLevelNumber(level.number);
-            }
-
-            dom.Layer.buttons().forEach((button: any) => {
-                button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
-            });
-            await music.gameOver(winner);
-            restartClick();
-        }
 
         return () => clearTimeout(timeout);
     }, []);
 
+    async function runGame() {
+        if (!enableRunButton) {
+            return;
+        }
+        music.startup();
+        setEnableRunButton(false);
+        dom.titleArea().fadeOut();
+        await time.Delay.fadeSpeed(1);
+        dom.titleArea().hide();
+
+        dom.gameArea().fadeIn();
+        await time.Delay.fadeSpeed(0.25);
+
+        dom.controlArea().fadeIn();
+        await time.Delay.newLevelDelay(0.5);
+        dom.scoreArea().fadeIn();
+
+        let winner: boolean = false;
+        while (true) {
+            await time.Delay.newLevelDelay(1);
+            const level = levels.next();
+            if (!level) {
+                winner = true;
+                break;
+            }
+            const gameOver: boolean = await levels.run(level);
+            if (gameOver) {
+                winner = false;
+                break;
+            }
+            setLevelNumber(level.number);
+        }
+
+        dom.buttons().forEach((button: any) => {
+            button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
+        });
+        await music.gameOver(winner);
+        restartClick();
+    }
+
     function restartClick() {
-        setGameClass(dom.FadeOut.game);
-        setControlClass(dom.FadeOut.control);
+        dom.gameArea().fadeOut();
+        dom.controlArea().fadeOut();
+        dom.scoreArea().fadeOut();
         window.location.reload();
+    }
+
+    const buttonElements = [];
+    for (let i = 0; i < 4; i++) {
+        buttonElements.push(
+            <b
+                key={i}
+                id={`button_${i}`}
+                onTouchStart={buttons.handleTouchStart}
+                onTouchEnd={buttons.handleTouchEnd}
+            ></b>
+        );
     }
 
     return (
         <main>
-            <section className={titleClass}>
+            <section className="titleArea" onClick={runGame}>
                 <h1>Ximon '77</h1>
                 <aside>DEPLOYED ON [2024-05-10 13:41:22]</aside>
             </section>
 
-            <section className={gameClass}>
-                <b id="button_0"></b>
-                <b id="button_1"></b>
-                <b id="button_2"></b>
-                <b id="button_3"></b>
-
-                <input type="hidden" id="game_sequence" />
-                <input type="hidden" id="user_sequence" />
+            <section className="gameArea">
+                {buttonElements}
+                <input type="hidden" id="gameSequence" />
+                <input type="hidden" id="userSequence" />
             </section>
 
-            <section className={controlClass}>
+            <section className="controlArea">
                 <img src={pauseImage} id="pause" />
                 <img src={playImage} id="play" />
                 <img src={restartImage} id="restart" onClick={restartClick} />
             </section>
 
-            <section className={scoreClass}>Score: {levelNumber}</section>
-            <section className={overlayClass}></section>
+            <section className="scoreArea">
+                Score: <span className="scoreValue">{levelNumber}</span>
+            </section>
         </main>
     );
 }

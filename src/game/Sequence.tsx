@@ -22,14 +22,14 @@ function addSequenceStep(count: number = 1) {
     for (let i = 0; i < count; i++) {
         sequence.push({ button: Math.floor(Math.random() * 4) });
     }
-    dom.Hidden.gameSequence().value = sequence
+    dom.gameSequence().value = sequence
         .map((step) => step.button)
         .join(",");
 }
 
 function compareSequences() {
-    const game = dom.Hidden.gameSequence().value;
-    const user = dom.Hidden.userSequence().value;
+    const game = dom.gameSequence().value;
+    const user = dom.userSequence().value;
 
     if (game === user) {
         return CompareResult.Match;
@@ -47,12 +47,12 @@ function getSequenceStep(index: number) {
 }
 
 function clearUserSequence() {
-    dom.Hidden.userSequence().value = "";
+    dom.userSequence().value = "";
 }
 
 function addUserStep(buttonId: number) {
-    if (dom.Hidden.userSequence().value.length > 0) {
-        dom.Hidden.userSequence().value += ",";
+    if (dom.userSequence().value.length > 0) {
+        dom.userSequence().value += ",";
     }
-    dom.Hidden.userSequence().value += buttonId;
+    dom.userSequence().value += buttonId;
 }

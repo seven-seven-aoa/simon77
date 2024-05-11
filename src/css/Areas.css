@@ -1,98 +1,26 @@
-@font-face {
-    font-family: "ximon77";
-    src: url("./assets/gomarice_game_music_love.ttf") format("truetype");
-}
-
-:root {
-    --button_size: 39svmin;
-    --score-font-top-offset: 1.85;
-}
-
-@media (orientation: landscape) {
-    :root {
-        --button_size: 33svmin;
-        --score-font-top-offset: 1.05;
-    }
-}
-
-:root {
-    --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
-    --button_border: 1svmin;
-    --button_margin: 4svmin;
-}
-:root {
-    --control_image_size: 4svmax;
-    --control_image_margin: 2svmax;
-    --score-font-size: 4svmax;
-    --score-font-top: calc(
-        100% - calc(var(--score-font-size) * var(--score-font-top-offset))
-    );
-}
-:root {
-    --fade_speed: 1000ms;
-    --glow_speed: 1000ms;
-    --fade_tansition: opacity var(--fade_speed) linear;
-}
-:root {
-    --glow_color_0: #000000;
-    --glow_color_1: #000000;
-    --glow_color_2: #000000;
-    --glow_color_3: #000000;
-}
-:root {
-    --box_shadow_a: 0 0 1svmin;
-    --box_shadow_b: 0 0 2svmin;
-    --box_shadow_c: 0 0 4svmin;
-    --box_shadow_d: 0 0 8svmin;
-}
-
-* {
-    box-sizing: border-box;
-    font-family: ximon77;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    text-align: center;
-}
-* {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    background-color: #0000ff;
-}
-
-main {
-    background-color: #000000;
-}
-
-.title {
+.titleArea {
     opacity: 0;
 }
 
-.title > h1 {
+.titleArea > h1 {
     color: #ffff00;
     font-size: 10svmax;
     top: calc(50% - 5svmax);
 }
 
-.title > aside {
+.titleArea > aside {
     color: #000000;
     font-family: monospace;
     font-size: 2.3svmax;
     top: calc(100svmax - 3svmax);
 }
 
-.control {
+.controlArea {
     opacity: 0;
     height: calc(var(--control_image_size) + var(--control_image_margin));
 }
 
-.control > img {
+.controlArea > img {
     opacity: 0.25;
     width: 6svmax;
     height: 6svmax;
@@ -101,19 +29,19 @@ main {
     top: 2svmax;
 }
 
-.control > img#play {
+.controlArea > img#play {
     opacity: 0;
 }
 
-.control > img#restart {
+.controlArea > img#restart {
     left: calc(100% - 8svmax);
 }
 
-.game {
+.gameArea {
     opacity: 0;
 }
 
-.game > b {
+.gameArea > b {
     width: var(--button_size);
     height: var(--button_size);
 
@@ -124,27 +52,25 @@ main {
     border-radius: 3%;
     border-style: solid;
     border-width: var(--button_border);
-
-    /* z-index: 101; */
 }
 
-.game > b#button_0 {
+.gameArea > b#button_0 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-.game > b#button_1 {
+.gameArea > b#button_1 {
     left: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-.game > b#button_2 {
+.gameArea > b#button_2 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
 }
-.game > b#button_3 {
+.gameArea > b#button_3 {
     left: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
@@ -153,32 +79,32 @@ main {
     );
 }
 
-.game > b#button_0.glow {
+.gameArea > b#button_0.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_0),
         var(--box_shadow_b) var(--glow_color_0),
         var(--box_shadow_c) var(--glow_color_0),
         var(--box_shadow_d) var(--glow_color_0);
 }
-.game > b#button_1.glow {
+.gameArea > b#button_1.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_1),
         var(--box_shadow_b) var(--glow_color_1),
         var(--box_shadow_c) var(--glow_color_1),
         var(--box_shadow_d) var(--glow_color_1);
 }
-.game > b#button_2.glow {
+.gameArea > b#button_2.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_2),
         var(--box_shadow_b) var(--glow_color_2),
         var(--box_shadow_c) var(--glow_color_2),
         var(--box_shadow_d) var(--glow_color_2);
 }
-.game > b#button_3.glow {
+.gameArea > b#button_3.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_3),
         var(--box_shadow_b) var(--glow_color_3),
         var(--box_shadow_c) var(--glow_color_3),
         var(--box_shadow_d) var(--glow_color_3);
 }
 
-.score {
+.scoreArea {
     background-color: #000000;
     color: #ffff00;
     opacity: 0;
@@ -187,22 +113,7 @@ main {
     top: var(--score-font-top);
 }
 
-.overlay {
-    background-color: #ff69b4;
-    opacity: 0.25;
-    /* z-index: 100; */
-}
-
-.fade_in {
-    opacity: 1;
-    transition: var(--fade_tansition);
-}
-
-.fade_out {
-    opacity: 0;
-    transition: var(--fade_tansition);
-}
-
-.hide {
-    /* top: var(--score-font-top); */
+.scoreArea > .scoreValue {
+    color: #FFFFFF;
+    position: relative;
 }
