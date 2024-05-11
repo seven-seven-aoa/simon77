@@ -67,9 +67,9 @@ function handleTouchStart(event: any) {
     // touchStartTimeMs = Date.now();
 }
 
-async function handleTouchEnd(event: any) {
+function handleTouchEnd(event: any) {
 
-    await time.Delay.inputLoopThrottle();
+    // await time.Delay.inputLoopThrottle();
     animateTouchEnd(event.target);
 
     seq.addUserStep(event.target.gameId);
