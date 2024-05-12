@@ -14,10 +14,11 @@
             "**/.vscode": true,
             "**/CVS": true,
             "**/Thumbs.db": true,
-            "**/dist": false,
+            "**/dist": true,
             "**/node_modules": true,
             "**/obj": true,
-            "package-lock.json": true
+            "package-lock.json": true,
+            "simon77.maui": true
         }
     }
 }
