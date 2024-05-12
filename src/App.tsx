@@ -11,7 +11,7 @@ import * as music from "./game/Music";
 import * as time from "./game/Timing";
 import "./css";
 
-console.info("XIMON77 - DEPLOYED ON [2024-05-11 20:27:03]");
+console.info("XIMON77 - DEPLOYED ON [2024-05-12 16:04:42]");
 levels.init();
 
 const hiddenInputs: string = "hidden";
@@ -98,7 +98,7 @@ export default function App() {
         <main>
             <section className="titleArea" onClick={runGame}>
                 <h1>Ximon '77</h1>
-                <aside>DEPLOYED ON [2024-05-11 20:27:03]</aside>
+                <aside>DEPLOYED ON [2024-05-12 16:04:42]</aside>
             </section>
 
             <section className="gameArea">
