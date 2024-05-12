@@ -1,0 +1,18 @@
+.controlArea {
+    opacity: 0;
+    height: calc(var(--control_image_size) + var(--control_image_margin));
+}
+
+.controlArea > img#restart {
+    opacity: 0.25;
+    width: var(--control_image_size);
+    height: var(--control_image_size);
+
+    left: calc(100% - var(--control_image_size) - var(--control_image_margin));
+    top: var(--control_image_margin)
+}
+
+.controlArea > img#play,
+.controlArea > img#pause {
+    display: none;
+}

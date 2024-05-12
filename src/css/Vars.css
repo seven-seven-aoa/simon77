@@ -1,26 +1,24 @@
-:root {
-    --button_size: 39svmin;
-    --score-font-top-offset: 1.85;
-}
-
 @media (orientation: landscape) {
     :root {
-        --button_size: 33svmin;
-        --score-font-top-offset: 1.05;
+        * {
+            display: none;
+        }
+        body {
+            display: block;
+            background-color: red;
+        }
     }
 }
 
 :root {
+    --button_size: 39svmin;
     --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
     --button_border: 1svmin;
     --button_margin: 4svmin;
 
-    --control_image_size: 4svmax;
+    --control_image_size: 6svmax;
     --control_image_margin: 2svmax;
-    --score-font-size: 4svmax;
-    --score-font-top: calc(
-        100% - calc(var(--score-font-size) * var(--score-font-top-offset))
-    );
+    --score_font_size: 4.5svmax;
 
     --fade_speed: 1000ms;
     --glow_speed: 1000ms;

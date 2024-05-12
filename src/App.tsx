@@ -3,22 +3,13 @@
 /* eslint-disable no-constant-condition */
 
 import { useState, useEffect } from "react";
-
+import * as img from "./images";
 import * as buttons from "./game/Buttons";
 import * as dom from "./game/Dom";
 import * as levels from "./game/Levels";
 import * as music from "./game/Music";
 import * as time from "./game/Timing";
-
-import "./css/Vars.css";
-import "./css/Universal.css";
-import "./css/Areas.css";
-import "./css/Zareas.css";
-import "./css/Xforms.css";
-
-import playImage from "./assets/play.png";
-import pauseImage from "./assets/pause.png";
-import restartImage from "./assets/restart.png";
+import "./css";
 
 console.info("XIMON77 - DEPLOYED ON [2024-05-11 20:27:03]");
 levels.init();
@@ -117,9 +108,9 @@ export default function App() {
             </section>
 
             <section className="controlArea">
-                <img src={pauseImage} id="pause" />
-                <img src={playImage} id="play" />
-                <img src={restartImage} id="restart" onClick={restartClick} />
+                <img src={img.pauseImage} id="pause" />
+                <img src={img.playImage} id="play" />
+                <img src={img.restartImage} id="restart" onClick={restartClick} />
             </section>
 
             <section className="scoreArea">
