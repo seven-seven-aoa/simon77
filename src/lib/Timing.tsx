@@ -1,4 +1,3 @@
-export function delay(ms: number, multiplier?: number) {
-    ms = Math.max(ms * (multiplier || 1), 1);
+export function delay(ms: number) {
     return new Promise((r) => setTimeout(r, ms));
 }

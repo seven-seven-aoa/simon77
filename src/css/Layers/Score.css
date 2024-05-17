@@ -1,16 +1,15 @@
-.scoreArea {
+main > section.score {
     /* background-color: #990000; */
     color: #ffff00;
     opacity: 0;
     font-size: var(--score_font_size);
     height: var(--score_font_size);
-    text-align: left;
     
     left: calc(var(--control_image_margin) * 1.5);
     top: calc(var(--control_image_margin) * 1.5);
 }
 
-.scoreArea > .scoreValue {
+main > section.score > .scoreValue {
     color: #FFFFFF;
     position: relative;
 }

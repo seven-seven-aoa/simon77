@@ -1,0 +1,24 @@
+main > section {
+    display: none;
+    opacity: 0;
+}
+
+main > section.debug {
+    z-index: 500;
+}
+
+main > section.title {
+    z-index: 400;
+}
+
+main > section.control {
+    z-index: 300;
+}
+
+main > section.game {
+    z-index: 200;
+}
+
+main > section.score {
+    z-index: 100;
+}

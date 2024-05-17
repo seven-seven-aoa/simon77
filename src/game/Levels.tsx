@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { delay } from "../lib/Timing";
 import * as buttons from "./Buttons";
-import * as dom from "./Dom";
+import * as cvar from "../lib/CSSVars";
 import * as seq from "./Sequence";
-import * as time from "./Timing";
 
 export { init, next, run };
 
@@ -23,7 +24,7 @@ function init() {
 function next() {
     const level = levels.pop();
     if (level) {
-        dom.setVarGlowSpeed(level.speed);
+        cvar.set("glow_speed", `${level.speed}ms`);
     }
     return level;
 }
@@ -40,7 +41,7 @@ async function run(level: any) {
 
         const { button } = step;
         buttons.trigger(button, level.glow);
-        await time.Delay.levelSpeed(level);
+        await delay(level.speed);
     }
 
     seq.clearUserSequence();

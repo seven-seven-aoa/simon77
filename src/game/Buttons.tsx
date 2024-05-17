@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { delay } from "../lib/Timing";
 import { playNote } from "../lib/Sound";
-import * as dom from "./Dom";
+import * as cvar from "../lib/CSSVars";
+import * as layers from "./Layers";
 import * as seq from "./Sequence";
 import * as time from "./Timing";
 
@@ -28,10 +30,10 @@ function init() {
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
 
     glowColors.forEach((color: string, index: number) => {
-        dom.setVarGlowColor(index, color);
+        cvar.set(`glow_color_${index}`, color);
     });
 
-    _buttons = dom.buttons();
+    _buttons = layers.buttons();
     const notes = ["C4", "Eb4", "G4", "Bb4"];
 
     _buttons.forEach((button: any, index: number) => {
@@ -68,8 +70,7 @@ function handleTouchStart(event: any) {
 }
 
 async function handleTouchEnd(event: any) {
-
-    await time.Delay.inputLoopThrottle();
+    await delay(time.loop.throttle.default);
     animateTouchEnd(event.target);
 
     seq.addUserStep(event.target.gameId);
@@ -90,7 +91,7 @@ async function waitForUserInput() {
     _state.inputEnabled = true;
 
     while (!_state.turnCompleted) {
-        await time.Delay.inputLoopThrottle();
+        await delay(time.loop.throttle.default);
     }
 
     if (_state.compareResult === seq.CompareResult.None) {

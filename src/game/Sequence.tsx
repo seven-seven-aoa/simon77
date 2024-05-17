@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as dom from "./Dom";
-
 export {
     addSequenceStep,
     addUserStep,
@@ -22,23 +20,18 @@ function addSequenceStep(count: number = 1) {
     for (let i = 0; i < count; i++) {
         sequence.push({ button: Math.floor(Math.random() * 4) });
     }
-    dom.gameSequence().value = sequence
+    gameSequence = sequence
         .map((step) => step.button)
         .join(",");
 }
 
 function compareSequences() {
-    const game = dom.gameSequence().value;
-    const user = dom.userSequence().value;
-
-    if (game === user) {
+    if (gameSequence === userSequence) {
         return CompareResult.Match;
     }
-    
-    if (game.indexOf(user) === 0) {
+    if (gameSequence.indexOf(userSequence) === 0) {
         return CompareResult.Partial;
     }
-
     return CompareResult.Mismatch;
 }
 
@@ -47,12 +40,15 @@ function getSequenceStep(index: number) {
 }
 
 function clearUserSequence() {
-    dom.userSequence().value = "";
+    userSequence = "";
 }
 
 function addUserStep(buttonId: number) {
-    if (dom.userSequence().value.length > 0) {
-        dom.userSequence().value += ",";
+    if (userSequence.length > 0) {
+        userSequence += ",";
     }
-    dom.userSequence().value += buttonId;
+    userSequence += buttonId;
 }
+
+let gameSequence: string = "";
+let userSequence: string = "";

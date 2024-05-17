@@ -1,0 +1,91 @@
+:root {
+    --width: 414px;
+    --height: 736px;
+    --fontSize: 3px;
+    --border: var(--fontSize);
+}
+
+* {
+    box-sizing: border-box;
+    font-family: ximon77;
+    font-weight: normal;
+
+    margin: 0;
+    padding: 0;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+html {
+    font-size: var(--fontSize);
+}
+
+body {
+    background-color: #000032;
+    width: 100svw;
+    height: 100svh;
+}
+
+main {
+    background-color: #000000;
+    border-color: #0000FF;
+    border-style: solid;
+    border-width: var(--border);
+
+    width: var(--width);
+    height: var(--height);
+}
+
+/* :root {
+    --button_size: calc(33rem * var(--fx));
+    --button_pos: calc(50% - calc(calc(var(--button_size) * 2) * 0.5));
+    --button_border: 1rem;
+    --button_margin: 4rem;
+
+    --control_image_size: 6svmax;
+    --control_image_margin: 2svmax;
+    --score_font_size: 4.5svmax;
+
+    --glow_speed: 1000ms;
+
+    --glow_color_0: #000000;
+    --glow_color_1: #000000;
+    --glow_color_2: #000000;
+    --glow_color_3: #000000;
+
+    --box_shadow_a: 0 0 1rem;
+    --box_shadow_b: 0 0 2rem;
+    --box_shadow_c: 0 0 4rem;
+    --box_shadow_d: 0 0 8rem;
+} 
+
+.xCenter.yCenter {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.xCenter.yTop {
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0);
+}
+
+.xCenter.yBottom {
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, -100%);
+}
+
+*/

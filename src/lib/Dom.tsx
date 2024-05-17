@@ -1,49 +1,44 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export { getDomAll, getDomSingle, setCssVar };
+import { ElementX, toElementX } from "./ElementX";
 
-const dom = new Map();
+const _multiple = new Map<string, ElementX[]>();
+const _single = new Map<string, ElementX>();
 
-function getDomAll(query: string) {
-    if (!dom.has(query)) {
-        const elements = document.querySelectorAll(query);
-        if (elements.length === 0) {
-            throw new Error(`No elements found for query: ${query}`);
-        }
-        elements.forEach(extendElement);
-        dom.set(query, elements);
+export function multiple(query: string) : ElementX[] {
+    if (_multiple.has(query)) {
+        return _multiple.get(query)!;
     }
-    return dom.get(query);
-}
 
-function getDomSingle(query: string) {
-    if (!dom.has(query)) {
-        const element = document.querySelector(query);
-        if (element === null) {
-            throw new Error(`No element found for query: ${query}`);
-        }
-        extendElement(element);
-        dom.set(query, element);
+    const elements = document.querySelectorAll(query);
+    if (elements.length === 0) {
+        throw new Error(noElementsError(query));
     }
-    return dom.get(query);
+
+    const elementXArray: ElementX[] = [];
+    elements.forEach((element) => {
+        const elementX = toElementX(element as HTMLElement);
+        elementXArray.push(elementX);
+    });
+
+    _multiple.set(query, elementXArray);
+    return _multiple.get(query)!;
 }
 
-function setCssVar(name: string, value: string) {
-    getDomSingle(":root").style.setProperty(`--${name}`, value);
+export function single(query: string) : ElementX {
+    if (_single.has(query)) {
+        return _single.get(query)!;
+    }
+
+    const element = document.querySelector(query);
+    console.debug({ query, type: typeof element, element });
+    if (!element) {
+        throw new Error(noElementsError(query));
+    }
+
+    const elementX = toElementX(element as HTMLElement);
+    _single.set(query, elementX);
+    return _single.get(query)!;
 }
 
-function extendElement(element: any) {
-    element.fadeIn = function () {
-        element.classList.remove("fade_out");
-        element.classList.add("fade_in");
-    };
-    element.fadeOut = function () {
-        element.classList.remove("fade_in");
-        element.classList.add("fade_out");
-    };
-    element.hide = function () {
-        element.classList.add("hide");
-    };
-    element.show = function () {
-        element.classList.remove("hide");
-    };
+function noElementsError(query: string) {
+    return `No elements found for query: ${query}`;
 }

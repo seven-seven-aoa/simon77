@@ -1,0 +1,12 @@
+main > section.debug {
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 4rem;
+    /* justify-content: center; */
+    padding: 4rem;
+    opacity: 0;
+
+    position: abs;
+    width: 100rem;
+    margin: 0 var(--fxm);
+}

@@ -1,9 +1,8 @@
-
-.gameArea {
+main > section.game {
     opacity: 0;
 }
 
-.gameArea > b {
+main > section.game > b {
     width: var(--button_size);
     height: var(--button_size);
 
@@ -16,23 +15,23 @@
     border-width: var(--button_border);
 }
 
-.gameArea > b#button_0 {
+main > section.game > b#button_0 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-.gameArea > b#button_1 {
+main > section.game > b#button_1 {
     left: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
     top: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
 }
-.gameArea > b#button_2 {
+main > section.game > b#button_2 {
     left: calc(var(--button_pos) - calc(var(--button_margin) * 0.5));
     top: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
 }
-.gameArea > b#button_3 {
+main > section.game > b#button_3 {
     left: calc(
         calc(var(--button_pos) + var(--button_size)) + var(--button_margin)
     );
@@ -41,25 +40,25 @@
     );
 }
 
-.gameArea > b#button_0.glow {
+main > section.game > b#button_0.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_0),
         var(--box_shadow_b) var(--glow_color_0),
         var(--box_shadow_c) var(--glow_color_0),
         var(--box_shadow_d) var(--glow_color_0);
 }
-.gameArea > b#button_1.glow {
+main > section.game > b#button_1.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_1),
         var(--box_shadow_b) var(--glow_color_1),
         var(--box_shadow_c) var(--glow_color_1),
         var(--box_shadow_d) var(--glow_color_1);
 }
-.gameArea > b#button_2.glow {
+main > section.game > b#button_2.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_2),
         var(--box_shadow_b) var(--glow_color_2),
         var(--box_shadow_c) var(--glow_color_2),
         var(--box_shadow_d) var(--glow_color_2);
 }
-.gameArea > b#button_3.glow {
+main > section.game > b#button_3.glow {
     box-shadow: var(--box_shadow_a) var(--glow_color_3),
         var(--box_shadow_b) var(--glow_color_3),
         var(--box_shadow_c) var(--glow_color_3),

@@ -1,34 +1,50 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-condition */
 
 import { useState, useEffect } from "react";
-import * as img from "./images";
+import { ElementX, FadeDefaults } from "./lib/ElementX";
+import { fade } from "./lib/animation/Fade";
+import { delay } from "./lib/Timing";
+
 import * as buttons from "./game/Buttons";
-import * as dom from "./game/Dom";
+import * as img from "./images";
+import * as input from "./lib/Input";
+import * as layers from "./game/Layers";
 import * as levels from "./game/Levels";
 import * as music from "./game/Music";
 import * as time from "./game/Timing";
+
 import "./css";
 
 console.info("XIMON77 - DEPLOYED ON [2024-05-12 16:04:42]");
+FadeDefaults.in.durationMs = time.fade.default.in;
+FadeDefaults.out.durationMs = time.fade.default.out;
 levels.init();
-
-const hiddenInputs: string = "hidden";
-// const hiddenInputs: string = "text";
 
 export default function App() {
     const [enableRunButton, setEnableRunButton] = useState(false);
     const [levelNumber, setLevelNumber] = useState(0);
 
     useEffect(() => {
-        dom.init(time.WaitTime.fadeSpeed);
+        input.disableCommomAnnnoyingEvents(
+            [
+                ...layers.buttons(),
+                layers.control(),
+                layers.debug(),
+                layers.game(),
+                layers.score(),
+                layers.title(),
+            ],
+            true
+        );
         buttons.init();
+        const title: ElementX = layers.title();
 
-        const timeout = setTimeout(async () => {
-            dom.titleArea().fadeIn();
+        const timeout: number = setTimeout(async () => {
+            title.style.display = "block";
+            await fade(title);
             setEnableRunButton(true);
-        }, time.WaitTime.fadeSpeed);
+        }, time.delay.titleSplash);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -37,22 +53,24 @@ export default function App() {
         if (!enableRunButton) {
             return;
         }
-        music.startup();
+
         setEnableRunButton(false);
-        dom.titleArea().fadeOut();
-        await time.Delay.fadeSpeed(1);
-        dom.titleArea().hide();
+        music.startup();
 
-        dom.gameArea().fadeIn();
-        await time.Delay.fadeSpeed(0.25);
+        const title = layers.title();
+        await fade(title);
+        title.style.display = "none";
 
-        dom.controlArea().fadeIn();
-        await time.Delay.newLevelDelay(0.5);
-        dom.scoreArea().fadeIn();
+        // layers.game().fade(fade.inConfig());
+        // await time.Delay.titleDelay(0.25);
+
+        // layers.control().fade(fade.inConfig());
+        // await time.Delay.newLevelDelay(0.5);
+        // layers.score().fade(fade.inConfig());
 
         let winner: boolean = false;
         while (true) {
-            await time.Delay.newLevelDelay(1);
+            await delay(time.delay.newLevel);
             const level = levels.next();
             if (!level) {
                 winner = true;
@@ -66,7 +84,7 @@ export default function App() {
             setLevelNumber(level.number);
         }
 
-        dom.buttons().forEach((button: any) => {
+        layers.buttons().forEach((button: ElementX) => {
             button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
         });
         await music.gameOver(winner);
@@ -74,10 +92,20 @@ export default function App() {
     }
 
     function restartClick() {
-        dom.gameArea().fadeOut();
-        dom.controlArea().fadeOut();
-        dom.scoreArea().fadeOut();
+        // layers.game().fade(fade.outConfig());
+        // layers.control().fade(fade.outConfig());
+        // layers.score().fade(fade.outConfig());
         window.location.reload();
+    }
+
+    function toggleDebug() {
+        // const layer = layers.debug();
+        // const fadeToggle = fade.toggleConfig(layer);
+        // fadeToggle.preDisplay = "block";
+        // fadeToggle.postDisplay = undefined;
+        // config.durationMs = time.WaitTime.titleDelay;
+        // config.postDisplay = undefined;
+        // area.fade(config);
     }
 
     const buttonElements = [];
@@ -88,32 +116,35 @@ export default function App() {
                 id={`button_${i}`}
                 onPointerDown={buttons.handleTouchStart}
                 onPointerUp={buttons.handleTouchEnd}
-                // onMouseDown={buttons.handleTouchStart}
-                // onMouseUp={buttons.handleTouchEnd}
             ></b>
         );
     }
 
     return (
-        <main>
-            <section className="titleArea" onClick={runGame}>
-                <h1>Ximon '77</h1>
-                <aside>DEPLOYED ON [2024-05-12 16:04:42]</aside>
+        <main className="centered" onClick={runGame}>
+            <section className="debug" onClick={toggleDebug}>
+                DEPLOYED ON [2024-05-12 16:04:42]
             </section>
 
-            <section className="gameArea">
+            <section className="title">Ximon '77</section>
+
+            <section className="game">
                 {buttonElements}
-                <input type={hiddenInputs} id="gameSequence" />
-                <input type={hiddenInputs} id="userSequence" />
+                <input type="hidden" id="gameSequence" />
+                <input type="hidden" id="userSequence" />
             </section>
 
-            <section className="controlArea">
+            <section className="control">
                 <img src={img.pauseImage} id="pause" />
                 <img src={img.playImage} id="play" />
-                <img src={img.restartImage} id="restart" onClick={restartClick} />
+                <img
+                    src={img.restartImage}
+                    id="restart"
+                    onClick={restartClick}
+                />
             </section>
 
-            <section className="scoreArea">
+            <section className="score">
                 Score: <span className="scoreValue">{levelNumber}</span>
             </section>
         </main>
