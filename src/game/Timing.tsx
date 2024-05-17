@@ -4,12 +4,12 @@ export const delay = {
 };
 
 export const fade = {
-    default: { in: 2000, out: 2000 },
-    control: { in: 2000, out: 2000 },
-    debug: { in: 2000, out: 2000 },
-    game: { in: 2000, out: 2000 },
-    score: { in: 2000, out: 2000 },
-    title: { in: 2000, out: 2000 },
+    default: { in: 900, out: 900 },
+    control: { in: 900, out: 900 },
+    debug: { in: 900, out: 900 },
+    game: { in: 900, out: 900 },
+    score: { in: 900, out: 900 },
+    title: { in: 900, out: 900 },
 };
 
 export const loop = {

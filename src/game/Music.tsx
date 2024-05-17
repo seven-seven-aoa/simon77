@@ -1,5 +1,6 @@
 import { delay } from "../lib/Timing";
 import { playNote, RampType } from "../lib/Sound";
+import * as game from "./Game";
 
 export { startup, gameOver };
 
@@ -26,26 +27,24 @@ function startup() {
     }
 }
 
-async function gameOver(winner: boolean) {
-    const notes: string[] = winner
-        ? [
-              "C3",
-              "E3",
-              "G3",
-              "C4",
-              "E4",
-              "G4",
-              "C5",
-              "E5",
-              "G5",
-              "C6",
-              "E6",
-              "G6",
-              "C7",
-          ]
-        : ["F#2", "F#2", "F#2", "F#1", "F#2", "F#2", "F#2", "F#1", "F#1"];
+async function gameOver() {
 
-    const delayValue = winner ? 50 : 75;
+    let delayValue: number = 0;
+    let notes: string[] = [];
+
+    if (game.getState() === game.State.GameWon) {
+        delayValue = 50;
+        notes = ["C3", "E3", "G3", 
+                 "C4", "E4", "G4", 
+                 "C5", "E5", "G5", 
+                 "C6", "E6", "G6", "C7"];
+    }
+    else {
+        delayValue = 75;
+        ["F#2", "F#2", "F#2", "F#1", "F#2", 
+         "F#2", "F#2", "F#1", "F#1"];
+    }
+
     for (let j = 0; j < notes.length; j++) {
         const osc = playNote({
             wave: "sawtooth",

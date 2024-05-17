@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export {
     addSequenceStep,
     addUserStep,
@@ -14,7 +13,11 @@ export enum CompareResult {
     Mismatch = 3,
 }
 
-const sequence: any[] = [];
+export interface SequenceStep {
+    button: number;
+}
+
+const sequence: SequenceStep[] = [];
 
 function addSequenceStep(count: number = 1) {
     for (let i = 0; i < count; i++) {
@@ -35,7 +38,7 @@ function compareSequences() {
     return CompareResult.Mismatch;
 }
 
-function getSequenceStep(index: number) {
+function getSequenceStep(index: number) : SequenceStep {
     return sequence[index];
 }
 

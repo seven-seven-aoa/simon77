@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-constant-condition */
-
 import { useState, useEffect } from "react";
 import { ElementX, FadeDefaults } from "./lib/ElementX";
 import { fade } from "./lib/animation/Fade";
 import { delay } from "./lib/Timing";
 
 import * as buttons from "./game/Buttons";
+import * as game from "./game/Game";
 import * as img from "./images";
 import * as input from "./lib/Input";
 import * as layers from "./game/Layers";
@@ -20,9 +18,9 @@ console.info("XIMON77 - DEPLOYED ON [2024-05-12 16:04:42]");
 FadeDefaults.in.durationMs = time.fade.default.in;
 FadeDefaults.out.durationMs = time.fade.default.out;
 levels.init();
+game.setState(game.State.Loading);
 
 export default function App() {
-    const [enableRunButton, setEnableRunButton] = useState(false);
     const [levelNumber, setLevelNumber] = useState(0);
 
     useEffect(() => {
@@ -43,18 +41,18 @@ export default function App() {
         const timeout: number = setTimeout(async () => {
             title.style.display = "block";
             await fade(title);
-            setEnableRunButton(true);
+            game.setState(game.State.Ready);
         }, time.delay.titleSplash);
 
         return () => clearTimeout(timeout);
     }, []);
 
     async function runGame() {
-        if (!enableRunButton) {
+        if (game.getState() !== game.State.Ready) {
             return;
         }
 
-        setEnableRunButton(false);
+        game.setState(game.State.Running);
         music.startup();
 
         const title = layers.title();
@@ -68,26 +66,29 @@ export default function App() {
         // await time.Delay.newLevelDelay(0.5);
         // layers.score().fade(fade.inConfig());
 
-        let winner: boolean = false;
-        while (true) {
+        while (game.getState() === game.State.Running) {
             await delay(time.delay.newLevel);
             const level = levels.next();
             if (!level) {
-                winner = true;
+                game.setState(game.State.GameWon);
                 break;
             }
-            const gameOver: boolean = await levels.run(level);
-            if (gameOver) {
-                winner = false;
+            await levels.run(level);
+            if (game.getState() === game.State.GameLost) {
                 break;
             }
             setLevelNumber(level.number);
         }
 
         layers.buttons().forEach((button: ElementX) => {
-            button.style.backgroundColor = winner ? "#FFFFFF" : "#222222";
+            if (game.getState() === game.State.GameLost) {
+                button.style.borderColor = "#FF0000";
+            }
+            else {
+                button.style.borderColor = "#00FF00";
+            }
         });
-        await music.gameOver(winner);
+        await music.gameOver();
         restartClick();
     }
 

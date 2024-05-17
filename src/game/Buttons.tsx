@@ -3,6 +3,7 @@
 import { delay } from "../lib/Timing";
 import { playNote } from "../lib/Sound";
 import * as cvar from "../lib/CSSVars";
+import * as game from "./Game";
 import * as layers from "./Layers";
 import * as seq from "./Sequence";
 import * as time from "./Timing";
@@ -98,7 +99,9 @@ async function waitForUserInput() {
         throw new Error("No comparison result");
     }
     _state.gameOver = _state.compareResult === seq.CompareResult.Mismatch;
-    return _state.gameOver;
+    if (_state.gameOver) {
+        game.setState(game.State.GameLost);
+    }
 }
 
 function trigger(index: number, glow: number) {
