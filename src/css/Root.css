@@ -1,3 +1,17 @@
+:root {
+    --width: 414px;
+    --height: 736px;
+
+    --fontSize: calc(var(--width) / 100);
+    --border: var(--fontSize);
+}
+
+@media (max-height: 735px) {
+    :root {
+        --width: calc(100vh * 0.5625);
+    }
+}
+
 * {
     box-sizing: border-box;
     font-family: ximon77;
@@ -12,20 +26,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-:root {
-    --width: 414px;
-    --height: 736px;
-
-    --fontSize: calc(var(--width) / 100);
-    --border: var(--fontSize);
-}
-
-@media (max-height: 735px) {
-    :root {
-        --width: calc(100vh * 0.5625);
-    }
 }
 
 .centered {
@@ -47,6 +47,7 @@ body {
 main {
     background-color: #000000;
     border-color: #0000FF;
+    border-color: #000000;
     border-style: solid;
     border-width: var(--border);
 
