@@ -2,17 +2,15 @@ import { useState, useEffect } from "react";
 import { ElementX, FadeDefaults } from "./lib/ElementX";
 import { fade } from "./lib/animation/Fade";
 import { delay } from "./lib/Timing";
+import "./css";
 
 import * as buttons from "./game/Buttons";
 import * as game from "./game/Game";
 import * as img from "./images";
-import * as input from "./lib/Input";
 import * as layers from "./game/Layers";
 import * as levels from "./game/Levels";
 import * as music from "./game/Music";
 import * as time from "./game/Timing";
-
-import "./css";
 
 console.info("XIMON77 - DEPLOYED ON [2024-05-12 16:04:42]");
 FadeDefaults.in.durationMs = time.fade.default.in;
@@ -24,26 +22,7 @@ export default function App() {
     const [levelNumber, setLevelNumber] = useState(0);
 
     useEffect(() => {
-        input.disableCommomAnnnoyingEvents(
-            [
-                ...layers.buttons(),
-                layers.control(),
-                layers.debug(),
-                layers.game(),
-                layers.score(),
-                layers.title(),
-            ],
-            true
-        );
-        buttons.init();
-        const title: ElementX = layers.title();
-
-        const timeout: number = setTimeout(async () => {
-            title.style.display = "block";
-            await fade(title);
-            game.setState(game.State.Ready);
-        }, time.delay.titleSplash);
-
+        const timeout = game.startup();
         return () => clearTimeout(timeout);
     }, []);
 

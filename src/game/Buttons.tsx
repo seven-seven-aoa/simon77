@@ -8,7 +8,11 @@ import * as layers from "./Layers";
 import * as seq from "./Sequence";
 import * as time from "./Timing";
 
-export { init, waitForUserInput, trigger, handleTouchStart, handleTouchEnd };
+export { 
+    createButtonElements, 
+    trigger, 
+    waitForUserInput, 
+};
 
 let _buttons: any[] = [];
 
@@ -25,7 +29,10 @@ interface GameState {
     gameOver: boolean;
 }
 
-function init() {
+function createButtonElements() {
+    
+    const musicNotes = ["C4", "Eb4", "G4", "Bb4"];
+    
     const backColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
     const borderColors = ["#A00000", "#00A000", "#0000A0", "#A0A000"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
@@ -34,8 +41,23 @@ function init() {
         cvar.set(`glow_color_${index}`, color);
     });
 
+    const buttonElements = [];
+    for (let i = 0; i < 4; i++) {
+        buttonElements.push(
+            <b
+                key={i}
+                id={`button_${i}`}
+                onPointerDown={handleTouchStart}
+                onPointerUp={handleTouchEnd}
+            ></b>
+        );
+    }
+    return buttonElements;
+}
+
+function init() {
+
     _buttons = layers.buttons();
-    const notes = ["C4", "Eb4", "G4", "Bb4"];
 
     _buttons.forEach((button: any, index: number) => {
         button.gameId = index;
@@ -74,7 +96,7 @@ async function handleTouchEnd(event: any) {
     await delay(time.loop.throttle.default);
     animateTouchEnd(event.target);
 
-    seq.addUserStep(event.target.gameId);
+    seq.addUserStep(event.target.key);
     _state.compareResult = seq.compareSequences();
 
     if (_state.compareResult === seq.CompareResult.Partial) {
