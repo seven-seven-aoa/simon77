@@ -1,36 +1,61 @@
-import { ElementX, FadeConfig, FadeStatus } from "../ElementX";
 import { applyProgress } from "./Core";
 
-const _mode = {
+export interface Fade {
+    status: FadeStatus;
+    opacity: Opacity;
+    in: FadeConfig;
+    out: FadeConfig;
+}
+
+export interface Opacity {
+    get: () => number;
+    set: (value: number) => void;
+}
+
+export interface FadeConfig {
+    initialOpacity: number;
+    targetOpacity: number;
+    durationMs: number;
+}
+
+export const FadeDefaults = {
+    in: { durationMs: 2000 },
+    out: { durationMs: 2000 },
+};
+
+export enum FadeStatus {
+    None = 0,
+    FadingIn = 1,
+    FadedIn = 2,
+    FadingOut = 3,
+    FadedOut = 4,
+}
+
+const _fadeStatus = {
     in: [FadeStatus.FadingIn, FadeStatus.FadedIn],
     out: [FadeStatus.FadingOut, FadeStatus.FadedOut],
 };
 
-export async function fade(elx: ElementX) {
-    let config: FadeConfig = elx.fade.in;
-    let mode: FadeStatus[] = _mode.in;
+export async function fade(fade: Fade) {
+    let config: FadeConfig = fade.in;
+    let status: FadeStatus[] = _fadeStatus.in;
 
-    if (_mode.in.indexOf(elx.fade.status) > -1) {
-        config = elx.fade.out;
-        mode = _mode.out;
+    if (_fadeStatus.in.indexOf(fade.status) > -1) {
+        config = fade.out;
+        status = _fadeStatus.out;
     }
 
-    config.initialOpacity ??= parseFloat(elx.style.opacity);
+    config.initialOpacity ??= fade.opacity.get();
     const range: number = config.targetOpacity - config.initialOpacity;
 
-    elx.style.opacity = config.initialOpacity.toString();
-    elx.fade.status = mode[0];
+    fade.opacity.set(config.initialOpacity);
+    fade.status = status[0];
 
     await applyProgress(
         config.durationMs,
         (progress) => {
-            elx.style.opacity = (
-                config.initialOpacity! +
-                progress * range
-            ).toString();
+            fade.opacity.set(config.initialOpacity! + progress * range);
         },
-        () => {
-            elx.fade.status = mode[1];
-        }
+        () => { fade.status = status[1]; }
     );
 }

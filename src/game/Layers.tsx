@@ -1,4 +1,4 @@
-import * as time from "./Timing";
+import * as time from "./GameTime";
 import * as dom from "../lib/Dom";
 import { ElementX } from "../lib/ElementX";
 

@@ -1,30 +1,7 @@
+import { Fade, FadeDefaults, FadeStatus } from "./animation/Fade";
+
 export interface ElementX extends HTMLElement {
     fade: Fade;
-}
-
-export interface Fade {
-    in: FadeConfig;
-    out: FadeConfig;
-    status: FadeStatus;
-}
-
-export interface FadeConfig {
-    initialOpacity: number;
-    targetOpacity: number;
-    durationMs: number;
-}
-
-export const FadeDefaults = {
-    in: { durationMs: 2000 },
-    out: { durationMs: 2000 },
-};
-
-export enum FadeStatus {
-    None = 0,
-    FadingIn = 1,
-    FadedIn = 2,
-    FadingOut = 3,
-    FadedOut = 4,
 }
 
 export function toElementX(element: HTMLElement): ElementX {
@@ -41,6 +18,10 @@ export function toElementX(element: HTMLElement): ElementX {
             durationMs: FadeDefaults.out.durationMs,
         },
         status: FadeStatus.None,
+        opacity: {
+            get: () => elementX.style.opacity ? parseFloat(elementX.style.opacity) : 1,
+            set: (value: number) => elementX.style.opacity = value.toString(),
+        },
     };
     return elementX;
 }

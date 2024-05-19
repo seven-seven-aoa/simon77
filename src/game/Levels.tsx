@@ -1,7 +1,6 @@
 import { delay } from "../lib/Timing";
-import * as buttons from "./GameButton";
-import * as cvar from "../lib/CSSVars";
-import * as seq from "./Sequence";
+import * as cssVariable from "../lib/CSSVariable";
+import * as sequence from "./Sequence";
 
 export { init, next, run };
 
@@ -24,18 +23,18 @@ function init() {
 function next() {
     const level = _levels.pop();
     if (level) {
-        cvar.set("glow_speed", `${level.speed}ms`);
+        cssVariable.set("glow_speed", `${level.speed}ms`);
     }
     return level;
 }
 
 async function run(level: Level) {
-    seq.addSequenceStep(1);
+    sequence.addSequenceStep(1);
     let sequenceStep: number = -1;
     let levelComplete: boolean = false;
 
     while (!levelComplete) {
-        const step: seq.SequenceStep = seq.getSequenceStep(++sequenceStep);
+        const step: sequence.SequenceStep = sequence.getSequenceStep(++sequenceStep);
         if (!step) {
             levelComplete = true;
             break;
@@ -44,6 +43,6 @@ async function run(level: Level) {
         await delay(level.speed);
     }
 
-    seq.clearUserSequence();
+    sequence.clearUserSequence();
     await buttons.waitForUserInput();
 }

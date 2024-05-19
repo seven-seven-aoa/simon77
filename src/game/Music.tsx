@@ -1,6 +1,6 @@
 import { delay } from "../lib/Timing";
 import { playNote, RampType } from "../lib/Sound";
-import * as game from "./Game";
+import * as gameStatus from "./GameStatus";
 
 export { startup, gameOver };
 
@@ -32,7 +32,7 @@ async function gameOver() {
     let delayValue: number = 0;
     let notes: string[] = [];
 
-    if (game.getState() === game.State.GameWon) {
+    if (gameStatus.get() === gameStatus.Value.GameWon) {
         delayValue = 50;
         notes = ["C3", "E3", "G3", 
                  "C4", "E4", "G4", 

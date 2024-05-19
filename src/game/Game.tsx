@@ -5,27 +5,7 @@ import * as buttons from "./GameButton";
 import * as game from "./Game";
 import * as input from "../lib/Input";
 import * as layers from "./Layers";
-import * as time from "./Timing";
-
-export enum State {
-    None,
-    Loading,
-    Ready,
-    Running,
-    GameLost,
-    GameWon,
-}
-
-let _state: State = State.None;
-
-export function getState() {
-    return _state;
-}
-
-export function setState(state: State) {
-    _state = state;
-}
-
+import * as time from "./GameTime";
 export function startup() : number {
     input.disableCommomAnnnoyingEvents(
         [
