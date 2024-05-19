@@ -1,5 +1,5 @@
 import { delay } from "../lib/Timing";
-import * as buttons from "./Buttons";
+import * as buttons from "./GameButton";
 import * as cvar from "../lib/CSSVars";
 import * as seq from "./Sequence";
 

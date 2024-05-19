@@ -1,7 +1,7 @@
 import { ElementX } from "../lib/ElementX";
 import { fade } from "../lib/animation/Fade";
 
-import * as buttons from "./Buttons";
+import * as buttons from "./GameButton";
 import * as game from "./Game";
 import * as input from "../lib/Input";
 import * as layers from "./Layers";

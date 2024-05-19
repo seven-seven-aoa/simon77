@@ -2,7 +2,7 @@
 const ctx = new window.AudioContext();
 export type RampType = "none" | "exponential" | "liner";
 
-export function playNote(props: PlayNote) {
+export function playNote(props: MusicNote) {
     props.note ??= "A4";
     props.wave ??= "triangle";
     props.gain ??= [];
@@ -52,7 +52,7 @@ export function playNote(props: PlayNote) {
 
 const minExponentialValue: number = 0.000001;
 
-interface PlayNote {
+export interface MusicNote {
     note?: string;
     wave?: OscillatorType;
     gain?: EnvelopeNode[];
@@ -60,7 +60,7 @@ interface PlayNote {
     startGain?: number;
 }
 
-interface EnvelopeNode {
+export interface EnvelopeNode {
     value?: number;
     time?: number;
     ramp?: RampType;

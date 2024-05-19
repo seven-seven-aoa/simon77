@@ -4,7 +4,7 @@ import { fade } from "./lib/animation/Fade";
 import { delay } from "./lib/Timing";
 import "./css";
 
-import * as buttons from "./game/Buttons";
+import * as buttons from "./game/GameButton";
 import * as game from "./game/Game";
 import * as img from "./images";
 import * as layers from "./game/Layers";
