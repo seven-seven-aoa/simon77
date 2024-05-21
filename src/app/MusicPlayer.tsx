@@ -1,8 +1,8 @@
-import { delay } from "../../lib/TimeManager";
+import { delay } from "../lib/TimeManager";
 import { GameStatus } from "./Types";
 import { getGameStatus } from "./Status";
-import { playNote } from "../../lib/SoundManager";
-import { RampType } from "../../lib/SoundTypes";
+import { playNote } from "../lib/SoundManager";
+import { RampType } from "../lib/SoundTypes";
 
 export function playStartupMusic() {
     const notes: string[] = ["C3", "C4", "C5", "C6"];

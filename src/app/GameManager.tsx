@@ -1,9 +1,9 @@
 import { delayTime, fadeTime } from "./TimeConstants";
-import { disableCommomAnnnoyingEvents } from "../../lib/EventManager";
-import { dxMultiple, dxSingle } from "../../lib/DomX";
-import { ElementX } from "../../lib/ElementX";
-import { fade } from "../../lib/animation/Fade";
-import { FadeDefaults } from "../../lib/animation/Types";
+import { disableCommomAnnnoyingEvents } from "../lib/EventManager";
+import { dxMultiple, dxSingle } from "../lib/DomX";
+import { ElementX } from "../lib/ElementX";
+import { fade } from "../lib/animation/Fade";
+import { FadeDefaults } from "../lib/animation/Types";
 import { GameStatus } from "./Types";
 import { initButtons } from "./ButtonManager";
 import { initLevels } from "./LevelManager";

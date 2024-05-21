@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./Types";
-import { delay } from "../../lib/TimeManager";
+import { delay } from "../lib/TimeManager";
 import { getGameStatus, setGameStatus } from "./Status";
 import { JSX } from "react";
 import { loopTime } from "./TimeConstants";
-import { playNote } from "../../lib/SoundManager";
-import { setCSSVariable } from "../../lib/CSSVariableManager";
+import { playNote } from "../lib/SoundManager";
+import { setCSSVariable } from "../lib/CSSVariableManager";
 
 export { initButtons, renderButtons, sequenceTrigger };
 
@@ -38,7 +38,7 @@ function initButtons() {
                     borderColor: borderColors[key],
                 },
                 cssVarGlowColor: setCSSVariable({
-                    rootName: "main > section.buttonLayer",
+                    rootName: ":root",
                     varName: `glowColor_${key}`,
                     value: glowColors[key],
                 }),

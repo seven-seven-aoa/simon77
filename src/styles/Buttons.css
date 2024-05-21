@@ -1,15 +1,5 @@
 main > section.buttonLayer {
     opacity: 0;
-
-    --glowColor_0: #000000;
-    --glowColor_1: #000000;
-    --glowColor_2: #000000;
-    --glowColor_3: #000000;
-
-    --boxShadow_a: 0 0 1rem;
-    --boxShadow_b: 0 0 2rem;
-    --boxShadow_c: 0 0 4rem;
-    --boxShadow_d: 0 0 8rem;
 }
 
 /* main > section.buttonLayer > div.button {

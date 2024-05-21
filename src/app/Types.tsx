@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { MusicNote } from "../../lib/SoundTypes";
+import { MusicNote } from "../lib/SoundTypes";
 
 export interface Button {
     key: number;
