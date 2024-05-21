@@ -9,7 +9,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App versionInfo="BUILD [2024-05-12 16:04:42]" />,
 );
 
-// initGame();
+initGame();
+
 function App(props: { versionInfo: string }) {
     console.info(props);
     

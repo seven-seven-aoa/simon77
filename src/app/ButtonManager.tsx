@@ -13,6 +13,7 @@ export { initButtons, renderButtons, sequenceTrigger };
 const _buttons: Button[] = [];
 
 function initButtons() {
+    setGameStatus(GameStatus.InitButtons);
     const buttonCount: number = 4;
     const musicNotes: string[] = ["C4", "Eb4", "G4", "Bb4"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];

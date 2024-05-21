@@ -8,4 +8,5 @@ export function getGameStatus() {
 
 export function setGameStatus(value: GameStatus) {
     _value = value;
+    console.info({ GameStatus: GameStatus[_value] });
 }

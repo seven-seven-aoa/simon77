@@ -10,7 +10,7 @@ import { initLevels } from "./LevelManager";
 import { setGameStatus } from "./Status";
 
 export function initGame(): number {
-    setGameStatus(GameStatus.Initializing);
+    setGameStatus(GameStatus.InitGame);
     FadeDefaults.in.durationMs = fadeTime.default.in;
     FadeDefaults.out.durationMs = fadeTime.default.out;
 

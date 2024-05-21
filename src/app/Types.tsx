@@ -33,7 +33,9 @@ export interface GameLevel {
 
 export enum GameStatus {
     None,
-    Initializing,
+    InitLevels,
+    InitButtons,
+    InitGame,
     Ready,
     Running,
     WaitingForTouchStart,

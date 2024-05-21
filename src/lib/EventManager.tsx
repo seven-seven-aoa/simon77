@@ -1,23 +1,16 @@
-import {
-    ElementSet,
-    EventType,
-    ElementEvent,
-    ElementEventSet,
-} from "./EventTypes";
+import { ElementSet, EventType, ElementEvent, ElementEventSet } from "./EventTypes";
 
 export function disableCommomAnnnoyingEvents(set: ElementSet) {
     disableMultipleEvents({
         elementSet: set,
-        eventTypes: [
-            EventType.dblclick,
-            EventType.selectstart,
-            EventType.touchmove,
-        ],
+        eventTypes: [EventType.dblclick, EventType.selectstart, EventType.touchmove],
     });
 }
 
 export function disableMultipleEvents(set: ElementEventSet) {
     for (const eventType of set.eventTypes) {
+        console.info({ disableMultipleEvents: EventType[eventType] });
+
         if (set.elementSet.includeDocument) {
             disableSingleEvent({ eventType, elementObject: document });
         }
@@ -28,11 +21,8 @@ export function disableMultipleEvents(set: ElementEventSet) {
 }
 
 export function disableSingleEvent(single: ElementEvent) {
-    single.elementObject.addEventListener(
-        single.eventType.toString(),
-        (e: Event) => {
-            e.preventDefault();
-            return false;
-        },
-    );
+    single.elementObject.addEventListener(EventType[single.eventType], (e: Event) => {
+        e.preventDefault();
+        return false;
+    });
 }
