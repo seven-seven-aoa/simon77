@@ -1,4 +1,4 @@
-main > section.buttons {
+main > section.buttonLayer {
     opacity: 0;
 
     --glowColor_0: #000000;
@@ -12,7 +12,7 @@ main > section.buttons {
     --boxShadow_d: 0 0 8rem;
 }
 
-/* main > section.buttons > div.button {
+/* main > section.buttonLayer > div.button {
     width: var(--button_size);
     height: var(--button_size);
 
@@ -25,7 +25,7 @@ main > section.buttons {
     border-width: var(--button_border);
 } */
 
-main > section.buttons > div.button#button_0.glowing {
+main > section.buttonLayer > div.button#button_0.glowing {
     box-shadow:
         var(--boxShadow_a) var(--glowColor_0),
         var(--boxShadow_b) var(--glowColor_0),
@@ -33,7 +33,7 @@ main > section.buttons > div.button#button_0.glowing {
         var(--boxShadow_d) var(--glowColor_0);
 }
 
-main > section.buttons > div.button#button_1.glowing {
+main > section.buttonLayer > div.button#button_1.glowing {
     box-shadow: 
         var(--boxShadow_a) var(--glowColor_1),
         var(--boxShadow_b) var(--glowColor_1),
@@ -41,7 +41,7 @@ main > section.buttons > div.button#button_1.glowing {
         var(--boxShadow_d) var(--glowColor_1);
 }
 
-main > section.buttons > div.button#button_2.glowing {
+main > section.buttonLayer > div.button#button_2.glowing {
     box-shadow: 
         var(--boxShadow_a) var(--glowColor_2),
         var(--boxShadow_b) var(--glowColor_2),
@@ -49,7 +49,7 @@ main > section.buttons > div.button#button_2.glowing {
         var(--boxShadow_d) var(--glowColor_2);
 }
 
-main > section.buttons > div.button#button_3.glowing {
+main > section.buttonLayer > div.button#button_3.glowing {
     box-shadow: 
         var(--boxShadow_a) var(--glowColor_3),
         var(--boxShadow_b) var(--glowColor_3),

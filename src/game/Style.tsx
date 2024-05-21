@@ -1,13 +1,13 @@
 //////////////////////////////////////////////
-import "./style/App.css";
+import "./stylesheets/App.css";
 //////////////////////////////////////////////
-import "./style/Fonts/GameMusicLove.css";
+import "./stylesheets/Fonts/GameMusicLove.css";
 //////////////////////////////////////////////
-import "./style/Layers.css";
+import "./stylesheets/Layers.css";
 //////////////////////////////////////////////
-import "./style/Sections/Control.css";
-import "./style/Sections/Debug.css";
-import "./style/Sections/Game.css";
-import "./style/Sections/Score.css";
-import "./style/Sections/Title.css";
+import "./stylesheets/Sections/Buttons.css";
+import "./stylesheets/Sections/Control.css";
+import "./stylesheets/Sections/Debug.css";
+import "./stylesheets/Sections/Score.css";
+import "./stylesheets/Sections/Title.css";
 //////////////////////////////////////////////

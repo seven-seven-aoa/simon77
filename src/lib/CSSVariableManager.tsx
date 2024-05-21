@@ -1,18 +1,18 @@
 import { GetProps, RemoveProps, SetProps } from "./CSSVariableTypes";
-import { single } from "./DomX";
+import { dxSingle } from "./DomX";
 
-export function get(props: GetProps): string {
+export function getCSSVariable(props: GetProps): string {
     props.rootName ??= ":root";
-    return single(props.rootName).style.getPropertyValue(`--${props.varName}`);
+    return dxSingle(props.rootName).style.getPropertyValue(`--${props.varName}`);
 }
 
-export function remove(props: RemoveProps): void {
+export function removeCSSVariable(props: RemoveProps): void {
     props.rootName ??= ":root";
-    single(props.rootName).style.removeProperty(`--${props.varName}`);
+    dxSingle(props.rootName).style.removeProperty(`--${props.varName}`);
 }
 
-export function set(props: SetProps): string {
+export function setCSSVariable(props: SetProps): string {
     props.rootName ??= ":root";
-    single(props.rootName).style.setProperty(`--${props.varName}`, props.value);
+    dxSingle(props.rootName).style.setProperty(`--${props.varName}`, props.value);
     return props.value;
 }

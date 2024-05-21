@@ -1,12 +1,5 @@
 import { CompareResult, SequenceStep } from "./Types";
-
-export {
-    addSequenceStep,
-    addUserStep,
-    clearUserSequence,
-    compareSequences,
-    getSequenceStep,
-};
+export { addSequenceStep, addUserStep, clearUserSequence, compareSequences, getSequenceStep };
 
 const _sequence: SequenceStep[] = [];
 

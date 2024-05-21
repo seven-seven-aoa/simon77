@@ -1,35 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CSSProperties, JSX } from "react";
-
+import { addUserStep, compareSequences } from "./Sequencer";
+import { Button, CompareResult, GameStatus } from "./Types";
 import { delay } from "../../lib/TimeManager";
-import { MusicNote, playNote } from "../../lib/SoundManager";
-import { addUserStep, compareSequences } from "./SequenceManager";
+import { getGameStatus, setGameStatus } from "./Status";
+import { JSX } from "react";
+import { loopTime } from "./TimeConstants";
+import { playNote } from "../../lib/SoundManager";
+import { setCSSVariable } from "../../lib/CSSVariableManager";
 
-import * as cssVariable from "../../lib/CSSVariableManager";
-import * as gameStatus from "./Status";
-import * as gameTime from "./Time";
-
-export { create, render, trigger };
-
-export interface Button {
-    key: number;
-    sound: ButtonSound;
-    style: ButtonStyle;
-}
-
-export interface ButtonSound {
-    musicNote: MusicNote;
-    oscillator: OscillatorNode | null;
-}
-
-export interface ButtonStyle {
-    cssProperties: CSSProperties;
-    cssVarGlowColor: string;
-    isGlowing: boolean;
-}
+export { initButtons, renderButtons, sequenceTrigger };
 
 const _buttons: Button[] = [];
-function create() {
+
+function initButtons() {
     const buttonCount: number = 4;
     const musicNotes: string[] = ["C4", "Eb4", "G4", "Bb4"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
@@ -54,8 +37,8 @@ function create() {
                     backgroundColor: backColors[key],
                     borderColor: borderColors[key],
                 },
-                cssVarGlowColor: cssVariable.set({
-                    rootName: "main > section.buttons",
+                cssVarGlowColor: setCSSVariable({
+                    rootName: "main > section.buttonLayer",
                     varName: `glowColor_${key}`,
                     value: glowColors[key],
                 }),
@@ -65,15 +48,13 @@ function create() {
 
         _buttons.push(button);
     }
-
-    return _buttons;
 }
 
 function getClassName(button: Button): string {
     return button.style.isGlowing ? "button glowing" : "button";
 }
 
-function render(): JSX.Element[] {
+function renderButtons(): JSX.Element[] {
     const jsx: JSX.Element[] = [];
     for (const button of _buttons) {
         jsx.push(
@@ -90,37 +71,37 @@ function render(): JSX.Element[] {
 }
 
 function handleTouchStart(event: any) {
-    if (gameStatus.get() !== gameStatus.Value.WaitingForTouchStart) {
+    if (getGameStatus() !== GameStatus.WaitingForTouchStart) {
         return;
     }
-    gameStatus.set(gameStatus.Value.WaitingForTouchEnd);
+    setGameStatus(GameStatus.WaitingForTouchEnd);
     animateTouchStart(event.target);
 }
 
 async function handleTouchEnd(event: any) {
-    if (gameStatus.get() !== gameStatus.Value.WaitingForTouchEnd) {
+    if (getGameStatus() !== GameStatus.WaitingForTouchEnd) {
         return;
     }
-    await delay(gameTime.loop.throttle.default);
+    await delay(loopTime.throttle.default);
     animateTouchEnd(event.target);
 
     addUserStep(event.target.key);
     switch (compareSequences()) {
         case CompareResult.Match:
-            gameStatus.set(gameStatus.Value.GameWon);
+            setGameStatus(GameStatus.FinalWon);
             break;
         case CompareResult.Partial:
-            gameStatus.set(gameStatus.Value.WaitingForTouchStart);
+            setGameStatus(GameStatus.WaitingForTouchStart);
             break;
         case CompareResult.Mismatch:
-            gameStatus.set(gameStatus.Value.GameLost);
+            setGameStatus(GameStatus.FinalLost);
             break;
         default:
             throw new Error("Invalid comparison result");
     }
 }
 
-function trigger(buttonKey: number, glowSpeed: number) {
+function sequenceTrigger(buttonKey: number, glowSpeed: number) {
     const button = _buttons[buttonKey];
     animateTouchStart(button);
     setTimeout(() => {

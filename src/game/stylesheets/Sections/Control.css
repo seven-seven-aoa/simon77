@@ -1,10 +1,10 @@
-main > section.control {
+main > section.controlLayer {
 }
 
-main > section.control > img#restart {
+main > section.controlLayer > img#restart {
 }
 
-main > section.control > img#play,
-main > section.control > img#pause {
+main > section.controlLayer > img#play,
+main > section.controlLayer > img#pause {
     display: none;
 }

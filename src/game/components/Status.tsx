@@ -1,20 +1,11 @@
-export enum Value {
-    None,
-    Loading,
-    Ready,
-    Running,
-    WaitingForTouchStart,
-    WaitingForTouchEnd,
-    GameLost,
-    GameWon,
-}
+import { GameStatus } from "./Types";
 
-let _value: Value = Value.None;
+let _value: GameStatus = GameStatus.None;
 
-export function get() {
+export function getGameStatus() {
     return _value;
 }
 
-export function set(value: Value) {
+export function setGameStatus(value: GameStatus) {
     _value = value;
 }

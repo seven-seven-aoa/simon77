@@ -3,22 +3,22 @@ main > section {
     opacity: 0;
 }
 
-main > section.debug {
+main > section.debugLayer {
     z-index: 500;
 }
 
-main > section.title {
+main > section.titleLayer {
     z-index: 400;
 }
 
-main > section.control {
+main > section.controlLayer {
     z-index: 300;
 }
 
-main > section.buttons {
+main > section.buttonLayer {
     z-index: 200;
 }
 
-main > section.score {
+main > section.scoreLayer {
     z-index: 100;
 }

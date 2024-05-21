@@ -1,4 +1,4 @@
-main > section.score {
+main > section.scoreLayer {
     /* background-color: #990000; */
     color: #ffff00;
     opacity: 0;
@@ -9,7 +9,7 @@ main > section.score {
     top: calc(var(--control_image_margin) * 1.5);
 }
 
-main > section.score > .scoreValue {
+main > section.scoreLayer > .scoreValue {
     color: #FFFFFF;
     position: relative;
 }

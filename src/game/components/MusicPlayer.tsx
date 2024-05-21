@@ -1,11 +1,10 @@
 import { delay } from "../../lib/TimeManager";
+import { GameStatus } from "./Types";
+import { getGameStatus } from "./Status";
 import { playNote } from "../../lib/SoundManager";
 import { RampType } from "../../lib/SoundTypes";
-import * as status from "./Status";
 
-export { startup, gameOver };
-
-function startup() {
+export function playStartupMusic() {
     const notes: string[] = ["C3", "C4", "C5", "C6"];
     const gains: number[] = [0.62, 0.42, 0.24, 0.12];
 
@@ -28,12 +27,12 @@ function startup() {
     }
 }
 
-async function gameOver() {
+export async function playGameOverMusic() {
 
     let delayValue: number = 0;
     let notes: string[] = [];
 
-    if (status.get() === status.Value.GameWon) {
+    if (getGameStatus() === GameStatus.FinalWon) {
         delayValue = 50;
         notes = ["C3", "E3", "G3", 
                  "C4", "E4", "G4", 

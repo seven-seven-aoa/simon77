@@ -1,16 +1,14 @@
+import { addSequenceStep, clearUserSequence,  getSequenceStep } from "./Sequencer";
 import { delay } from "../../lib/TimeManager";
-import {
-    addSequenceStep,
-    clearUserSequence,
-    getSequenceStep,
-} from "./SequenceManager";
-import * as buttonSet from "./ButtonManager";
-import * as gameStatus from "./Status";
+import { GameLevel, GameStatus, SequenceStep } from "./Types";
+import { sequenceTrigger } from "./ButtonManager";
+import { setGameStatus } from "./Status";
 
-export { init, pop, run };
-const _levels: Level[] = [];
+export { initLevels, popLevel, runLevel };
 
-function init() {
+const _levels: GameLevel[] = [];
+
+function initLevels() {
     const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
 
     for (let i = 0; i < speeds.length; i++) {
@@ -23,11 +21,11 @@ function init() {
     }
 }
 
-function pop(): Level | undefined {
+function popLevel(): GameLevel | undefined {
     return _levels.pop();
 }
 
-async function run(level: Level) {
+async function runLevel(level: GameLevel) {
     addSequenceStep(1);
 
     let sequenceStep: number = -1;
@@ -39,10 +37,10 @@ async function run(level: Level) {
             levelComplete = true;
             break;
         }
-        buttonSet.trigger(step.button, level.glowSpeedMs);
+        sequenceTrigger(step.button, level.glowSpeedMs);
         await delay(level.playNoteSpeedMs);
     }
 
     clearUserSequence();
-    gameStatus.set(gameStatus.Value.WaitingForTouchStart);
+    setGameStatus(GameStatus.WaitingForTouchStart);
 }
