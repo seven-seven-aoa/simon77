@@ -1,0 +1,58 @@
+main > section.buttons {
+    opacity: 0;
+
+    --glowColor_0: #000000;
+    --glowColor_1: #000000;
+    --glowColor_2: #000000;
+    --glowColor_3: #000000;
+
+    --boxShadow_a: 0 0 1rem;
+    --boxShadow_b: 0 0 2rem;
+    --boxShadow_c: 0 0 4rem;
+    --boxShadow_d: 0 0 8rem;
+}
+
+/* main > section.buttons > div.button {
+    width: var(--button_size);
+    height: var(--button_size);
+
+    left: var(--button_pos);
+    top: var(--button_pos);
+
+    display: inline-block;
+    border-radius: 3%;
+    border-style: solid;
+    border-width: var(--button_border);
+} */
+
+main > section.buttons > div.button#button_0.glowing {
+    box-shadow:
+        var(--boxShadow_a) var(--glowColor_0),
+        var(--boxShadow_b) var(--glowColor_0),
+        var(--boxShadow_c) var(--glowColor_0),
+        var(--boxShadow_d) var(--glowColor_0);
+}
+
+main > section.buttons > div.button#button_1.glowing {
+    box-shadow: 
+        var(--boxShadow_a) var(--glowColor_1),
+        var(--boxShadow_b) var(--glowColor_1),
+        var(--boxShadow_c) var(--glowColor_1),
+        var(--boxShadow_d) var(--glowColor_1);
+}
+
+main > section.buttons > div.button#button_2.glowing {
+    box-shadow: 
+        var(--boxShadow_a) var(--glowColor_2),
+        var(--boxShadow_b) var(--glowColor_2),
+        var(--boxShadow_c) var(--glowColor_2),
+        var(--boxShadow_d) var(--glowColor_2);
+}
+
+main > section.buttons > div.button#button_3.glowing {
+    box-shadow: 
+        var(--boxShadow_a) var(--glowColor_3),
+        var(--boxShadow_b) var(--glowColor_3),
+        var(--boxShadow_c) var(--glowColor_3),
+        var(--boxShadow_d) var(--glowColor_3);
+}

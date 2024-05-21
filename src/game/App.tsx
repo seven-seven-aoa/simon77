@@ -1,23 +1,28 @@
-import "./css";
-import { FadeDefaults } from "./lib/animation/Fade";
-import * as gameStatus from "./game/GameStatus";
-import * as img from "./images";
-import * as levels from "./game/Levels";
-import * as time from "./game/GameTime";
+import { FadeConfigDefaults } from "../lib/animation/Fade";
+
+import "./Style.tsx";
+import * as img from "./stylesheets/Images";
 
 
-export default function App() {
 
-    console.info("XIMON77 - BUILD [2024-05-12 16:04:42]");
-    FadeDefaults.in.durationMs = time.fade.default.in;
-    FadeDefaults.out.durationMs = time.fade.default.out;
+
+import * as statua  from "./components/Status.tsx";
+import * as levelSet from "./components/LevelManager.tsx";
+import * as time from "./components/Time";
+
+
+export default function App(props: { versionInfo: string }) {
+
+    console.info(props);
+    FadeConfigDefaults.in.durationMs = time.fade.default.in;
+    FadeConfigDefaults.out.durationMs = time.fade.default.out;
     levels.init();
     gameStatus.set(gameStatus.Value.Loading);
 
     return (
         <main className="centered">
             <section className="debug">
-                BUILD [2024-05-12 16:04:42]
+                {props.versionInfo}
             </section>
 
             <section className="title">Ximon '77</section>

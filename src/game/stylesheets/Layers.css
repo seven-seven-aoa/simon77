@@ -15,7 +15,7 @@ main > section.control {
     z-index: 300;
 }
 
-main > section.game {
+main > section.buttons {
     z-index: 200;
 }
 

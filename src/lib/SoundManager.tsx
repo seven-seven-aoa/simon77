@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { MusicNote, RampType } from "./SoundTypes";
+
 const ctx = new window.AudioContext();
-export type RampType = "none" | "exponential" | "liner";
 
 export function playNote(props: MusicNote) {
     props.note ??= "A4";
@@ -22,13 +22,13 @@ export function playNote(props: MusicNote) {
         node.time ??= 0;
         endTime = startTime + node.time;
 
-        node.ramp ??= "none";
+        node.ramp ??= RampType.none;
         switch (node.ramp) {
-            case "exponential":
+            case RampType.exponential:
                 node.value = Math.max(node.value, minExponentialValue);
                 volume.gain.exponentialRampToValueAtTime(node.value, endTime);
                 break;
-            case "liner":
+            case RampType.liner:
                 volume.gain.linearRampToValueAtTime(node.value, endTime);
                 break;
             default:
@@ -52,19 +52,6 @@ export function playNote(props: MusicNote) {
 
 const minExponentialValue: number = 0.000001;
 
-export interface MusicNote {
-    note?: string;
-    wave?: OscillatorType;
-    gain?: EnvelopeNode[];
-    nostop?: boolean;
-    startGain?: number;
-}
-
-export interface EnvelopeNode {
-    value?: number;
-    time?: number;
-    ramp?: RampType;
-}
 
 //    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 

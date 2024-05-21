@@ -42,3 +42,4 @@ export function single(query: string) : ElementX {
 function noElementsError(query: string) {
     return `No elements found for query: ${query}`;
 }
+

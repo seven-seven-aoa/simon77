@@ -1,20 +1,15 @@
-export function applyProgress(
-    duration: number,
-    progressUpdater: (progress: number) => void,
-    onComplete?: () => void
-) {
+import { ProgressTracker } from "./Types";
+
+export function trackProgress(progressTracker: ProgressTracker) {
     const startTime: number = performance.now();
     return new Promise((resolve) => {
         function step() {
             const elapsed: number = performance.now() - startTime;
-            const progress: number = Math.min(elapsed / duration, 1);
-            progressUpdater(progress);
+            const progress: number = Math.min(elapsed / progressTracker.durationMs, 1);
+            progressTracker.onUpdate(progress);
             if (progress < 1) {
                 window.requestAnimationFrame(step);
                 return;
-            }
-            if (onComplete) {
-                onComplete();
             }
             resolve(void 0);
         }

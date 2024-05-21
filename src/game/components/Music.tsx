@@ -1,6 +1,7 @@
-import { delay } from "../lib/Timing";
-import { playNote, RampType } from "../lib/Sound";
-import * as gameStatus from "./GameStatus";
+import { delay } from "../../lib/TimeManager";
+import { playNote } from "../../lib/SoundManager";
+import { RampType } from "../../lib/SoundTypes";
+import * as status from "./Status";
 
 export { startup, gameOver };
 
@@ -11,7 +12,7 @@ function startup() {
     let time: number = 0;
     const duration: number = 2.2;
     const space: number = 0.11;
-    const ramp: RampType = "exponential";
+    const ramp: RampType = RampType.exponential;
     const wave: OscillatorType = "sine";
 
     for (let i = 0; i < notes.length; i++) {
@@ -32,7 +33,7 @@ async function gameOver() {
     let delayValue: number = 0;
     let notes: string[] = [];
 
-    if (gameStatus.get() === gameStatus.Value.GameWon) {
+    if (status.get() === status.Value.GameWon) {
         delayValue = 50;
         notes = ["C3", "E3", "G3", 
                  "C4", "E4", "G4", 

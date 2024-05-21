@@ -1,3 +1,5 @@
+import { CompareResult, SequenceStep } from "./Types";
+
 export {
     addSequenceStep,
     addUserStep,
@@ -6,26 +8,13 @@ export {
     getSequenceStep,
 };
 
-export enum CompareResult {
-    None = 0,
-    Match = 1,
-    Partial = 2,
-    Mismatch = 3,
-}
-
-export interface SequenceStep {
-    button: number;
-}
-
-const sequence: SequenceStep[] = [];
+const _sequence: SequenceStep[] = [];
 
 function addSequenceStep(count: number = 1) {
     for (let i = 0; i < count; i++) {
-        sequence.push({ button: Math.floor(Math.random() * 4) });
+        _sequence.push({ button: Math.floor(Math.random() * 4) });
     }
-    gameSequence = sequence
-        .map((step) => step.button)
-        .join(",");
+    gameSequence = _sequence.map((step) => step.button).join(",");
 }
 
 function compareSequences() {
@@ -38,8 +27,8 @@ function compareSequences() {
     return CompareResult.Mismatch;
 }
 
-function getSequenceStep(index: number) : SequenceStep {
-    return sequence[index];
+function getSequenceStep(index: number): SequenceStep {
+    return _sequence[index];
 }
 
 function clearUserSequence() {

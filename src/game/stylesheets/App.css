@@ -65,17 +65,6 @@ main {
     --control_image_margin: 2svmax;
     --score_font_size: 4.5svmax;
 
-    --glow_speed: 1000ms;
-
-    --glow_color_0: #000000;
-    --glow_color_1: #000000;
-    --glow_color_2: #000000;
-    --glow_color_3: #000000;
-
-    --box_shadow_a: 0 0 1rem;
-    --box_shadow_b: 0 0 2rem;
-    --box_shadow_c: 0 0 4rem;
-    --box_shadow_d: 0 0 8rem;
 } 
 
 .xCenter.yCenter {
