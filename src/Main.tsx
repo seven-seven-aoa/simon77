@@ -1,19 +1,20 @@
-// import React from "react";
-import ReactDOM from "react-dom/client";
 import "./Styles.tsx";
+import { initButtons, renderButtons } from "./app/ButtonManager.tsx";
 import { initGame } from "./app/GameManager.tsx";
-import { renderButtons } from "./app/ButtonManager.tsx";
+import { initLevels } from "./app/LevelManager.tsx";
 import { restartImage } from "./images/index.tsx";
+import ReactDOM from "react-dom/client";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    //    <React.StrictMode>
     <App versionInfo="BUILD [2024-05-12 16:04:42]" />,
-    //    </React.StrictMode>
 );
 
+// initGame();
 function App(props: { versionInfo: string }) {
     console.info(props);
-    initGame();
+    
+    initLevels();
+    initButtons();
 
     return (
         <main className="centered">

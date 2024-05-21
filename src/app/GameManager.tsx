@@ -14,8 +14,6 @@ export function initGame(): number {
     FadeDefaults.in.durationMs = fadeTime.default.in;
     FadeDefaults.out.durationMs = fadeTime.default.out;
 
-    initButtons();
-    initLevels();
 
     disableCommomAnnnoyingEvents({
         elementObjects: [...buttonArray(), buttonLayer(), controlLayer(), debugLayer(), scoreLayer(), titleLayer()],

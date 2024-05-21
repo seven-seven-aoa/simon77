@@ -60,6 +60,7 @@ function renderButtons(): JSX.Element[] {
         jsx.push(
             <div
                 id={`button_${button.key}`}
+                key={button.key}
                 className={getClassName(button)}
                 style={button.style.cssProperties}
                 onPointerDown={handleTouchStart}
