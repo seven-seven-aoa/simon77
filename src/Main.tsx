@@ -1,29 +1,33 @@
 import ReactDOM from "react-dom/client";
 import { useEffect } from "react";
 import "./Styles.tsx";
+import { dxSingle } from "./lib/DomX.tsx";
 import { initButtons, renderButtons } from "./app/ButtonManager.tsx";
-import { initGame } from "./app/GameManager.tsx";
+import { initGame, mainContainer } from "./app/GameManager.tsx";
+import { initInput, inputHandler } from "./lib/InputManager.tsx";
 import { initLevels } from "./app/LevelManager.tsx";
 import { restartImage } from "./images/index.tsx";
-import { initInputEvents, pointerEventHandler } from "./lib/InputManager.tsx";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 
 const _version: string = "Ximon '77 - v0.1.0";
 console.info(_version);
 initLevels();
 initButtons();
+
+ReactDOM.createRoot(dxSingle("#root")).render(<App />);
 const _buttons: JSX.Element[] = renderButtons();
 
 function App() {
     useEffect(() => {
-        initInputEvents();
+        initInput({
+            container: mainContainer(),
+            nodeObservers: [],
+        });
         const game = initGame();
         return () => clearTimeout(game);
     }, []);
 
     return (
-        <main className="centered" onPointerDown={pointerEventHandler} onPointerUp={pointerEventHandler}>
+        <main className="centered" onPointerDown={inputHandler} onPointerUp={inputHandler}>
             <section className="buttonLayer">{_buttons}</section>
             <section className="controlLayer">
                 <img src={restartImage} id="restart" />
@@ -37,13 +41,3 @@ function App() {
     );
 }
 
-// // Get arbitrary element with id "my-element"
-// var myElementToCheckIfClicksAreInsideOf = document.querySelector('#my-element');
-// // Listen for click events on body
-// document.body.addEventListener('click', function (event) {
-//     if (myElementToCheckIfClicksAreInsideOf.contains(event.target)) {
-//         console.log('clicked inside');
-//     } else {
-//         console.log('clicked outside');
-//     }
-// });

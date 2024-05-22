@@ -1,27 +1,32 @@
-import { PointerEventHandler } from "react";
+import { ElementX } from "./ElementX";
 import { EventType } from "./EventTypes";
-import { mainContainer, titleLayer } from "../app/GameManager";
+import { PointerEventHandler } from "react";
 
-const badEvents: EventType[] = [EventType.dblclick, EventType.selectstart, EventType.touchmove];
+export interface InputConfig {
+    container: ElementX;
+    nodeObservers: ((node: Node) => void)[];
+}
 
-export function initInputEvents() {
+let _config : InputConfig;
+
+export function initInput(config : InputConfig) {
+    _config = config;
+    disableBadEvents();
+}
+
+function disableBadEvents() {
+    const badEvents: EventType[] = [EventType.dblclick, EventType.selectstart, EventType.touchmove];
     badEvents.forEach((eventType: EventType) => {
-        mainContainer().addEventListener(EventType[eventType], (e: Event) => {
+        _config.container.addEventListener(EventType[eventType], (e: Event) => {
             e.preventDefault();
             return false;
         });
     });
 }
 
-export const pointerEventHandler: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
-    console.info({ pointerEvent: e });
+export const inputHandler: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
+    console.debug({ inputEvent: e });
     e.preventDefault();
-
-    if (titleLayer().contains(e.target as Node)) {
-        console.info("clicked inside");
-    } else {
-        console.info("clicked outside");
-    }
-
+    _config.nodeObservers.forEach((node) => node(e.target as Node));
     return false;
 };

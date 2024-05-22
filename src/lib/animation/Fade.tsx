@@ -20,7 +20,7 @@ export async function fade(info: FadeInfo) {
 
     info.opacityController.set(config.initialOpacity);
     info.status = status[0];
-    console.info({ fadeStatus: FadeStatus[info.status] });
+    console.debug({ fadeStatus: FadeStatus[info.status] });
 
     await trackProgress({
         durationMs: config.durationMs,
@@ -31,7 +31,7 @@ export async function fade(info: FadeInfo) {
 
     return new Promise((resolve) => {
         info.status = status[1];
-        console.info({ fadeStatus: FadeStatus[info.status] });
+        console.debug({ fadeStatus: FadeStatus[info.status] });
         resolve(void 0);
     });
 }
