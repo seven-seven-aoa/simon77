@@ -64,15 +64,13 @@ function renderButtons(): JSX.Element[] {
                 key={button.key}
                 className={getClassName(button)}
                 style={button.style.cssProperties}
-                onPointerDown={handleTouchStart}
-                onPointerUp={handleTouchEnd}
             ></div>,
         );
     }
     return jsx;
 }
 
-function handleTouchStart(event: any) {
+export function handleTouchStart(event: any) {
     if (getGameStatus() !== GameStatus.WaitingForTouchStart) {
         return;
     }
@@ -80,7 +78,7 @@ function handleTouchStart(event: any) {
     animateTouchStart(event.target);
 }
 
-async function handleTouchEnd(event: any) {
+export async function handleTouchEnd(event: any) {
     if (getGameStatus() !== GameStatus.WaitingForTouchEnd) {
         return;
     }

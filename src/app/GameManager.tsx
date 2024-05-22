@@ -1,5 +1,4 @@
 import { delayTime, fadeTime } from "./TimeConstants";
-import { disableCommomAnnnoyingEvents } from "../lib/EventManager";
 import { dxMultiple, dxSingle } from "../lib/DomX";
 import { ElementX } from "../lib/ElementX";
 import { fade } from "../lib/animation/Fade";
@@ -12,16 +11,15 @@ export function initGame(): number {
     FadeDefaults.in.durationMs = fadeTime.default.in;
     FadeDefaults.out.durationMs = fadeTime.default.out;
 
-    disableCommomAnnnoyingEvents({
-        elementObjects: [...buttonArray(), buttonLayer(), controlLayer(), debugLayer(), scoreLayer(), titleLayer()],
-        includeDocument: true,
-    });
-
     return setTimeout(async () => {
         titleLayer().style.display = "block";
         await fade(titleLayer().fadeInfo);
         setGameStatus(GameStatus.Ready);
     }, delayTime.gameIntro);
+}
+
+export function mainContainer() : ElementX {
+    return dxSingle("main");
 }
 
 export function buttonArray(): ElementX[] {
