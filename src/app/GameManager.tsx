@@ -1,12 +1,14 @@
-import { dxMultiple, dxSingle } from "./core/DomX";
-import { ElementX } from "./core/ElementX";
-import { fadeAnimation, FadeDefaults } from "./core/FadeAnimation";
-import { InputObserver } from "./core/InputManager";
+// core //
+import { dxMultiple, dxSingle } from "../core/DomX";
+import { ElementX } from "../core/ElementX";
+import { fadeAnimation, FadeDefaults } from "../core/FadeAnimation";
+import { InputObserver } from "../core/InputManager";
 
+// app //
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
+import { getGameStatus, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
-import { getGameStatus, setGameStatus } from "./Status";
 
 export { initGame, startGame, mainContainer, buttonArray, buttonLayer, controlLayer, debugLayer, scoreLayer, titleLayer };
 

@@ -1,7 +1,10 @@
-import { delay } from "./core/TimeManager";
+// core //
+import { RampType, playNote } from "../core/SoundManager";
+import { delay } from "../core/TimeManager";
+
+// app //
+import { getGameStatus } from "./GameStatus";
 import { GameStatus } from "./GameTypes";
-import { getGameStatus } from "./Status";
-import { RampType, playNote } from "./core/SoundManager";
 
 export { playStartupMusic, playGameOverMusic };
 

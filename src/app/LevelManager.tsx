@@ -1,8 +1,9 @@
+import { delay } from "../core/TimeManager";
+
 import { addSequenceStep, clearUserSequence,  getSequenceStep } from "./Sequencer";
-import { delay } from "./core/TimeManager";
 import { GameLevel, GameStatus, SequenceStep } from "./GameTypes";
 import { sequenceTrigger } from "./ButtonManager";
-import { setGameStatus } from "./Status";
+import { setGameStatus } from "./GameStatus";
 
 export { initLevels, popLevel, runLevel };
 

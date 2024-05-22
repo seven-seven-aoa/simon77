@@ -2,18 +2,18 @@
 import ReactDOM from "react-dom/client";
 import { useEffect } from "react";
 
-// lib //
-import { dxSingle } from "./lib/core/DomX.tsx";
-import { initInput, inputHandler } from "./lib/core/InputManager.tsx";
+// core //
+import { dxSingle } from "./core/DomX";
+import { initInput, inputHandler } from "./core/InputManager";
 
 // app //
-import { initButtons, renderButtons } from "./lib/ButtonManager.tsx";
-import { initGame, mainContainer, startGame } from "./lib/GameManager.tsx";
-import { initLevels } from "./lib/LevelManager.tsx";
+import { initButtons, renderButtons } from "./app/ButtonManager";
+import { initGame, mainContainer, startGame } from "./app/GameManager";
+import { initLevels } from "./app/LevelManager";
 
-// styles //s
-import "./Styles.tsx";
-import { restartImage } from "./images/index.tsx";
+// styles //
+import "./Styles";
+import { restartImage } from "./images";
 
 // init app //
 const _version: string = "Ximon '77 - v0.1.0";

@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JSX } from "react";
-import { delay } from "./core/TimeManager";
-import { playNote } from "./core/SoundManager";
 
+// core //
+import { playNote } from "../core/SoundManager";
+import { setCSSVariable } from "../core/StyleManager";
+import { delay } from "../core/TimeManager";
+
+// app //
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./GameTypes";
-import { getGameStatus, setGameStatus } from "./Status";
+import { getGameStatus, setGameStatus } from "./GameStatus";
 import { loopTime } from "./TimeConstants";
-import { setCSSVariable } from "./core/StyleManager";
 
 export { initButtons, renderButtons, sequenceTrigger, handleTouchEnd, handleTouchStart };
 const _buttons: Button[] = [];

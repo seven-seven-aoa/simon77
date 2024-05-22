@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { MusicNote } from "./core/SoundManager";
+import { MusicNote } from "../core/SoundManager";
 
 export type { Button, GameLevel, SequenceStep };
 export { GameStatus, CompareResult };

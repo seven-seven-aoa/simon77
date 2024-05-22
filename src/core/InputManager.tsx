@@ -1,6 +1,6 @@
+import { PointerEventHandler } from "react";
 import { ElementX } from "./ElementX";
 import { EventType } from "./EventTypes";
-import { PointerEventHandler } from "react";
 
 export type { InputObserver };
 export { initInput, inputHandler };
