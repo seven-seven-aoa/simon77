@@ -4,12 +4,17 @@ import { PointerEventHandler } from "react";
 
 export interface InputConfig {
     container: ElementX;
-    nodeObservers: ((node: Node) => void)[];
+    observers: ((observer: InputObserver) => void)[];
 }
 
-let _config : InputConfig;
+export interface InputObserver {
+    inputEvent: React.PointerEvent<HTMLElement>;
+    node: Node;
+}
 
-export function initInput(config : InputConfig) {
+let _config: InputConfig;
+
+export function initInput(config: InputConfig) {
     _config = config;
     disableBadEvents();
 }
@@ -24,9 +29,14 @@ function disableBadEvents() {
     });
 }
 
-export const inputHandler: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
-    console.debug({ inputEvent: e });
-    e.preventDefault();
-    _config.nodeObservers.forEach((node) => node(e.target as Node));
+export const inputHandler: PointerEventHandler<HTMLElement> = (inputEvent: React.PointerEvent<HTMLElement>) => {
+    console.debug({ inputEvent });
+    inputEvent.preventDefault();
+    _config.observers.forEach((observer) =>
+        observer({
+            inputEvent,
+            node: inputEvent.target as Node,
+        }),
+    );
     return false;
 };

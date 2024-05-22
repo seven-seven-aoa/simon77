@@ -1,26 +1,36 @@
+// react //
 import ReactDOM from "react-dom/client";
 import { useEffect } from "react";
-import "./Styles.tsx";
+
+// lib //
 import { dxSingle } from "./lib/DomX.tsx";
+import { initInput, inputHandler } from "./lib/InputManager.tsx";
+
+// app //
 import { initButtons, renderButtons } from "./app/ButtonManager.tsx";
 import { initGame, mainContainer } from "./app/GameManager.tsx";
-import { initInput, inputHandler } from "./lib/InputManager.tsx";
 import { initLevels } from "./app/LevelManager.tsx";
+
+// styles //
+import "./Styles.tsx";
 import { restartImage } from "./images/index.tsx";
 
+// init app //
 const _version: string = "Ximon '77 - v0.1.0";
 console.info(_version);
 initLevels();
 initButtons();
 
+// init react //
 ReactDOM.createRoot(dxSingle("#root")).render(<App />);
 const _buttons: JSX.Element[] = renderButtons();
 
+/////////////////
 function App() {
     useEffect(() => {
         initInput({
             container: mainContainer(),
-            nodeObservers: [],
+            observers: [],
         });
         const game = initGame();
         return () => clearTimeout(game);

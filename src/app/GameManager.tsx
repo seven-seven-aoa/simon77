@@ -4,7 +4,9 @@ import { ElementX } from "../lib/ElementX";
 import { fade } from "../lib/animation/Fade";
 import { FadeDefaults } from "../lib/animation/Types";
 import { GameStatus } from "./Types";
+import { playStartupMusic } from "./MusicPlayer";
 import { setGameStatus } from "./Status";
+import { InputObserver } from "../lib/InputManager";
 
 export function initGame(): number {
     setGameStatus(GameStatus.InitGame);
@@ -18,7 +20,14 @@ export function initGame(): number {
     }, delayTime.gameIntro);
 }
 
-export function mainContainer() : ElementX {
+export function startGame(inputObserver: InputObserver): void {
+    inputObserver.inputEvent
+    setGameStatus(GameStatus.Running);
+    fade(titleLayer().fadeInfo);
+    playStartupMusic();
+}
+
+export function mainContainer(): ElementX {
     return dxSingle("main");
 }
 
