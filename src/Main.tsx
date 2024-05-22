@@ -8,7 +8,7 @@ import { initInput, inputHandler } from "./lib/core/InputManager.tsx";
 
 // app //
 import { initButtons, renderButtons } from "./lib/ButtonManager.tsx";
-import { initGame, mainContainer } from "./lib/GameManager.tsx";
+import { initGame, mainContainer, startGame } from "./lib/GameManager.tsx";
 import { initLevels } from "./lib/LevelManager.tsx";
 
 // styles //s
@@ -30,7 +30,7 @@ function App() {
     useEffect(() => {
         initInput({
             container: mainContainer(),
-            observers: [],
+            observers: [startGame],
         });
         const game = initGame();
         return () => clearTimeout(game);
@@ -50,4 +50,3 @@ function App() {
         </main>
     );
 }
-

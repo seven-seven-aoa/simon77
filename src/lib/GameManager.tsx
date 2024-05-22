@@ -6,7 +6,7 @@ import { InputObserver } from "./core/InputManager";
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
 import { playStartupMusic } from "./MusicPlayer";
-import { setGameStatus } from "./Status";
+import { getGameStatus, setGameStatus } from "./Status";
 
 export { initGame, startGame, mainContainer, buttonArray, buttonLayer, controlLayer, debugLayer, scoreLayer, titleLayer };
 
@@ -23,7 +23,9 @@ function initGame(): number {
 }
 
 function startGame(inputObserver: InputObserver): void {
-    inputObserver.inputEvent;
+    if (getGameStatus() !== GameStatus.Ready || !titleLayer().contains(inputObserver.node)) {
+        return;
+    }
     setGameStatus(GameStatus.Running);
     fadeAnimation(titleLayer().fadeInfo);
     playStartupMusic();
