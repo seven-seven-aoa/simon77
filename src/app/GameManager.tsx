@@ -5,8 +5,6 @@ import { ElementX } from "../lib/ElementX";
 import { fade } from "../lib/animation/Fade";
 import { FadeDefaults } from "../lib/animation/Types";
 import { GameStatus } from "./Types";
-import { initButtons } from "./ButtonManager";
-import { initLevels } from "./LevelManager";
 import { setGameStatus } from "./Status";
 
 export function initGame(): number {
@@ -14,19 +12,16 @@ export function initGame(): number {
     FadeDefaults.in.durationMs = fadeTime.default.in;
     FadeDefaults.out.durationMs = fadeTime.default.out;
 
-
     disableCommomAnnnoyingEvents({
         elementObjects: [...buttonArray(), buttonLayer(), controlLayer(), debugLayer(), scoreLayer(), titleLayer()],
         includeDocument: true,
     });
 
-    const ut: number = setTimeout(async () => {
+    return setTimeout(async () => {
         titleLayer().style.display = "block";
         await fade(titleLayer().fadeInfo);
         setGameStatus(GameStatus.Ready);
     }, delayTime.gameIntro);
-
-    return ut;
 }
 
 export function buttonArray(): ElementX[] {
@@ -68,7 +63,3 @@ export function titleLayer(): ElementX {
     elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.title.out;
     return elx;
 }
-
-
-
-

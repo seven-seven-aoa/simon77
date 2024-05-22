@@ -1,37 +1,36 @@
+import ReactDOM from "react-dom/client";
+import { useEffect } from "react";
 import "./Styles.tsx";
 import { initButtons, renderButtons } from "./app/ButtonManager.tsx";
 import { initGame } from "./app/GameManager.tsx";
 import { initLevels } from "./app/LevelManager.tsx";
 import { restartImage } from "./images/index.tsx";
-import ReactDOM from "react-dom/client";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-    <App versionInfo="BUILD [2024-05-12 16:04:42]" />,
-);
+ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 
-initGame();
+const _version: string = "Ximon '77 - v0.1.0";
+console.info(_version);
+initLevels();
+initButtons();
+const _buttons: JSX.Element[] = renderButtons();
 
-function App(props: { versionInfo: string }) {
-    console.info(props);
-    
-    initLevels();
-    initButtons();
+function App() {
+    useEffect(() => {
+        const game = initGame();
+        return () => clearTimeout(game);
+    }, []);
 
     return (
         <main className="centered">
-            <section className="debugLayer">{props.versionInfo}</section>
-
-            <section className="titleLayer">Ximon '77</section>
-
-            <section className="gameLayer">{renderButtons()}</section>
-
+            <section className="buttonLayer">{_buttons}</section>
             <section className="controlLayer">
                 <img src={restartImage} id="restart" />
             </section>
-
+            <section className="debugLayer">{_version}</section>
             <section className="scoreLayer">
                 Score: <span className="scoreValue"></span>
             </section>
+            <section className="titleLayer">Ximon '77</section>
         </main>
     );
 }
