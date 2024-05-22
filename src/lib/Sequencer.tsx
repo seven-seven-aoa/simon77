@@ -1,4 +1,4 @@
-import { CompareResult, SequenceStep } from "./Types";
+import { CompareResult, SequenceStep } from "./GameTypes";
 export { addSequenceStep, addUserStep, clearUserSequence, compareSequences, getSequenceStep };
 
 const _sequence: SequenceStep[] = [];

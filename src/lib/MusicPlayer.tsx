@@ -1,10 +1,11 @@
-import { delay } from "../lib/TimeManager";
-import { GameStatus } from "./Types";
+import { delay } from "./core/TimeManager";
+import { GameStatus } from "./GameTypes";
 import { getGameStatus } from "./Status";
-import { playNote } from "../lib/SoundManager";
-import { RampType } from "../lib/SoundTypes";
+import { RampType, playNote } from "./core/SoundManager";
 
-export function playStartupMusic() {
+export { playStartupMusic, playGameOverMusic };
+
+function playStartupMusic() {
     const notes: string[] = ["C3", "C4", "C5", "C6"];
     const gains: number[] = [0.62, 0.42, 0.24, 0.12];
 
@@ -27,7 +28,7 @@ export function playStartupMusic() {
     }
 }
 
-export async function playGameOverMusic() {
+async function playGameOverMusic() {
 
     let delayValue: number = 0;
     let notes: string[] = [];

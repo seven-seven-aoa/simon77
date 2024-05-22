@@ -1,10 +1,13 @@
-import { FadeInfo, FadeDefaults, FadeStatus } from "./animation/Types";
+import { FadeInfo, FadeDefaults, FadeStatus } from "./FadeAnimation";
 
-export interface ElementX extends HTMLElement {
+export type { ElementX };
+export { toElementX };
+
+interface ElementX extends HTMLElement {
     fadeInfo: FadeInfo;
 }
 
-export function toElementX(element: HTMLElement): ElementX {
+function toElementX(element: HTMLElement): ElementX {
     const elementX = element as ElementX;
     elementX.fadeInfo = {
         fadeInConfig: {

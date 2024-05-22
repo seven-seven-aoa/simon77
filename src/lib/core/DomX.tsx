@@ -1,5 +1,4 @@
 import { ElementX, toElementX } from "./ElementX";
-
 export { dxSingle, dxMultiple };
 
 const _single = new Map<string, ElementX>();

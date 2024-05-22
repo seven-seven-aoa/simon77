@@ -1,12 +1,45 @@
-import { trackProgress } from "./Core";
-import { FadeStatus, FadeInfo, FadeConfiguration } from "./Types";
+import { trackProgress } from "./AnimationTracker";
+
+export type { FadeInfo };
+export { FadeDefaults, FadeStatus, fadeAnimation };
+
+interface FadeConfiguration {
+    initialOpacity: number;
+    targetOpacity: number;
+    durationMs: number;
+}
+
+const FadeDefaults = {
+    in: { durationMs: 2000 },
+    out: { durationMs: 2000 },
+};
+
+interface FadeInfo {
+    status: FadeStatus;
+    opacityController: OpacityController;
+    fadeInConfig: FadeConfiguration;
+    fadeOutConfig: FadeConfiguration;
+}
+
+enum FadeStatus {
+    None = 0,
+    FadingIn = 1,
+    FadedIn = 2,
+    FadingOut = 3,
+    FadedOut = 4,
+}
+
+interface OpacityController {
+    get: () => number;
+    set: (value: number) => void;
+}
 
 const _fadeStatus = {
     in: [FadeStatus.FadingIn, FadeStatus.FadedIn],
     out: [FadeStatus.FadingOut, FadeStatus.FadedOut],
 };
 
-export async function fade(info: FadeInfo) {
+async function fadeAnimation(info: FadeInfo) {
     let config: FadeConfiguration = info.fadeInConfig;
     let status: FadeStatus[] = _fadeStatus.in;
 

@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { addUserStep, compareSequences } from "./Sequencer";
-import { Button, CompareResult, GameStatus } from "./Types";
-import { delay } from "../lib/TimeManager";
-import { getGameStatus, setGameStatus } from "./Status";
 import { JSX } from "react";
+import { delay } from "./core/TimeManager";
+import { playNote } from "./core/SoundManager";
+
+import { addUserStep, compareSequences } from "./Sequencer";
+import { Button, CompareResult, GameStatus } from "./GameTypes";
+import { getGameStatus, setGameStatus } from "./Status";
 import { loopTime } from "./TimeConstants";
-import { playNote } from "../lib/SoundManager";
-import { setCSSVariable } from "../lib/CSSVariableManager";
+import { setCSSVariable } from "./core/StyleManager";
 
-export { initButtons, renderButtons, sequenceTrigger };
-
+export { initButtons, renderButtons, sequenceTrigger, handleTouchEnd, handleTouchStart };
 const _buttons: Button[] = [];
 
 function initButtons() {
@@ -70,7 +70,7 @@ function renderButtons(): JSX.Element[] {
     return jsx;
 }
 
-export function handleTouchStart(event: any) {
+function handleTouchStart(event: any) {
     if (getGameStatus() !== GameStatus.WaitingForTouchStart) {
         return;
     }
@@ -78,7 +78,7 @@ export function handleTouchStart(event: any) {
     animateTouchStart(event.target);
 }
 
-export async function handleTouchEnd(event: any) {
+async function handleTouchEnd(event: any) {
     if (getGameStatus() !== GameStatus.WaitingForTouchEnd) {
         return;
     }

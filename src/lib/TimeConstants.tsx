@@ -1,9 +1,11 @@
-export const delayTime = {
+export { delayTime, fadeTime, loopTime };
+
+const delayTime = {
     gameIntro: 900,
     newLevel: 1700,
 };
 
-export const fadeTime = {
+const fadeTime = {
     default: { in: 900, out: 900 },
     buttons: { in: 900, out: 900 },
     control: { in: 900, out: 900 },
@@ -12,6 +14,6 @@ export const fadeTime = {
     title: { in: 900, out: 900 },
 };
 
-export const loopTime = {
+const loopTime = {
     throttle: { default: 10 },
 };

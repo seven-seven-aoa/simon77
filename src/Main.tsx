@@ -3,15 +3,15 @@ import ReactDOM from "react-dom/client";
 import { useEffect } from "react";
 
 // lib //
-import { dxSingle } from "./lib/DomX.tsx";
-import { initInput, inputHandler } from "./lib/InputManager.tsx";
+import { dxSingle } from "./lib/core/DomX.tsx";
+import { initInput, inputHandler } from "./lib/core/InputManager.tsx";
 
 // app //
-import { initButtons, renderButtons } from "./app/ButtonManager.tsx";
-import { initGame, mainContainer } from "./app/GameManager.tsx";
-import { initLevels } from "./app/LevelManager.tsx";
+import { initButtons, renderButtons } from "./lib/ButtonManager.tsx";
+import { initGame, mainContainer } from "./lib/GameManager.tsx";
+import { initLevels } from "./lib/LevelManager.tsx";
 
-// styles //
+// styles //s
 import "./Styles.tsx";
 import { restartImage } from "./images/index.tsx";
 

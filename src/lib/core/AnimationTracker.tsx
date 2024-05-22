@@ -1,6 +1,11 @@
-import { ProgressTracker } from "./Types";
+export { trackProgress };
 
-export function trackProgress(progressTracker: ProgressTracker) {
+interface ProgressTracker {
+    durationMs: number;
+    onUpdate: (progress: number) => void;
+}
+
+function trackProgress(progressTracker: ProgressTracker) {
     const startTime: number = performance.now();
     return new Promise((resolve) => {
         function step() {

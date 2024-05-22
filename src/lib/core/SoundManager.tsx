@@ -1,8 +1,29 @@
-import { MusicNote, RampType } from "./SoundTypes";
+export type { MusicNote };
+export { playNote, RampType };
+
+enum RampType {
+    none,
+    exponential,
+    liner,
+}
+
+interface MusicNote {
+    gain?: EnvelopeNode[];
+    nostop?: boolean;
+    note?: string;
+    startGain?: number;
+    wave?: OscillatorType;
+}
+
+interface EnvelopeNode {
+    ramp?: RampType;
+    time?: number;
+    value?: number;
+}
 
 const ctx = new window.AudioContext();
 
-export function playNote(props: MusicNote) {
+function playNote(props: MusicNote) {
     props.note ??= "A4";
     props.wave ??= "triangle";
     props.gain ??= [];
@@ -51,7 +72,6 @@ export function playNote(props: MusicNote) {
 }
 
 const minExponentialValue: number = 0.000001;
-
 
 //    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 

@@ -1,37 +1,40 @@
 import { CSSProperties } from "react";
-import { MusicNote } from "../lib/SoundTypes";
+import { MusicNote } from "./core/SoundManager";
 
-export interface Button {
+export type { Button, GameLevel, SequenceStep };
+export { GameStatus, CompareResult };
+
+interface Button {
     key: number;
     sound: ButtonSound;
     style: ButtonStyle;
 }
 
-export interface ButtonSound {
+interface ButtonSound {
     musicNote: MusicNote;
     oscillator: OscillatorNode | null;
 }
 
-export interface ButtonStyle {
+interface ButtonStyle {
     cssProperties: CSSProperties;
     cssVarGlowColor: string;
     isGlowing: boolean;
 }
 
-export enum CompareResult {
+enum CompareResult {
     None = 0,
     Match = 1,
     Partial = 2,
     Mismatch = 3,
 }
 
-export interface GameLevel {
+interface GameLevel {
     levelNumber: number;
     glowSpeedMs: number;
     playNoteSpeedMs: number;
 }
 
-export enum GameStatus {
+enum GameStatus {
     None,
     InitLevels,
     InitButtons,
@@ -44,6 +47,6 @@ export enum GameStatus {
     FinalWon,
 }
 
-export interface SequenceStep {
+interface SequenceStep {
     button: number;
 }
