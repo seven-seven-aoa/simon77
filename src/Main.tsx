@@ -29,7 +29,7 @@ const _buttons: JSX.Element[] = renderButtons();
 function App() {
     useEffect(() => {
         initInput({
-            container: mainContainer(),
+            captor: mainContainer(),
             observers: [startGame],
         });
         const game = initGame();

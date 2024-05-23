@@ -22,11 +22,11 @@ interface FadeInfo {
 }
 
 enum FadeStatus {
-    None = 0,
-    FadingIn = 1,
-    FadedIn = 2,
-    FadingOut = 3,
-    FadedOut = 4,
+    None      = "None",
+    FadingIn  = "FadingIn",
+    FadedIn   = "FadedIn",
+    FadingOut = "FadingOut",
+    FadedOut  = "FadedOut",
 }
 
 interface OpacityController {
@@ -53,18 +53,18 @@ async function fadeAnimation(info: FadeInfo) {
 
     info.opacityController.set(config.initialOpacity);
     info.status = status[0];
-    console.debug({ fadeStatus: FadeStatus[info.status] });
-
+    console.debug({ fadeStatus: info.status });
+    
     await trackProgress({
         durationMs: config.durationMs,
         onUpdate: (progress) => {
             info.opacityController.set(config.initialOpacity! + progress * range);
         },
     });
-
+    
     return new Promise((resolve) => {
         info.status = status[1];
-        console.debug({ fadeStatus: FadeStatus[info.status] });
+        console.debug({ fadeStatus: info.status });
         resolve(void 0);
     });
 }

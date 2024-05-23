@@ -10,7 +10,7 @@ function addSequenceStep(count: number = 1) {
     gameSequence = _sequence.map((step) => step.button).join(",");
 }
 
-function compareSequences() {
+function compareSequences() : CompareResult {
     if (gameSequence === userSequence) {
         return CompareResult.Match;
     }

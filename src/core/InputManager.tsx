@@ -2,18 +2,18 @@ import { PointerEventHandler } from "react";
 import { ElementX } from "./ElementX";
 import { EventType } from "./EventTypes";
 
-export type { InputObserver };
+export type { InputEvent };
 export { initInput, inputHandler };
 
 interface InputConfig {
-    container: ElementX;
-    observers: ((observer: InputObserver) => void)[];
+    captor: ElementX;
+    observers: ((observer: InputEvent) => void)[];
 }
 
-interface InputObserver {
-    inputEvent: React.PointerEvent<HTMLElement>;
-    eventTypeRaw: string;
-    node: Node;
+interface InputEvent {
+    eventTypeName: string;
+    isType: (eventType: EventType) => boolean;
+    isContainedBy: (element: ElementX) => boolean;
 }
 
 let _config: InputConfig;
@@ -26,21 +26,21 @@ function initInput(config: InputConfig) {
 function disableBadEvents() {
     const badEvents: EventType[] = [EventType.dblclick, EventType.selectstart, EventType.touchmove];
     badEvents.forEach((eventType: EventType) => {
-        _config.container.addEventListener(EventType[eventType], (e: Event) => {
+        _config.captor.addEventListener(eventType, (e: Event) => {
             e.preventDefault();
             return false;
         });
     });
 }
 
-const inputHandler: PointerEventHandler<HTMLElement> = (inputEvent: React.PointerEvent<HTMLElement>) => {
-    const obs: InputObserver = {
-        inputEvent,
-        node: inputEvent.target as Node,
-        eventTypeRaw: inputEvent.type,
+const inputHandler: PointerEventHandler<HTMLElement> = (pe: React.PointerEvent<HTMLElement>) => {
+    const inputEvent: InputEvent = {
+        eventTypeName: pe.type,
+        isType: (eventType: EventType) => pe.type === eventType,
+        isContainedBy: (element: ElementX) => element.contains(pe.target as Node),
     };
-    console.debug({ obs });
-    inputEvent.preventDefault();
-    _config.observers.forEach((observer) => observer(obs));
+    console.debug({ inputEvent });
+    pe.preventDefault();
+    _config.observers.forEach((observer) => observer(inputEvent));
     return false;
 };

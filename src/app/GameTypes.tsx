@@ -22,10 +22,10 @@ interface ButtonStyle {
 }
 
 enum CompareResult {
-    None = 0,
-    Match = 1,
-    Partial = 2,
-    Mismatch = 3,
+    None     = "None",
+    Match    = "Match",
+    Mismatch = "Mismatch",
+    Partial  = "Partial",
 }
 
 interface GameLevel {
@@ -35,16 +35,16 @@ interface GameLevel {
 }
 
 enum GameStatus {
-    None,
-    InitLevels,
-    InitButtons,
-    InitGame,
-    Ready,
-    Running,
-    WaitingForTouchStart,
-    WaitingForTouchEnd,
-    FinalLost,
-    FinalWon,
+    None                 = "None",
+    FinalLost            = "FinalLost",
+    FinalWon             = "FinalWon",
+    InitButtons          = "InitButtons",
+    InitGame             = "InitGame",
+    InitLevels           = "InitLevels",
+    Ready                = "Ready",
+    Running              = "Running",
+    WaitingForTouchEnd   = "WaitingForTouchEnd",
+    WaitingForTouchStart = "WaitingForTouchStart",
 }
 
 interface SequenceStep {

@@ -1,35 +1,18 @@
-import { ElementX } from "../core/ElementX";
-import { InputObserver } from "../core/InputManager";
 import { GameStatus } from "./GameTypes";
-export { getGameStatus, setGameStatus };
+export { getGameStatus, setGameStatus, isGameStatus };
 
 let _value: GameStatus = GameStatus.None;
 
-function getGameStatus() {
+function getGameStatus(): GameStatus {
     return _value;
 }
 
-function setGameStatus(value: GameStatus) {
+function setGameStatus(value: GameStatus): GameStatus {
     _value = value;
-    console.debug({ GameStatus: GameStatus[_value] });
+    console.debug({ GameStatus: _value });
+    return _value;
 }
 
-interface GameEvent {
-    gameStatus?: GameStatus;
-    inputObserver?: InputObserver;
-    elementFacts?: ElementFact[];
-}
-
-interface ElementFact {
-    element: ElementX;
-    condition: boolean;
-}
-
-function checkGameEvent(gameEvent: GameEvent): boolean {
-    if (
-        gameEvent.gameStatus !== undefined &&
-        gameEvent.gameStatus !== getGameStatus()
-    ) {
-        return false;
-    }
+function isGameStatus(value: GameStatus): boolean {
+    return _value === value;
 }

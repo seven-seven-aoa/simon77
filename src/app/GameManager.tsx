@@ -2,12 +2,12 @@
 import { dxMultiple, dxSingle } from "../core/DomX";
 import { ElementX } from "../core/ElementX";
 import { fadeAnimation, FadeDefaults } from "../core/FadeAnimation";
-import { InputObserver } from "../core/InputManager";
+import { InputEvent } from "../core/InputManager";
 
 // app //
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
-import { getGameStatus, setGameStatus } from "./GameStatus";
+import { isGameStatus, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
 import { EventType } from "../core/EventTypes";
 import { initAudioContext } from "../core/SoundManager";
@@ -20,23 +20,23 @@ function initGame(): number {
     FadeDefaults.out.durationMs = fadeTime.default.out;
 
     return setTimeout(async () => {
-        titleLayer().style.display = "block";
         await fadeAnimation(titleLayer().fadeInfo);
     }, delayTime.gameIntro);
 }
 
-function startGame(inputObserver: InputObserver): void {
-    if (getGameStatus() !== GameStatus.InitGame) {
+function startGame(inputEvent: InputEvent): void {
+    if (!isGameStatus(GameStatus.InitGame)) {
         return;
     }
 
-    if (inputObserver.eventTypeRaw === EventType[EventType.pointerdown]) {
+    if (inputEvent.isType(EventType.pointerdown)) {
         initAudioContext();
         return;
     }
-    if (inputObserver.eventTypeRaw === EventType[EventType.pointerup]) {
+
+    if (inputEvent.isType(EventType.pointerup)) {
         playStartupMusic();
-        setGameStatus(GameStatus.Ready);
+        fadeAnimation(titleLayer().fadeInfo);
         return;
     }
 }

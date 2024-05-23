@@ -2,9 +2,9 @@ export type { MusicNote };
 export { playNote, RampType, initAudioContext };
 
 enum RampType {
-    none,
-    exponential,
-    liner,
+    none        = "none",
+    exponential = "exponential",
+    liner       = "liner",
 }
 
 interface MusicNote {

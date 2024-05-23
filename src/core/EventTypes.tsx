@@ -23,14 +23,14 @@ interface EventDetection {
 }
 
 enum EventType {
-    click,
-    dblclick,
-    mousedown,
-    mouseup,
-    pointerdown,
-    pointerup,
-    selectstart,
-    touchend,
-    touchstart,
-    touchmove,
+    click            = "click",
+    dblclick         = "dblclick",
+    mousedown        = "mousedown",
+    mouseup          = "mouseup",
+    pointerdown      = "pointerdown",
+    pointerup        = "pointerup",
+    selectstart      = "selectstart",
+    touchend         = "touchend",
+    touchmove        = "touchmove",
+    touchstart       = "touchstart",
 }
