@@ -26,10 +26,20 @@ function initGame(): number {
 }
 
 function startGame(inputObserver: InputObserver): void {
-    
+    if (getGameStatus() !== GameStatus.InitGame) {
+        return;
+    }
 
+    if (inputObserver.eventTypeRaw === EventType[EventType.pointerdown]) {
+        initAudioContext();
+        return;
+    }
+    if (inputObserver.eventTypeRaw === EventType[EventType.pointerup]) {
+        playStartupMusic();
+        setGameStatus(GameStatus.Ready);
+        return;
+    }
 }
-
 function mainContainer(): ElementX {
     return dxSingle("main");
 }
