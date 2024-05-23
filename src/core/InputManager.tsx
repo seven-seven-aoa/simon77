@@ -2,15 +2,15 @@ import { PointerEventHandler } from "react";
 import { ElementX } from "./ElementX";
 import { EventType } from "./EventTypes";
 
-export type { InputEvent };
+export type { InputInfo };
 export { initInput, inputHandler };
 
 interface InputConfig {
     captor: ElementX;
-    observers: ((observer: InputEvent) => void)[];
+    observers: ((observer: InputInfo) => void)[];
 }
 
-interface InputEvent {
+interface InputInfo {
     eventTypeName: string;
     isType: (eventType: EventType) => boolean;
     isContainedBy: (element: ElementX) => boolean;
@@ -34,13 +34,13 @@ function disableBadEvents() {
 }
 
 const inputHandler: PointerEventHandler<HTMLElement> = (pe: React.PointerEvent<HTMLElement>) => {
-    const inputEvent: InputEvent = {
+    const inputInfo: InputInfo = {
         eventTypeName: pe.type,
         isType: (eventType: EventType) => pe.type === eventType,
         isContainedBy: (element: ElementX) => element.contains(pe.target as Node),
     };
-    console.debug({ inputEvent });
+    console.debug({ inputInfo });
     pe.preventDefault();
-    _config.observers.forEach((observer) => observer(inputEvent));
+    _config.observers.forEach((observer) => observer(inputInfo));
     return false;
 };

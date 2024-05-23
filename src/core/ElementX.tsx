@@ -5,10 +5,31 @@ export { toElementX };
 
 interface ElementX extends HTMLElement {
     fadeInfo: FadeInfo;
+    displayShow: DisplayStyle;
+    displayHide: DisplayStyle;
+    show: () => void;
+    hide: () => void;
+}
+
+enum DisplayStyle {
+    block = "block",
+    none = "none",
 }
 
 function toElementX(element: HTMLElement): ElementX {
     const elementX = element as ElementX;
+    elementX.displayShow = DisplayStyle.block;
+    elementX.displayHide = DisplayStyle.none;
+
+    elementX.show = () => {
+        elementX.style.display = elementX.displayShow;
+    };
+
+    elementX.hide = () => {
+        elementX.style.display = elementX.displayHide;
+    };
+    
+
     elementX.fadeInfo = {
         fadeInConfig: {
             initialOpacity: 0,
