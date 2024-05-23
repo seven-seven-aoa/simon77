@@ -5,7 +5,6 @@ import { EventType } from "./EventTypes";
 export type { InputObserver };
 export { initInput, inputHandler };
 
-
 interface InputConfig {
     container: ElementX;
     observers: ((observer: InputObserver) => void)[];
@@ -13,6 +12,7 @@ interface InputConfig {
 
 interface InputObserver {
     inputEvent: React.PointerEvent<HTMLElement>;
+    eventTypeRaw: string;
     node: Node;
 }
 
@@ -34,13 +34,13 @@ function disableBadEvents() {
 }
 
 const inputHandler: PointerEventHandler<HTMLElement> = (inputEvent: React.PointerEvent<HTMLElement>) => {
-    console.debug({ inputEvent });
+    const obs: InputObserver = {
+        inputEvent,
+        node: inputEvent.target as Node,
+        eventTypeRaw: inputEvent.type,
+    };
+    console.debug({ obs });
     inputEvent.preventDefault();
-    _config.observers.forEach((observer) =>
-        observer({
-            inputEvent,
-            node: inputEvent.target as Node,
-        }),
-    );
+    _config.observers.forEach((observer) => observer(obs));
     return false;
 };

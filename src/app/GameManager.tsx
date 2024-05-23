@@ -7,8 +7,10 @@ import { InputObserver } from "../core/InputManager";
 // app //
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
-import { getGameStatus, setGameStatus } from "./GameStatus";
+import { inputEventFacts,  setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
+import { EventType } from "../core/EventTypes";
+import { initAudioContext } from "../core/SoundManager";
 
 export { initGame, startGame, mainContainer, buttonArray, buttonLayer, controlLayer, debugLayer, scoreLayer, titleLayer };
 
@@ -20,23 +22,35 @@ function initGame(): number {
     return setTimeout(async () => {
         titleLayer().style.display = "block";
         await fadeAnimation(titleLayer().fadeInfo);
-        setGameStatus(GameStatus.Ready);
     }, delayTime.gameIntro);
 }
 
 function startGame(inputObserver: InputObserver): void {
-    if (getGameStatus() !== GameStatus.Ready) {
+    if (
+        inputEventFacts({
+            inputObserver,
+            gameStatus: (gs) => gs === GameStatus.InitGame,
+            eventType: (et) => et === EventType[EventType.pointerdown],
+        })
+    ) {
+        initAudioContext();
+        setGameStatus(GameStatus.Ready);
         return;
     }
-    
-    if (titleLayer().contains(inputObserver.node)) {
-        console.debug("detected title click");
+
+    if (
+        inputEventFacts({
+            inputObserver,
+            gameStatus: (gs) => gs === GameStatus.Ready,
+            eventType: (et) => et === EventType[EventType.pointerup],
+        })
+    ) {
+        fadeAnimation(titleLayer().fadeInfo);
+        playStartupMusic();
+        setGameStatus(GameStatus.Running);
+        return;
     }
-    
-    
-    setGameStatus(GameStatus.Running);
-    fadeAnimation(titleLayer().fadeInfo);
-    playStartupMusic();
+
 }
 
 function mainContainer(): ElementX {
