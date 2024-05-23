@@ -25,9 +25,15 @@ function initGame(): number {
 }
 
 function startGame(inputObserver: InputObserver): void {
-    if (getGameStatus() !== GameStatus.Ready || !titleLayer().contains(inputObserver.node)) {
+    if (getGameStatus() !== GameStatus.Ready) {
         return;
     }
+    
+    if (titleLayer().contains(inputObserver.node)) {
+        console.debug("detected title click");
+    }
+    
+    
     setGameStatus(GameStatus.Running);
     fadeAnimation(titleLayer().fadeInfo);
     playStartupMusic();

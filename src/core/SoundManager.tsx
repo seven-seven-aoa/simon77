@@ -1,5 +1,5 @@
 export type { MusicNote };
-export { playNote, RampType };
+export { playNote, RampType, initAudioContext };
 
 enum RampType {
     none,
@@ -21,7 +21,22 @@ interface EnvelopeNode {
     value?: number;
 }
 
-const ctx = new window.AudioContext();
+let ctx: AudioContext | null = null;
+
+function getAudioContext(): AudioContext {
+    if (ctx === null) {
+        throw new Error("AudioContext not initialized");
+    }
+    ctx.resume();
+    return ctx;
+}
+
+function initAudioContext(): void {
+    if (ctx !== null) {
+        throw new Error("AudioContext already initialized");
+    }
+    ctx = new AudioContext();
+}
 
 function playNote(props: MusicNote) {
     props.note ??= "A4";
@@ -30,6 +45,7 @@ function playNote(props: MusicNote) {
     props.nostop ??= false;
     props.startGain ??= 0;
 
+    const ctx = getAudioContext();
     const volume = ctx.createGain();
 
     const startTime = ctx.currentTime;
