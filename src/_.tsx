@@ -99,34 +99,3 @@
 //             ></b>
 //         );
 //     }
-
-//     return (
-//         <main className="centered" onClick={runGame}>
-//             <section className="debug" onClick={toggleDebug}>
-//                 DEPLOYED ON [2024-05-12 16:04:42]
-//             </section>
-
-//             <section className="title">Ximon '77</section>
-
-//             <section className="game">
-//                 {buttonElements}
-//                 <input type="hidden" id="gameSequence" />
-//                 <input type="hidden" id="userSequence" />
-//             </section>
-
-//             <section className="control">
-//                 <img src={img.pauseImage} id="pause" />
-//                 <img src={img.playImage} id="play" />
-//                 <img
-//                     src={img.restartImage}
-//                     id="restart"
-//                     onClick={restartClick}
-//                 />
-//             </section>
-
-//             <section className="score">
-//                 Score: <span className="scoreValue">{levelNumber}</span>
-//             </section>
-//         </main>
-//     );
-// }

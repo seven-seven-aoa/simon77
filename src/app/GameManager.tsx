@@ -1,87 +1,53 @@
 // core //
-import { dxMultiple, dxSingle } from "../core/DomX";
-import { ElementX } from "../core/ElementX";
 import { fadeAnimation, FadeDefaults } from "../core/FadeAnimation";
-import { InputInfo } from "../core/InputManager";
+import { initInput, InputInfo } from "../core/InputManager";
+import { EventType } from "../core/EventTypes";
+import { initAudioContext } from "../core/SoundManager";
 
 // app //
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
 import { isGameEvent, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
-import { EventType } from "../core/EventTypes";
-import { initAudioContext } from "../core/SoundManager";
+import { controlLayer, mainContainer, titleLayer } from "./GameElements";
 
-export { initGame, startGame, mainContainer, buttonArray, buttonLayer, controlLayer, debugLayer, scoreLayer, titleLayer };
+export { initGame, };
 
 function initGame(): number {
     setGameStatus(GameStatus.InitGame);
     FadeDefaults.in.durationMs = fadeTime.default.in;
     FadeDefaults.out.durationMs = fadeTime.default.out;
 
-    return setTimeout(async () => {
-        titleLayer().show();
-        await fadeAnimation(titleLayer().fadeInfo);
-    }, delayTime.gameIntro);
+    initInput({
+        captor: mainContainer(),
+        observers: [triggerInitAudioContext, startGameIntro],
+    });
+
+    return setTimeout(showTitleScreen, delayTime.gameIntro);
 }
 
+async function showTitleScreen(): Promise<void> {
+    titleLayer().show();
+    await fadeAnimation(titleLayer().fadeInfo);
+}
 
-function startGame(inputInfo: InputInfo): void {
-
+async function triggerInitAudioContext(inputInfo: InputInfo): Promise<void> {
     if (isGameEvent(GameStatus.InitGame, inputInfo, EventType.pointerdown)) {
         initAudioContext();
         setGameStatus(GameStatus.Ready);
-        return;
     }
+}
 
+async function startGameIntro(inputInfo: InputInfo): Promise<void> {
     if (isGameEvent(GameStatus.Ready, inputInfo, EventType.pointerup)) {
+        
         playStartupMusic();
-        fadeAnimation(titleLayer().fadeInfo);
+        await fadeAnimation(titleLayer().fadeInfo);
         titleLayer().hide();
+
+        controlLayer().show();
+        await fadeAnimation(controlLayer().fadeInfo);
+
         setGameStatus(GameStatus.Running);
-        return;
     }
-}
-function mainContainer(): ElementX {
-    return dxSingle("main");
-}
-
-function buttonArray(): ElementX[] {
-    const elx: ElementX[] = dxMultiple("main > section.buttonLayer > div.button");
-    return elx;
-}
-
-function buttonLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.buttonLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.buttons.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.buttons.out;
-    return elx;
-}
-
-function controlLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.controlLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.control.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.control.out;
-    return elx;
-}
-
-function debugLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.debugLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.debug.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.debug.out;
-    return elx;
-}
-
-function scoreLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.scoreLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.score.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.score.out;
-    return elx;
-}
-
-function titleLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.titleLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.title.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.title.out;
-    return elx;
 }

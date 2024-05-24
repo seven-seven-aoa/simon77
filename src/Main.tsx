@@ -4,11 +4,11 @@ import { useEffect } from "react";
 
 // core //
 import { dxSingle } from "./core/DomX";
-import { initInput, inputHandler } from "./core/InputManager";
+import { inputHandler } from "./core/InputManager";
 
 // app //
 import { initButtons, renderButtons } from "./app/ButtonManager";
-import { initGame, mainContainer, startGame } from "./app/GameManager";
+import { initGame } from "./app/GameManager";
 import { initLevels } from "./app/LevelManager";
 
 // styles //
@@ -28,10 +28,6 @@ const _buttons: JSX.Element[] = renderButtons();
 /////////////////
 function App() {
     useEffect(() => {
-        initInput({
-            captor: mainContainer(),
-            observers: [startGame],
-        });
         const game = initGame();
         return () => clearTimeout(game);
     }, []);
