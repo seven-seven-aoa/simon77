@@ -1,10 +1,3 @@
-/* main > section.controlLayer {
+main > section.controlLayer > img {
+    width: 12rem;
 }
-
-main > section.controlLayer > img#restart {
-}
-
-main > section.controlLayer > img#play,
-main > section.controlLayer > img#pause {
-    display: none;
-} */

@@ -27,7 +27,6 @@ function initGame(): number {
 }
 
 async function showTitleScreen(): Promise<void> {
-    titleLayer().show();
     await fadeAnimation(titleLayer().fadeInfo);
 }
 
@@ -43,9 +42,6 @@ async function startGameIntro(inputInfo: InputInfo): Promise<void> {
         
         playStartupMusic();
         await fadeAnimation(titleLayer().fadeInfo);
-        titleLayer().hide();
-
-        controlLayer().show();
         await fadeAnimation(controlLayer().fadeInfo);
 
         setGameStatus(GameStatus.Running);

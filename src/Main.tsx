@@ -11,8 +11,9 @@ import { initButtons, renderButtons } from "./app/ButtonManager";
 import { initGame } from "./app/GameManager";
 import { initLevels } from "./app/LevelManager";
 
-// styles //
-import "./Styles";
+// styles/assets //
+import "./fonts/GameMusicLove.css";
+import "./Style.css";
 import { restartImage } from "./images";
 
 // init app //
@@ -33,7 +34,10 @@ function App() {
     }, []);
 
     return (
-        <main className="centered" onPointerDown={inputHandler} onPointerUp={inputHandler}>
+        <main onPointerDown={inputHandler} onPointerUp={inputHandler}>
+            <section className="titleLayer">
+                Ximon '77
+            </section>
             <section className="buttonLayer">{_buttons}</section>
             <section className="controlLayer">
                 <img src={restartImage} id="restart" />
@@ -42,7 +46,6 @@ function App() {
             <section className="scoreLayer">
                 Score: <span className="scoreValue"></span>
             </section>
-            <section className="titleLayer">Ximon '77</section>
         </main>
     );
 }

@@ -19,6 +19,13 @@
             "**/obj": true,
             "package-lock.json": true,
             "simon77.maui": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/bower_components": true,
+            "**/*.code-search": true,
+            "**/*.code-profile": true,
+            "**/*.yml": true
         }
     }
 }
