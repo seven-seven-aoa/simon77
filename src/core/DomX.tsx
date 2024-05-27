@@ -1,10 +1,10 @@
-import { ElementX, toElementX } from "./ElementX";
+import { ElementX, XProps, toElementX } from "./ElementX";
 export { dxSingle, dxMultiple };
 
 const _single = new Map<string, ElementX>();
 const _multiple = new Map<string, ElementX[]>();
 
-function dxSingle(query: string) : ElementX {
+function dxSingle(query: string, xprops?: XProps): ElementX {
     if (_single.has(query)) {
         return _single.get(query)!;
     }
@@ -15,12 +15,12 @@ function dxSingle(query: string) : ElementX {
         throw new Error(noElementsError(query));
     }
 
-    const elementX = toElementX(element as HTMLElement);
+    const elementX = toElementX(element as HTMLElement, xprops);
     _single.set(query, elementX);
     return _single.get(query)!;
 }
 
-function dxMultiple(query: string) : ElementX[] {
+function dxMultiple(query: string, xprops?: XProps): ElementX[] {
     if (_multiple.has(query)) {
         return _multiple.get(query)!;
     }
@@ -32,7 +32,7 @@ function dxMultiple(query: string) : ElementX[] {
 
     const elementXArray: ElementX[] = [];
     elements.forEach((element) => {
-        const elementX = toElementX(element as HTMLElement);
+        const elementX = toElementX(element as HTMLElement, xprops);
         elementXArray.push(elementX);
     });
 
@@ -43,4 +43,3 @@ function dxMultiple(query: string) : ElementX[] {
 function noElementsError(query: string) {
     return `No elements found for query: ${query}`;
 }
-

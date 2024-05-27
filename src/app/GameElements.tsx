@@ -1,12 +1,10 @@
 import { dxSingle, dxMultiple } from "../core/DomX";
 import { ElementX } from "../core/ElementX";
-import { fadeTime } from "./TimeConstants";
 
 export { mainContainer, buttonArray, buttonLayer, controlLayer, restartButton, debugLayer, scoreLayer, titleLayer };
 
-
 function mainContainer(): ElementX {
-    return dxSingle("main");
+    return dxSingle("main", { initialOpacity: 1 });
 }
 
 function buttonArray(): ElementX[] {
@@ -15,43 +13,31 @@ function buttonArray(): ElementX[] {
 }
 
 function buttonLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.buttonLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.buttons.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.buttons.out;
+    const elx: ElementX = dxSingle("main > section.buttonLayer", { initialOpacity: 0 });
     return elx;
 }
 
 function controlLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.controlLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.control.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.control.out;
+    const elx: ElementX = dxSingle("main > section.controlLayer", { initialOpacity: 0 });
     return elx;
 }
 
 function restartButton(): ElementX {
-    const elx: ElementX = dxSingle("main > section.controlLayer > img#restartButton");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.control.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.control.out;
+    const elx: ElementX = dxSingle("main > section.controlLayer > img#restartButton", { initialOpacity: 0.15 });
     return elx;
 }
 
 function debugLayer(): ElementX {
     const elx: ElementX = dxSingle("main > section.debugLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.debug.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.debug.out;
     return elx;
 }
 
 function scoreLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.scoreLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.score.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.score.out;
+    const elx: ElementX = dxSingle("main > section.scoreLayer", { initialOpacity: 0 });
     return elx;
 }
 
 function titleLayer(): ElementX {
-    const elx: ElementX = dxSingle("main > section.titleLayer");
-    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.title.in;
-    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.title.out;
+    const elx: ElementX = dxSingle("main > section.titleLayer", { initialOpacity: 0 });
     return elx;
 }

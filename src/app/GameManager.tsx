@@ -1,5 +1,4 @@
 // core //
-import { fadeAnimation, FadeDefaults } from "../core/FadeAnimation";
 import { initInput, InputInfo } from "../core/InputManager";
 import { EventType } from "../core/EventTypes";
 import { initAudioContext } from "../core/SoundManager";
@@ -15,45 +14,49 @@ export { initGame };
 
 function initGame(): number {
     setGameStatus(GameStatus.InitGame);
-    FadeDefaults.in.durationMs = fadeTime.default.in;
-    FadeDefaults.out.durationMs = fadeTime.default.out;
-
     initInput({
         captor: mainContainer(),
-        observers: [triggerInitAudioContext, startGameIntro, resetButtonClick],
+        observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart],
     });
 
     return setTimeout(showTitleScreen, delayTime.gameIntro);
 }
 
 async function showTitleScreen(): Promise<void> {
-    await fadeAnimation(titleLayer().fadeInfo);
+    await titleLayer().fade({ targetOpacity: 1, durationMs: fadeTime.title });
 }
 
 async function triggerInitAudioContext(inputInfo: InputInfo): Promise<void> {
-    if (isGameStatus(GameStatus.InitGame) && inputInfo.isType(EventType.pointerdown)) {
-        initAudioContext();
-        setGameStatus(GameStatus.Ready);
-    }
+    if (!isGameStatus(GameStatus.InitGame)) return;
+    if (!inputInfo.isType(EventType.pointerdown)) return;
+
+    initAudioContext();
+    setGameStatus(GameStatus.Ready);
 }
 
 async function startGameIntro(inputInfo: InputInfo): Promise<void> {
-    if (isGameStatus(GameStatus.Ready) && inputInfo.isType(EventType.pointerup)) {
-        playStartupMusic();
-        await fadeAnimation(titleLayer().fadeInfo);
-        await fadeAnimation(controlLayer().fadeInfo);
+    if (!isGameStatus(GameStatus.Ready)) return;
+    if (!inputInfo.isType(EventType.pointerup)) return;
 
-        setGameStatus(GameStatus.Running);
-    }
+    playStartupMusic();
+    await titleLayer().fade({ targetOpacity: 0, durationMs: fadeTime.title });
+    await controlLayer().fade({ targetOpacity: 1 });
+    setGameStatus(GameStatus.Running);
 }
 
-async function resetButtonClick(inputInfo: InputInfo): Promise<void> {
-    if (isGameStatus(GameStatus.Running)
-         && inputInfo.isType(EventType.pointerdown)
-         && restartButton().containsPoint(inputInfo.screenPosition)) {
+async function triggerRestart(inputInfo: InputInfo): Promise<void> {
+    if (!isGameStatus(GameStatus.Running)) return;
+    if (!inputInfo.isType(EventType.pointerdown)) return;
+    if (!restartButton().containsPoint(inputInfo.screenPosition)) return;
+    
+    restartButton().opacity.set(1);
+    setGameStatus(GameStatus.Restarting);
+}
 
-
-        setGameStatus(GameStatus.Stopped);
-        window.location.reload();
-    }
+async function executeRestart(inputInfo: InputInfo): Promise<void> {
+    if (!isGameStatus(GameStatus.Restarting)) return;
+    if (!inputInfo.isType(EventType.pointerup)) return;
+    
+    await mainContainer().fade({ targetOpacity: 0 });
+    window.location.reload();
 }

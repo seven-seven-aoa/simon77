@@ -40,13 +40,13 @@ main {
     width: var(--xvw);
     height: var(--xvh);
     background-color: var(--bac);
+    opacity: 1;
 }
-
 
 section {
     position: fixed;
-    opacity: .45;
-    
+    opacity: 0;
+
     width: var(--xvw);
     height: var(--xvh);
 
@@ -54,7 +54,6 @@ section {
     border-style: solid;
     border-color: var(--bor);
 
-    opacity: 0;
 }
 
 section.titleLayer {
@@ -66,10 +65,11 @@ section.titleLayer {
 }
 
 section.controlLayer {
-    color: #ff0000;
-    font-size: 7rem;
+    padding: 5rem;
 }
 
 section.controlLayer img {
-    width: 7rem;
+    width: 10rem;
+    float: right;
+    opacity: .19;
 }
