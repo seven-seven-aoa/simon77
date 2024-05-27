@@ -2,7 +2,7 @@ import { dxSingle, dxMultiple } from "../core/DomX";
 import { ElementX } from "../core/ElementX";
 import { fadeTime } from "./TimeConstants";
 
-export { mainContainer, buttonArray, buttonLayer, controlLayer, debugLayer, scoreLayer, titleLayer };
+export { mainContainer, buttonArray, buttonLayer, controlLayer, restartButton, debugLayer, scoreLayer, titleLayer };
 
 
 function mainContainer(): ElementX {
@@ -23,6 +23,13 @@ function buttonLayer(): ElementX {
 
 function controlLayer(): ElementX {
     const elx: ElementX = dxSingle("main > section.controlLayer");
+    elx.fadeInfo.fadeInConfig.durationMs = fadeTime.control.in;
+    elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.control.out;
+    return elx;
+}
+
+function restartButton(): ElementX {
+    const elx: ElementX = dxSingle("main > section.controlLayer > img#restartButton");
     elx.fadeInfo.fadeInConfig.durationMs = fadeTime.control.in;
     elx.fadeInfo.fadeOutConfig.durationMs = fadeTime.control.out;
     return elx;

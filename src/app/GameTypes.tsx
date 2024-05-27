@@ -43,6 +43,7 @@ enum GameStatus {
     InitLevels           = "InitLevels",
     Ready                = "Ready",
     Running              = "Running",
+    Stopped              = "Stopped",
     WaitingForTouchEnd   = "WaitingForTouchEnd",
     WaitingForTouchStart = "WaitingForTouchStart",
 }

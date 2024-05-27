@@ -14,7 +14,7 @@ import { initLevels } from "./app/LevelManager";
 // styles/assets //
 import "./fonts/GameMusicLove.css";
 import "./Style.css";
-import { restartImage } from "./images";
+import { restartButtonImage } from "./images";
 
 // init app //
 const _version: string = "Ximon '77 - v0.1.0";
@@ -40,9 +40,8 @@ function App() {
             </section>
             <section className="buttonLayer">{_buttons}</section>
             <section className="controlLayer">
-                <img src={restartImage} id="restart" />
+                <img src={restartButtonImage} id="restartButton" />
             </section>
-            <section className="debugLayer">{_version}</section>
             <section className="scoreLayer">
                 Score: <span className="scoreValue"></span>
             </section>

@@ -7,11 +7,11 @@ import { initAudioContext } from "../core/SoundManager";
 // app //
 import { delayTime, fadeTime } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
-import { isGameEvent, setGameStatus } from "./GameStatus";
+import { isGameStatus, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
-import { controlLayer, mainContainer, titleLayer } from "./GameElements";
+import { controlLayer, mainContainer, restartButton, titleLayer } from "./GameElements";
 
-export { initGame, };
+export { initGame };
 
 function initGame(): number {
     setGameStatus(GameStatus.InitGame);
@@ -20,7 +20,7 @@ function initGame(): number {
 
     initInput({
         captor: mainContainer(),
-        observers: [triggerInitAudioContext, startGameIntro],
+        observers: [triggerInitAudioContext, startGameIntro, resetButtonClick],
     });
 
     return setTimeout(showTitleScreen, delayTime.gameIntro);
@@ -31,19 +31,29 @@ async function showTitleScreen(): Promise<void> {
 }
 
 async function triggerInitAudioContext(inputInfo: InputInfo): Promise<void> {
-    if (isGameEvent(GameStatus.InitGame, inputInfo, EventType.pointerdown)) {
+    if (isGameStatus(GameStatus.InitGame) && inputInfo.isType(EventType.pointerdown)) {
         initAudioContext();
         setGameStatus(GameStatus.Ready);
     }
 }
 
 async function startGameIntro(inputInfo: InputInfo): Promise<void> {
-    if (isGameEvent(GameStatus.Ready, inputInfo, EventType.pointerup)) {
-        
+    if (isGameStatus(GameStatus.Ready) && inputInfo.isType(EventType.pointerup)) {
         playStartupMusic();
         await fadeAnimation(titleLayer().fadeInfo);
         await fadeAnimation(controlLayer().fadeInfo);
 
         setGameStatus(GameStatus.Running);
+    }
+}
+
+async function resetButtonClick(inputInfo: InputInfo): Promise<void> {
+    if (isGameStatus(GameStatus.Running)
+         && inputInfo.isType(EventType.pointerdown)
+         && restartButton().containsPoint(inputInfo.screenPosition)) {
+
+
+        setGameStatus(GameStatus.Stopped);
+        window.location.reload();
     }
 }

@@ -1,5 +1,5 @@
-import playImage from "./play.png";
-import pauseImage from "./pause.png";
-import restartImage from "./restart.png";
+import playButtonImage from "./play.png";
+import pauseButtonImage from "./pause.png";
+import restartButtonImage from "./restart.png";
 
-export { playImage, pauseImage, restartImage };
+export { playButtonImage, pauseButtonImage, restartButtonImage };

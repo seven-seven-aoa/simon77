@@ -14,41 +14,45 @@
     user-select: none;
 }
 
-html {
-    font-size: calc(100svw / 100);
-}
-
-body {
-    background-color: #000000;
-    background-color: #ffffff;
-}
-
-main {
-    width: 100vw;
-    height: 100vh;
-
-    
-    background-color: #000000;
-    
+:root {
+    --xvw: 100svw;
+    --xvh: 100svh;
+    --bac: #000000;
+    --bor: #0000ff;
 }
 
 @media screen and (orientation: landscape) {
-    main {
-        width: calc(100svh * 0.5625);
-        border-color: #0000ff;
+    :root {
+        --xvw: calc(var(--xvh) * 0.5625);
     }
 }
+
+html {
+    font-size: calc(var(--xvw) / 100);
+}
+
+body {
+    background-color: #ffffff;
+    background-color: var(--bac);
+}
+
+main {
+    width: var(--xvw);
+    height: var(--xvh);
+    background-color: var(--bac);
+}
+
 
 section {
     position: fixed;
     opacity: .45;
     
-    width: 100svw;
-    height: 100svh;
+    width: var(--xvw);
+    height: var(--xvh);
 
     border-width: 1rem;
     border-style: solid;
-    border-color: #0000ff;
+    border-color: var(--bor);
 
     opacity: 0;
 }
@@ -58,7 +62,7 @@ section.titleLayer {
     font-size: 14rem;
     text-align: center;
     vertical-align: middle;
-    line-height: 100svh;
+    line-height: var(--xvh);
 }
 
 section.controlLayer {

@@ -1,7 +1,5 @@
-import { EventType } from "../core/EventTypes";
-import { InputInfo } from "../core/InputManager";
 import { GameStatus } from "./GameTypes";
-export { getGameStatus, setGameStatus, isGameStatus, isGameEvent };
+export { getGameStatus, setGameStatus, isGameStatus };
 
 let _value: GameStatus = GameStatus.None;
 
@@ -17,8 +15,4 @@ function setGameStatus(value: GameStatus): GameStatus {
 
 function isGameStatus(value: GameStatus): boolean {
     return _value === value;
-}
-
-function isGameEvent(gameStatus: GameStatus, inputInfo: InputInfo, eventType: EventType): boolean {
-    return isGameStatus(gameStatus) && inputInfo.isType(eventType);
 }
