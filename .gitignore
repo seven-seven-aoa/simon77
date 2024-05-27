@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # other artifacts
-!.vscode/extensions.json
+!.vscode/extensions.jsonF
 .DS_Store
 .idea
 .vs/*
