@@ -36,7 +36,7 @@ async function playGameOverMusic() {
     let delayValue: number = 0;
     let notes: string[] = [];
 
-    if (getGameStatus() === GameStatus.FinalWon) {
+    if (getGameStatus() === GameStatus.GameOverWinner) {
         delayValue = 50;
         notes = ["C3", "E3", "G3", 
                  "C4", "E4", "G4", 

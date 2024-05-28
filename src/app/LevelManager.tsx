@@ -10,7 +10,7 @@ export { initLevels, popLevel, runLevel };
 const _levels: GameLevel[] = [];
 
 function initLevels() {
-    setGameStatus(GameStatus.InitLevels);
+    setGameStatus(GameStatus.GameLevelInit);
     const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
 
     for (let i = 0; i < speeds.length; i++) {
@@ -44,5 +44,5 @@ async function runLevel(level: GameLevel) {
     }
 
     clearUserSequence();
-    setGameStatus(GameStatus.WaitingForTouchStart);
+    setGameStatus(GameStatus.UserTurnReady);
 }

@@ -7,6 +7,7 @@ const delayTime = {
 
 const fadeTime = {
     title: 900,
+    controlButtonActivate: 300,
 };
 
 const loopTime = {

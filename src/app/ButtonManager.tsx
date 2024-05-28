@@ -9,14 +9,14 @@ import { delay } from "../core/TimeManager";
 // app //
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./GameTypes";
-import { getGameStatus, setGameStatus } from "./GameStatus";
+import { isGameStatus, setGameStatus } from "./GameStatus";
 import { loopTime } from "./TimeConstants";
 
 export { initButtons, renderButtons, sequenceTrigger, handleTouchEnd, handleTouchStart };
 const _buttons: Button[] = [];
 
 function initButtons() {
-    setGameStatus(GameStatus.InitButtons);
+    setGameStatus(GameStatus.GameButtonInit);
     const buttonCount: number = 4;
     const musicNotes: string[] = ["C4", "Eb4", "G4", "Bb4"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
@@ -74,30 +74,28 @@ function renderButtons(): JSX.Element[] {
 }
 
 function handleTouchStart(event: any) {
-    if (getGameStatus() !== GameStatus.WaitingForTouchStart) {
-        return;
-    }
-    setGameStatus(GameStatus.WaitingForTouchEnd);
+    if (!isGameStatus(GameStatus.UserTurnReady)) return;
+    // setGameStatus(GameStatus.Us);
     animateTouchStart(event.target);
 }
 
 async function handleTouchEnd(event: any) {
-    if (getGameStatus() !== GameStatus.WaitingForTouchEnd) {
-        return;
-    }
+    // if (getGameStatus() !== GameStatus.WaitingForUserTurn) {
+    //     return;
+    // }
     await delay(loopTime.throttle.default);
     animateTouchEnd(event.target);
 
     addUserStep(event.target.key);
     switch (compareSequences()) {
         case CompareResult.Match:
-            setGameStatus(GameStatus.FinalWon);
+            setGameStatus(GameStatus.GameOverWinner);
             break;
         case CompareResult.Partial:
-            setGameStatus(GameStatus.WaitingForTouchStart);
+            setGameStatus(GameStatus.UserTurnReady);
             break;
         case CompareResult.Mismatch:
-            setGameStatus(GameStatus.FinalLost);
+            setGameStatus(GameStatus.GameOverLoser);
             break;
         default:
             throw new Error("Invalid comparison result");

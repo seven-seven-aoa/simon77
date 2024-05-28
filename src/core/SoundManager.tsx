@@ -1,3 +1,5 @@
+import { delay } from "./TimeManager";
+
 export type { MusicNote };
 export { playNote, RampType, initAudioContext };
 
@@ -31,7 +33,7 @@ function getAudioContext(): AudioContext {
     return ctx;
 }
 
-function initAudioContext(): void {
+function initAudioContext() {
     if (ctx !== null) {
         throw new Error("AudioContext already initialized");
     }

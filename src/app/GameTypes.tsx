@@ -35,18 +35,20 @@ interface GameLevel {
 }
 
 enum GameStatus {
-    None                 = "None",
-    FinalLost            = "FinalLost",
-    FinalWon             = "FinalWon",
-    InitButtons          = "InitButtons",
-    InitGame             = "InitGame",
-    InitLevels           = "InitLevels",
-    Ready                = "Ready",
-    Restarting           = "Restarting",
-    Running              = "Running",
-    Stopped              = "Stopped",
-    WaitingForTouchEnd   = "WaitingForTouchEnd",
-    WaitingForTouchStart = "WaitingForTouchStart",
+    None               = "None",
+    GameButtonInit     = "GameButtonInit",
+    GameIntro          = "GameIntro",
+    GameLevelInit      = "GameLevelInit",
+    GameOverLoser      = "GameOverLoser",
+    GameOverWinner     = "GameOverWinner",
+    Restarting         = "Restarting",
+    RestartInit        = "RestartInit",
+    Running            = "Running",
+    Starting           = "Starting",
+    Stopped            = "Stopped",
+    UserInit           = "UserInit",
+    UserInitReady      = "UserInitReady",
+    UserTurnReady      = "UserTurnReady",
 }
 
 interface SequenceStep {

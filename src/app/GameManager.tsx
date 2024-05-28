@@ -13,31 +13,32 @@ import { controlLayer, mainContainer, restartButton, titleLayer } from "./GameEl
 export { initGame };
 
 function initGame(): number {
-    setGameStatus(GameStatus.InitGame);
+    setGameStatus(GameStatus.GameIntro);
     initInput({
         captor: mainContainer(),
         observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart],
     });
-
     return setTimeout(showTitleScreen, delayTime.gameIntro);
 }
 
 async function showTitleScreen(): Promise<void> {
     await titleLayer().fade({ targetOpacity: 1, durationMs: fadeTime.title });
+    setGameStatus(GameStatus.UserInitReady);
 }
 
-async function triggerInitAudioContext(inputInfo: InputInfo): Promise<void> {
-    if (!isGameStatus(GameStatus.InitGame)) return;
+function triggerInitAudioContext(inputInfo: InputInfo): void {
+    if (!isGameStatus(GameStatus.UserInitReady)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
 
     initAudioContext();
-    setGameStatus(GameStatus.Ready);
+    setGameStatus(GameStatus.UserInit);
 }
 
 async function startGameIntro(inputInfo: InputInfo): Promise<void> {
-    if (!isGameStatus(GameStatus.Ready)) return;
+    if (!isGameStatus(GameStatus.UserInit)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
 
+    setGameStatus(GameStatus.Starting);
     playStartupMusic();
     await titleLayer().fade({ targetOpacity: 0, durationMs: fadeTime.title });
     await controlLayer().fade({ targetOpacity: 1 });
@@ -48,15 +49,15 @@ async function triggerRestart(inputInfo: InputInfo): Promise<void> {
     if (!isGameStatus(GameStatus.Running)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     if (!restartButton().containsPoint(inputInfo.screenPosition)) return;
-    
-    restartButton().opacity.set(1);
+
+    await restartButton().fade({ targetOpacity: 1, durationMs: fadeTime.controlButtonActivate });
     setGameStatus(GameStatus.Restarting);
 }
 
 async function executeRestart(inputInfo: InputInfo): Promise<void> {
     if (!isGameStatus(GameStatus.Restarting)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
-    
+
     await mainContainer().fade({ targetOpacity: 0 });
     window.location.reload();
 }
