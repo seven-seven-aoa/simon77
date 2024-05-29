@@ -1,3 +1,5 @@
+import { delay } from "./TimeManager";
+
 export type { MusicNote };
 export { playNote, RampType, initAudioContext };
 
@@ -39,6 +41,7 @@ function initAudioContext() {
 }
 
 function playNote(props: MusicNote) {
+    
     props.note ??= "A4";
     props.wave ??= "triangle";
     props.gain ??= [];

@@ -28,11 +28,11 @@ function clearUserSequence() {
     userSequence = "";
 }
 
-function addUserStep(buttonId: number) {
+function addUserStep(buttonIndex: number) {
     if (userSequence.length > 0) {
         userSequence += ",";
     }
-    userSequence += buttonId;
+    userSequence += buttonIndex;
 }
 
 let gameSequence: string = "";

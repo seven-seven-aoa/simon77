@@ -1,19 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JSX } from "react";
 
 // core //
 import { playNote } from "../core/SoundManager";
 import { setCSSVariable } from "../core/StyleManager";
-// import { delay } from "../core/TimeManager";
 
 // app //
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./GameTypes";
 import { isGameStatus, setGameStatus } from "./GameStatus";
-// import { loopTime } from "./TimeConstants";
+import { buttonArray, glowingArray } from "./GameElements";
+import { InputInfo } from "../core/InputManager";
+import { EventType } from "../core/EventTypes";
 
-export { initButtons, renderButtons, sequenceTrigger, handleTouchEnd, handleTouchStart };
+export { initButtons, pushButton, releaseButton, renderButtons, sequenceTrigger };
 const _buttons: Button[] = [];
+const _spots: string[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+const _buttonSpots = new Map<string, Button>();
+let _currentlyPushedButton: Button | null = null;
 
 function initButtons() {
     setGameStatus(GameStatus.GameButtonInit);
@@ -23,13 +26,24 @@ function initButtons() {
     const borderColors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
     const backColors: string[] = ["#BB0000", "#00BB00", "#0000AA", "#CCCC00"];
 
-    for (let key = 0; key < buttonCount; key++) {
+    for (let index = 0; index < buttonCount; index++) {
         const button: Button = {
-            key: key,
+            index: index,
+            input: {
+                push: () => {
+                    glowingArray()[index].fade({ targetOpacity: 1, durationMs: 100 });
+                    button.sound.oscillator = playNote(button.sound.musicNote);
+                },
+                release: () => {
+                    glowingArray()[index].fade({ targetOpacity: 0, durationMs: 100 });
+                    button.sound.oscillator!.stop();
+                },
+            },
+            spot: _spots[index],
             sound: {
                 musicNote: {
                     nostop: true,
-                    note: musicNotes[key],
+                    note: musicNotes[index],
                     startGain: 0.4,
                     wave: "triangle",
                 },
@@ -37,53 +51,44 @@ function initButtons() {
             },
             style: {
                 cssProperties: {
-                    color: backColors[key],
-                    backgroundColor: backColors[key],
-                    borderColor: borderColors[key],
+                    color: backColors[index],
+                    backgroundColor: backColors[index],
+                    borderColor: borderColors[index],
                 },
                 cssVarGlowColor: setCSSVariable({
                     rootName: ":root",
-                    varName: `glowColor_${key}`,
-                    value: glowColors[key],
+                    varName: `glowColor_${index}`,
+                    value: glowColors[index],
                 }),
                 isGlowing: false,
             },
         };
 
         _buttons.push(button);
+        _buttonSpots.set(button.spot, button);
     }
 }
 
-function getClassName(button: Button): string {
-    return button.style.isGlowing ? "button glowing" : "button";
-}
-
-function renderButtons(): JSX.Element[] {
-    let spotIndex = 0;
-    const spots: string[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
-    const jsx: JSX.Element[] = [];
-    for (const button of _buttons) {
-        const spot: string = spots[spotIndex++];
-        const className: string = `button ${spot}`;
-        jsx.push(<div key={spot} className={className} style={button.style.cssProperties}></div>);
-    }
-    return jsx;
-}
-
-function handleTouchStart(event: any) {
+function pushButton(inputInfo: InputInfo) {
     if (!isGameStatus(GameStatus.UserTurnReady)) return;
-    // setGameStatus(GameStatus.Us);
-    animateTouchStart(event.target);
+    if (!inputInfo.isType(EventType.pointerdown)) return;
+    const button = buttonArray().find((b) => b.containsPoint(inputInfo.screenPosition));
+    if (!button) return;
+
+    setGameStatus(GameStatus.UserPushedButton);
+    _currentlyPushedButton = _buttonSpots.get(button.key)!;
+    _currentlyPushedButton.input.push();
 }
 
-async function handleTouchEnd(event: any) {
-    // if (getGameStatus() !== GameStatus.WaitingForUserTurn) {
-    //     return;
-    // }
-    // await delay(loopTime.throttle.default);
-    animateTouchEnd(event.target);
+function releaseButton(inputInfo: InputInfo) {
+    if (!isGameStatus(GameStatus.UserPushedButton)) return;
+    if (!inputInfo.isType(EventType.pointerup)) return;
+    if (!_currentlyPushedButton) return;
 
-    addUserStep(event.target.key);
+    _currentlyPushedButton.input.release();
+    addUserStep(_currentlyPushedButton.index);
+    _currentlyPushedButton = null;
+
     switch (compareSequences()) {
         case CompareResult.Match:
             setGameStatus(GameStatus.GameOverWinner);
@@ -99,26 +104,21 @@ async function handleTouchEnd(event: any) {
     }
 }
 
-function sequenceTrigger(buttonKey: number, glowSpeed: number) {
-    const button = _buttons[buttonKey];
-    animateTouchStart(button);
+function renderButtons(): JSX.Element[] {
+    let spotIndex = 0;
+    const jsx: JSX.Element[] = [];
+    for (const button of _buttons) {
+        const spot: string = _spots[spotIndex++];
+        const className: string = `button ${spot}`;
+        jsx.push(<div key={spot} data-key={spot} className={className} style={button.style.cssProperties}></div>);
+    }
+    return jsx;
+}
+
+function sequenceTrigger(buttonIndex: number, glowSpeed: number) {
+    const button = _buttons[buttonIndex];
+    button.input.push();
     setTimeout(() => {
-        animateTouchEnd(button);
+        button.input.release();
     }, glowSpeed);
-}
-
-function animateTouchStart(button: Button) {
-    if (button.sound.oscillator !== null) {
-        throw new Error("Oscillator already exists");
-    }
-    button.style.isGlowing = true;
-    button.sound.oscillator = playNote(button.sound.musicNote);
-}
-
-function animateTouchEnd(button: Button) {
-    if (button.sound.oscillator === null) {
-        throw new Error("Oscillator does not exist");
-    }
-    button.style.isGlowing = false;
-    button.sound.oscillator.stop();
 }

@@ -1,19 +1,28 @@
 import { dxSingle, dxMultiple } from "../core/DomX";
 import { ElementX } from "../core/ElementX";
 
-export { cacheElements, glowingArray, glowingLayer, mainContainer, buttonArray, buttonLayer, controlLayer, restartButton, debugLayer, scoreLayer, titleLayer };
+export { cacheElements, 
+    buttonArray, 
+    buttonLayer, 
+    controlLayer, 
+    glowingArray, 
+    glowingLayer,
+    mainContainer, 
+    restartButton, 
+    scoreLayer, 
+    titleLayer 
+};
 
 function cacheElements(): void {
-    mainContainer();
     buttonArray();
     buttonLayer();
     controlLayer();
-    restartButton();
-    //debugLayer();
-    scoreLayer();
-    titleLayer();
     glowingArray();
     glowingLayer();
+    mainContainer();
+    restartButton();
+    scoreLayer();
+    titleLayer();
 }
 
 function mainContainer(): ElementX {
@@ -26,7 +35,7 @@ function buttonArray(): ElementX[] {
 }
 
 function buttonLayer(): ElementX {
-    const elx: ElementX = dxSingle("section.buttonLayer", { initialOpacity: 1 });
+    const elx: ElementX = dxSingle("section.buttonLayer", { initialOpacity: 0 });
     return elx;
 }
 
@@ -47,11 +56,6 @@ function controlLayer(): ElementX {
 
 function restartButton(): ElementX {
     const elx: ElementX = dxSingle("section.controlLayer > img#restartButton", { initialOpacity: 0.15 });
-    return elx;
-}
-
-function debugLayer(): ElementX {
-    const elx: ElementX = dxSingle("section.debugLayer");
     return elx;
 }
 

@@ -6,10 +6,10 @@ import { initAudioContext } from "../core/SoundManager";
 // app //
 import { time } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
-import { isGameStatus, setGameStatus } from "./GameStatus";
+import { isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
-import { buttonArray, buttonLayer, cacheElements, controlLayer, glowingArray, mainContainer, restartButton, scoreLayer, titleLayer } from "./GameElements";
-import { delay } from "../core/TimeManager";
+import { buttonLayer, cacheElements, controlLayer, mainContainer, restartButton, scoreLayer, titleLayer } from "./GameElements";
+import { pushButton, releaseButton } from "./ButtonManager";
 
 export { initGame };
 
@@ -17,29 +17,18 @@ function initGame(): number {
     setGameStatus(GameStatus.GameIntro);
     initInput({
         captor: mainContainer(),
-        observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart],
+        observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart, pushButton, releaseButton],
     });
     cacheElements();
     return setTimeout(showTitleScreen, time.beforeTitleLayerFadeIn);
 }
 
-async function blinkTest() {
-    const button = glowingArray()[0];
-    await button.fade({
-        targetOpacity: button.opacity.get() === 0 ? 1 : 0,
-        durationMs: 120,
-    });
-    await delay(600);
-    await blinkTest();
-}
-
 async function showTitleScreen(): Promise<void> {
-    blinkTest();
     await titleLayer().fade({ targetOpacity: 1, durationMs: time.titleLayerFadeIn });
     setGameStatus(GameStatus.UserInitReady);
 }
 
-function triggerInitAudioContext(inputInfo: InputInfo): void {
+function triggerInitAudioContext(inputInfo: InputInfo) {
     if (!isGameStatus(GameStatus.UserInitReady)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
 
@@ -56,11 +45,14 @@ async function startGameIntro(inputInfo: InputInfo): Promise<void> {
     await titleLayer().fade({ targetOpacity: 0, durationMs: time.titleLayerFadeOut });
     await controlLayer().fade({ targetOpacity: 1, durationMs: time.controlLayerFadeIn });
     scoreLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn });
+    buttonLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn });
+
     setGameStatus(GameStatus.Running);
+    setGameStatus(GameStatus.UserTurnReady);
 }
 
 async function triggerRestart(inputInfo: InputInfo): Promise<void> {
-    if (!isGameStatus(GameStatus.Running)) return;
+    if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnReady)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     if (!restartButton().containsPoint(inputInfo.screenPosition)) return;
 

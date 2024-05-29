@@ -4,6 +4,9 @@ export type { ElementX, ScreenPosition, XProps };
 export { toElementX };
 
 interface ElementX extends HTMLElement {
+    attributeNames: string[];
+    key: string;
+
     containsPoint: (position: ScreenPosition) => boolean;
     overlapsWith: (element: ElementX) => boolean;
 
@@ -60,6 +63,8 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
     xprops.initialOpacity ??= 1;
 
     const elementX = element as ElementX;
+    elementX.attributeNames = elementX.getAttributeNames();
+    elementX.key = elementX.getAttribute("data-key") ?? elementX.id;
 
     elementX.showStyle = () => xprops.showStyle!;
     elementX.show = () => {
@@ -110,5 +115,7 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
         const rect = elementX.getBoundingClientRect();
         return position.x >= rect.left && position.x <= rect.right && position.y >= rect.top && position.y <= rect.bottom;
     };
+
+    console.info({ elementX });
     return elementX;
 }

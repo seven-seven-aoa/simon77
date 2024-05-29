@@ -1,5 +1,5 @@
 import { GameStatus } from "./GameTypes";
-export { getGameStatus, setGameStatus, isGameStatus };
+export { getGameStatus, setGameStatus, isGameStatus, isGameStatusAny };
 
 let _value: GameStatus = GameStatus.None;
 
@@ -15,4 +15,8 @@ function setGameStatus(value: GameStatus): GameStatus {
 
 function isGameStatus(value: GameStatus): boolean {
     return _value === value;
+}
+
+function isGameStatusAny(...values: GameStatus[]): boolean {
+    return values.includes(_value);
 }

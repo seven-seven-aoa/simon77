@@ -1,13 +1,20 @@
 import { CSSProperties } from "react";
 import { MusicNote } from "../core/SoundManager";
 
-export type { Button, GameLevel, SequenceStep };
+export type { Button, ButtonInput, GameLevel, SequenceStep };
 export { GameStatus, CompareResult };
 
 interface Button {
-    key: number;
+    index: number;
+    input: ButtonInput;
     sound: ButtonSound;
+    spot: string;
     style: ButtonStyle;
+}
+
+interface ButtonInput {
+    push: () => void;
+    release: () => void;
 }
 
 interface ButtonSound {
@@ -48,6 +55,7 @@ enum GameStatus {
     Stopped            = "Stopped",
     UserInit           = "UserInit",
     UserInitReady      = "UserInitReady",
+    UserPushedButton   = "UserPushedButton",
     UserTurnReady      = "UserTurnReady",
 }
 

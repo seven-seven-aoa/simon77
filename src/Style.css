@@ -48,7 +48,7 @@ main {
     width: var(--xvw);
     height: var(--xvh);
     background-color: var(--mainBackgroundColor);
-    opacity: 1;
+    opacity: 0;
 }
 
 section {
@@ -75,7 +75,7 @@ section.controlLayer {
 section.controlLayer img {
     width: 10rem;
     float: right;
-    opacity: 0.19;
+    opacity: 0;
 }
 
 section.scoreLayer {
@@ -103,6 +103,7 @@ div.buttonContainer {
 }
 
 div.button {
+    opacity: 0;
     width: var(--gameButtonSize);
     height: var(--gameButtonSize);
     display: inline-block;
@@ -122,10 +123,6 @@ div.button.bottomRight {
 div.button.bottomLeft,
 div.button.bottomRight {
     top: calc(var(--gameButtonMargin) * 2);
-}
-
-section.glowingLayer div.button {
-    opacity: 0;
 }
 
 section.glowingLayer div.button.topLeft {
