@@ -4,13 +4,13 @@ import { JSX } from "react";
 // core //
 import { playNote } from "../core/SoundManager";
 import { setCSSVariable } from "../core/StyleManager";
-import { delay } from "../core/TimeManager";
+// import { delay } from "../core/TimeManager";
 
 // app //
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./GameTypes";
 import { isGameStatus, setGameStatus } from "./GameStatus";
-import { loopTime } from "./TimeConstants";
+// import { loopTime } from "./TimeConstants";
 
 export { initButtons, renderButtons, sequenceTrigger, handleTouchEnd, handleTouchStart };
 const _buttons: Button[] = [];
@@ -20,8 +20,8 @@ function initButtons() {
     const buttonCount: number = 4;
     const musicNotes: string[] = ["C4", "Eb4", "G4", "Bb4"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
-    const backColors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
-    const borderColors: string[] = ["#A00000", "#00A000", "#0000A0", "#A0A000"];
+    const borderColors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
+    const backColors: string[] = ["#BB0000", "#00BB00", "#0000AA", "#CCCC00"];
 
     for (let key = 0; key < buttonCount; key++) {
         const button: Button = {
@@ -59,16 +59,13 @@ function getClassName(button: Button): string {
 }
 
 function renderButtons(): JSX.Element[] {
+    let spotIndex = 0;
+    const spots: string[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
     const jsx: JSX.Element[] = [];
     for (const button of _buttons) {
-        jsx.push(
-            <div
-                id={`button_${button.key}`}
-                key={button.key}
-                className={getClassName(button)}
-                style={button.style.cssProperties}
-            ></div>,
-        );
+        const spot: string = spots[spotIndex++];
+        const className: string = `button ${spot}`;
+        jsx.push(<div key={spot} className={className} style={button.style.cssProperties}></div>);
     }
     return jsx;
 }
@@ -83,7 +80,7 @@ async function handleTouchEnd(event: any) {
     // if (getGameStatus() !== GameStatus.WaitingForUserTurn) {
     //     return;
     // }
-    await delay(loopTime.throttle.default);
+    // await delay(loopTime.throttle.default);
     animateTouchEnd(event.target);
 
     addUserStep(event.target.key);

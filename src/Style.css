@@ -2,10 +2,8 @@
     box-sizing: border-box;
     font-family: ximon77;
     font-weight: normal;
-
     margin: 0;
     padding: 0;
-
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -17,8 +15,18 @@
 :root {
     --xvw: 100svw;
     --xvh: 100svh;
-    --bac: #000000;
-    --bor: #0000ff;
+    --mainBorderColor: #0000ff;
+    --mainBorderColor: #000000;
+    --mainBackgroundColor: #000000;
+    --gameButtonSize: 39rem;
+    --gameButtonMargin: calc(var(--gameButtonSize) * 0.13);
+    --doubleButtonSize: calc(var(--gameButtonSize) * 2);
+    --tripleMargin: calc(var(--gameButtonMargin) * 3);
+    --gameButtonContainterSize: calc(var(--doubleButtonSize) + var(--tripleMargin));
+    --boxShadow_a: 0 0 1rem;
+    --boxShadow_b: 0 0 2rem;
+    --boxShadow_c: 0 0 4rem;
+    --boxShadow_d: 0 0 8rem;
 }
 
 @media screen and (orientation: landscape) {
@@ -33,34 +41,30 @@ html {
 
 body {
     background-color: #ffffff;
-    background-color: var(--bac);
+    background-color: var(--mainBackgroundColor);
 }
 
 main {
     width: var(--xvw);
     height: var(--xvh);
-    background-color: var(--bac);
+    background-color: var(--mainBackgroundColor);
     opacity: 1;
 }
 
 section {
     position: fixed;
     opacity: 0;
-
     width: var(--xvw);
     height: var(--xvh);
-
     border-width: 1rem;
     border-style: solid;
-    border-color: var(--bor);
-
+    border-color: var(--mainBorderColor);
 }
 
 section.titleLayer {
     color: #ffff00;
     font-size: 14rem;
     text-align: center;
-    vertical-align: middle;
     line-height: var(--xvh);
 }
 
@@ -71,5 +75,87 @@ section.controlLayer {
 section.controlLayer img {
     width: 10rem;
     float: right;
-    opacity: .19;
+    opacity: 0.19;
+}
+
+section.scoreLayer {
+    padding: 6.5rem 6rem;
+    color: #ffff00;
+    font-size: 6.5rem;
+}
+
+span.scoreValue {
+    color: #ffffff;
+}
+
+section.buttonLayer,
+section.glowingLayer {
+    text-align: center;
+}
+
+div.buttonContainer {
+    width: var(--gameButtonContainterSize);
+    height: var(--gameButtonContainterSize);
+    display: inline-block;
+    position: relative;
+    top: calc(50% - var(--gameButtonContainterSize) / 2);
+    text-align: left;
+}
+
+div.button {
+    width: var(--gameButtonSize);
+    height: var(--gameButtonSize);
+    display: inline-block;
+    position: relative;
+    left: calc(var(--gameButtonMargin) * 1);
+    top: calc(var(--gameButtonMargin) * 1);
+    border-width: 1rem;
+    border-style: solid;
+    border-radius: 2rem;
+}
+
+div.button.topRight,
+div.button.bottomRight {
+    left: calc(var(--gameButtonMargin) * 2);
+}
+
+div.button.bottomLeft,
+div.button.bottomRight {
+    top: calc(var(--gameButtonMargin) * 2);
+}
+
+section.glowingLayer div.button {
+    opacity: 0;
+}
+
+section.glowingLayer div.button.topLeft {
+    box-shadow:
+        var(--boxShadow_a) var(--glowColor_0),
+        var(--boxShadow_b) var(--glowColor_0),
+        var(--boxShadow_c) var(--glowColor_0),
+        var(--boxShadow_d) var(--glowColor_0);
+}
+
+section.glowingLayer div.button.topRight {
+    box-shadow:
+        var(--boxShadow_a) var(--glowColor_1),
+        var(--boxShadow_b) var(--glowColor_1),
+        var(--boxShadow_c) var(--glowColor_1),
+        var(--boxShadow_d) var(--glowColor_1);
+}
+
+section.glowingLayer div.button.bottomLeft {
+    box-shadow:
+        var(--boxShadow_a) var(--glowColor_2),
+        var(--boxShadow_b) var(--glowColor_2),
+        var(--boxShadow_c) var(--glowColor_2),
+        var(--boxShadow_d) var(--glowColor_2);
+}
+
+section.glowingLayer div.button.bottomRight {
+    box-shadow:
+        var(--boxShadow_a) var(--glowColor_3),
+        var(--boxShadow_b) var(--glowColor_3),
+        var(--boxShadow_c) var(--glowColor_3),
+        var(--boxShadow_d) var(--glowColor_3);
 }

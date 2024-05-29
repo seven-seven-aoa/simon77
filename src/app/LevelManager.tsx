@@ -5,8 +5,9 @@ import { GameLevel, GameStatus, SequenceStep } from "./GameTypes";
 import { sequenceTrigger } from "./ButtonManager";
 import { setGameStatus } from "./GameStatus";
 
-export { initLevels, popLevel, runLevel };
+export { initLevels, popLevel, runLevel, gameScore };
 
+let _gameScore: number = 0;
 const _levels: GameLevel[] = [];
 
 function initLevels() {
@@ -21,6 +22,10 @@ function initLevels() {
             playNoteSpeedMs: speed,
         });
     }
+}
+
+function gameScore(): number {
+    return _gameScore;
 }
 
 function popLevel(): GameLevel | undefined {

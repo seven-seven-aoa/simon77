@@ -1,15 +1,16 @@
-export { delayTime, fadeTime, loopTime };
+export { time };
 
-const delayTime = {
-    gameIntro: 900,
-    newLevel: 1700,
-};
+const time = {
+    controlLayerFadeIn: 300,
+    scoreLayerFadeIn: 1900,
+    
+    restartButtonFadeIn: 125,
+    restartButtonFadeSustain: 75,
+    restartButtonFadeOut: 50,
+    
+    beforeTitleLayerFadeIn: 400,
+    titleLayerFadeIn: 600,
+    titleLayerFadeOut: 600,
 
-const fadeTime = {
-    title: 900,
-    controlButtonActivate: 300,
-};
-
-const loopTime = {
-    throttle: { default: 10 },
+    mainContainerFadeOut: 600,
 };

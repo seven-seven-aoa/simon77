@@ -23,7 +23,7 @@ interface ElementX extends HTMLElement {
 interface FadeProps {
     initialOpacity?: number;
     targetOpacity: number;
-    durationMs?: number;
+    durationMs: number;
 }
 
 interface OpacityController {
@@ -93,7 +93,7 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
 
         elementX.opacity.set(fprops.initialOpacity);
         await trackProgress({
-            durationMs: fprops.durationMs ?? 1000,
+            durationMs: fprops.durationMs,
             onUpdate: (progress) => {
                 elementX.opacity.set(fprops.initialOpacity! + progress * range);
             },
