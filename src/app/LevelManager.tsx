@@ -48,22 +48,28 @@ async function runNextLevel() {
     if (isGameStatus(GameStatus.UserTurnFailure)) {
         setGameStatus(GameStatus.GameOverLoser);
         await playGameOverMusic();
+        setGameStatus(GameStatus.FreePlay);
         return;
     }
 
+    if (isGameStatus(GameStatus.FreePlay)) {
+        return;
+    }
+    
     if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnSuccess)) {
         throw new Error("Invalid game status: " + getGameStatus());
     }
-
+    
     if (isGameStatus(GameStatus.UserTurnSuccess)) {
         scoreValue().innerHTML = _currentLevel!.levelNumber.toString();
     }
-
+    
     await delay(time.newLevelDelay);
     _currentLevel = _levels.pop();
     if (!_currentLevel) {
         setGameStatus(GameStatus.GameOverWinner);
         await playGameOverMusic();
+        setGameStatus(GameStatus.FreePlay);
         return;
     }
 

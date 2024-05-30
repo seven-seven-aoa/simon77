@@ -7,11 +7,12 @@ import { setCSSVariable } from "../core/StyleManager";
 // app //
 import { addUserStep, compareSequences } from "./Sequencer";
 import { Button, CompareResult, GameStatus } from "./GameTypes";
-import { isGameStatus, setGameStatus } from "./GameStatus";
+import { isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
 import { buttonArray, glowingArray } from "./GameElements";
 import { InputInfo } from "../core/InputManager";
 import { EventType } from "../core/EventTypes";
 import { runNextLevel } from "./LevelManager";
+import { time } from "./TimeConstants";
 
 export { initButtons, pushButton, releaseButton, renderButtons, sequenceTrigger };
 const _buttons: Button[] = [];
@@ -32,11 +33,17 @@ function initButtons() {
             index: index,
             input: {
                 push: () => {
-                    glowingArray()[index].fade({ targetOpacity: 1, durationMs: 100 });
+                    glowingArray()[index].fade({
+                        targetOpacity: 1,
+                        durationMs: time.buttonPushFadeIn,
+                    });
                     button.sound.oscillator = playNote(button.sound.musicNote);
                 },
                 release: () => {
-                    glowingArray()[index].fade({ targetOpacity: 0, durationMs: 100 });
+                    glowingArray()[index].fade({
+                        targetOpacity: 0,
+                        durationMs: time.buttonPushFadeOut,
+                    });
                     button.sound.oscillator!.stop();
                 },
             },
@@ -71,22 +78,29 @@ function initButtons() {
 }
 
 function pushButton(inputInfo: InputInfo) {
-    if (!isGameStatus(GameStatus.UserTurnNext)) return;
+    if (!isGameStatusAny(GameStatus.UserTurnNext, GameStatus.FreePlay)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     const button = buttonArray().find((b) => b.containsPoint(inputInfo.screenPosition));
     if (!button) return;
 
-    setGameStatus(GameStatus.UserPushedButton);
     _currentlyPushedButton = _buttonSpots.get(button.key)!;
     _currentlyPushedButton.input.push();
+
+    setGameStatus(isGameStatus(GameStatus.FreePlay) ? GameStatus.FreePlayPushedButton : GameStatus.UserPushedButton);
 }
 
 function releaseButton(inputInfo: InputInfo) {
-    if (!isGameStatus(GameStatus.UserPushedButton)) return;
+    if (!isGameStatusAny(GameStatus.UserPushedButton, GameStatus.FreePlayPushedButton)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
     if (!_currentlyPushedButton) return;
 
     _currentlyPushedButton.input.release();
+    if (isGameStatus(GameStatus.FreePlayPushedButton)) {
+        _currentlyPushedButton = null;
+        setGameStatus(GameStatus.FreePlay);
+        return;
+    }
+
     addUserStep(_currentlyPushedButton.index);
     _currentlyPushedButton = null;
 

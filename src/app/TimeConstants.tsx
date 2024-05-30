@@ -13,4 +13,7 @@ export const time = {
 
     mainContainerFadeOut: 600,
     newLevelDelay: 1200,
+
+    buttonPushFadeIn: 0,
+    buttonPushFadeOut: 50,
 };
