@@ -32,7 +32,7 @@ function initLevels() {
     for (let i = 0; i < speeds.length; i++) {
         const speed = speeds[i];
         levelArray.push({
-            levelNumber: i,
+            levelNumber: i + 1,
             glowSpeedMs: speed * 0.65,
             playNoteSpeedMs: speed,
         });
