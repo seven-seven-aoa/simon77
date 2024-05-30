@@ -1,5 +1,3 @@
-import { delay } from "./TimeManager";
-
 export type { MusicNote };
 export { playNote, RampType, initAudioContext };
 
@@ -95,7 +93,7 @@ const minExponentialValue: number = 0.000001;
 //    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 
 function noteFreq(note: string) {
-    const octave: number = parseInt(note[note.length - 1]);
+    const octave: number = Number(note[note.length - 1]);
     if (note.length === 1) note += "_";
     if (note.indexOf("C#") === 0) note = "Db" + octave;
     if (note.indexOf("D#") === 0) note = "Eb" + octave;

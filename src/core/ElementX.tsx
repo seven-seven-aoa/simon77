@@ -86,7 +86,7 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
 
     elementX.opacity = {
         initial: () => xprops.initialOpacity!,
-        get: () => (elementX.style.opacity ? parseFloat(elementX.style.opacity) : 1),
+        get: () => (elementX.style.opacity ? Number(elementX.style.opacity) : 1),
         set: (value: number) => (elementX.style.opacity = value.toString()),
         reset: () => elementX.opacity.set(elementX.opacity.initial()),
     };
@@ -116,6 +116,6 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
         return position.x >= rect.left && position.x <= rect.right && position.y >= rect.top && position.y <= rect.bottom;
     };
 
-    console.info({ elementX });
+    console.debug({ elementX });
     return elementX;
 }

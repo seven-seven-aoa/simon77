@@ -1,53 +1,86 @@
 import { delay } from "../core/TimeManager";
-
-import { addSequenceStep, clearUserSequence,  getSequenceStep } from "./Sequencer";
+import { addSequenceStep, clearUserSequence, getSequenceStep } from "./Sequencer";
 import { GameLevel, GameStatus, SequenceStep } from "./GameTypes";
 import { sequenceTrigger } from "./ButtonManager";
-import { setGameStatus } from "./GameStatus";
+import { getGameStatus, isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
+import { playGameOverMusic } from "./MusicPlayer";
+import { time } from "./TimeConstants";
+import { scoreValue } from "./GameElements";
 
-export { initLevels, popLevel, runLevel, gameScore };
+export { initLevels, runNextLevel };
 
-let _gameScore: number = 0;
+let _levelLimit: number | null = null;
+function getLevelLimit(): number {
+    if (_levelLimit !== null) {
+        return isNaN(_levelLimit) ? 0 : _levelLimit;
+    }
+    const url = new URLSearchParams(window.location.search);
+    _levelLimit = Number(url.get("l"));
+    return getLevelLimit();
+}
+
 const _levels: GameLevel[] = [];
+let _currentLevel: GameLevel | undefined;
+let _sequenceStep: number = -1;
 
 function initLevels() {
     setGameStatus(GameStatus.GameLevelInit);
-    const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
+    const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600].reverse();
+    const levelLimit: number = getLevelLimit();
 
+    const levelArray: GameLevel[] = [];
     for (let i = 0; i < speeds.length; i++) {
         const speed = speeds[i];
-        _levels.push({
-            levelNumber: speeds.length - i,
+        levelArray.push({
+            levelNumber: i,
             glowSpeedMs: speed * 0.65,
             playNoteSpeedMs: speed,
         });
-    }
-}
-
-function gameScore(): number {
-    return _gameScore;
-}
-
-function popLevel(): GameLevel | undefined {
-    return _levels.pop();
-}
-
-async function runLevel(level: GameLevel) {
-    addSequenceStep(1);
-
-    let sequenceStep: number = -1;
-    let levelComplete: boolean = false;
-
-    while (!levelComplete) {
-        const step: SequenceStep = getSequenceStep(++sequenceStep);
-        if (!step) {
-            levelComplete = true;
+        if (levelArray.length === levelLimit) {
             break;
         }
-        sequenceTrigger(step.button, level.glowSpeedMs);
-        await delay(level.playNoteSpeedMs);
+    }
+    _levels.push(...levelArray.reverse());
+    console.info({ _levels });
+}
+
+async function runNextLevel() {
+    if (isGameStatus(GameStatus.UserTurnFailure)) {
+        setGameStatus(GameStatus.GameOverLoser);
+        await playGameOverMusic();
+        return;
     }
 
+    if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnSuccess)) {
+        throw new Error("Invalid game status: " + getGameStatus());
+    }
+
+    if (isGameStatus(GameStatus.UserTurnSuccess)) {
+        scoreValue().innerHTML = _currentLevel!.levelNumber.toString();
+    }
+
+    await delay(time.newLevelDelay);
+    _currentLevel = _levels.pop();
+    if (!_currentLevel) {
+        setGameStatus(GameStatus.GameOverWinner);
+        await playGameOverMusic();
+        return;
+    }
+
+    addSequenceStep(1);
+    await sequencePlayback();
+    _sequenceStep = -1;
+
     clearUserSequence();
-    setGameStatus(GameStatus.UserTurnReady);
+    setGameStatus(GameStatus.UserTurnNext);
+}
+
+async function sequencePlayback() {
+    const step: SequenceStep = getSequenceStep(++_sequenceStep);
+    if (!step) {
+        return;
+    }
+    sequenceTrigger(step.button, _currentLevel!.glowSpeedMs);
+    await delay(_currentLevel!.playNoteSpeedMs);
+    await sequencePlayback();
 }

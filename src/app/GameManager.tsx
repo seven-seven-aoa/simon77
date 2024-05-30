@@ -10,10 +10,12 @@ import { isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
 import { buttonLayer, cacheElements, controlLayer, mainContainer, restartButton, scoreLayer, titleLayer } from "./GameElements";
 import { pushButton, releaseButton } from "./ButtonManager";
+import { initLevels, runNextLevel } from "./LevelManager";
 
 export { initGame };
 
 function initGame(): number {
+    initLevels();
     setGameStatus(GameStatus.GameIntro);
     initInput({
         captor: mainContainer(),
@@ -23,7 +25,7 @@ function initGame(): number {
     return setTimeout(showTitleScreen, time.beforeTitleLayerFadeIn);
 }
 
-async function showTitleScreen(): Promise<void> {
+async function showTitleScreen() {
     await titleLayer().fade({ targetOpacity: 1, durationMs: time.titleLayerFadeIn });
     setGameStatus(GameStatus.UserInitReady);
 }
@@ -36,23 +38,29 @@ function triggerInitAudioContext(inputInfo: InputInfo) {
     setGameStatus(GameStatus.UserInit);
 }
 
-async function startGameIntro(inputInfo: InputInfo): Promise<void> {
+async function startGameIntro(inputInfo: InputInfo) {
     if (!isGameStatus(GameStatus.UserInit)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
 
     setGameStatus(GameStatus.Starting);
     playStartupMusic();
     await titleLayer().fade({ targetOpacity: 0, durationMs: time.titleLayerFadeOut });
-    await controlLayer().fade({ targetOpacity: 1, durationMs: time.controlLayerFadeIn });
-    scoreLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn });
-    buttonLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn });
 
-    setGameStatus(GameStatus.Running);
-    setGameStatus(GameStatus.UserTurnReady);
+    await Promise.all([
+        controlLayer().fade({ targetOpacity: 1, durationMs: time.controlLayerFadeIn }),
+        scoreLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn }),
+        buttonLayer().fade({ targetOpacity: 1, durationMs: time.buttonLayerFadeIn }),
+    ]);
+    runGame();
 }
 
-async function triggerRestart(inputInfo: InputInfo): Promise<void> {
-    if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnReady)) return;
+async function runGame() {
+    setGameStatus(GameStatus.Running);
+    runNextLevel();
+}
+
+async function triggerRestart(inputInfo: InputInfo) {
+    if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnNext, GameStatus.GameOverLoser, GameStatus.GameOverWinner)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     if (!restartButton().containsPoint(inputInfo.screenPosition)) return;
 
@@ -60,7 +68,7 @@ async function triggerRestart(inputInfo: InputInfo): Promise<void> {
     setGameStatus(GameStatus.Restarting);
 }
 
-async function executeRestart(inputInfo: InputInfo): Promise<void> {
+async function executeRestart(inputInfo: InputInfo) {
     if (!isGameStatus(GameStatus.Restarting)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
 

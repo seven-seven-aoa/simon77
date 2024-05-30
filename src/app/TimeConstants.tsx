@@ -1,8 +1,11 @@
+import { buttonLayer } from "./GameElements";
+
 export { time };
 
 const time = {
     controlLayerFadeIn: 300,
-    scoreLayerFadeIn: 1900,
+    scoreLayerFadeIn: 900,
+    buttonLayerFadeIn: 1200,
     
     restartButtonFadeIn: 125,
     restartButtonFadeSustain: 75,
@@ -13,4 +16,5 @@ const time = {
     titleLayerFadeOut: 600,
 
     mainContainerFadeOut: 600,
+    newLevelDelay: 1492,
 };

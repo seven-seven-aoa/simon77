@@ -56,7 +56,9 @@ enum GameStatus {
     UserInit           = "UserInit",
     UserInitReady      = "UserInitReady",
     UserPushedButton   = "UserPushedButton",
-    UserTurnReady      = "UserTurnReady",
+    UserTurnNext       = "UserTurnNext",
+    UserTurnSuccess    = "UserTurnSuccess",
+    UserTurnFailure    = "UserTurnFailure",
 }
 
 interface SequenceStep {

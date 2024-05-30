@@ -9,7 +9,6 @@ import { inputHandler } from "./core/InputManager";
 // app //
 import { initButtons, renderButtons } from "./app/ButtonManager";
 import { initGame } from "./app/GameManager";
-import { initLevels, gameScore } from "./app/LevelManager";
 
 // styles/assets //
 import "./fonts/GameMusicLove.css";
@@ -19,20 +18,21 @@ import { restartButtonImage } from "./images";
 // init app //
 const _version: string = "Ximon '77 - v0.1.0";
 console.info(_version);
-initLevels();
 initButtons();
 
 // init react //
 ReactDOM.createRoot(dxSingle("#root")).render(<App />);
-const _buttons: JSX.Element[] = renderButtons(false);
-const _glowing: JSX.Element[] = renderButtons(true);
+const _buttons: JSX.Element[] = renderButtons();
+const _glowing: JSX.Element[] = renderButtons();
 
 /////////////////
 function App() {
+
     useEffect(() => {
         const game = initGame();
         return () => clearTimeout(game);
-    }, []);
+    });
+    const gameScorePlaceholder: number = 0;
 
     return (
         <main onPointerDown={inputHandler} onPointerUp={inputHandler}>
@@ -41,7 +41,7 @@ function App() {
                 <img src={restartButtonImage} id="restartButton" />
             </section>
             <section className="scoreLayer">
-                Score: <span className="scoreValue">{gameScore()}</span>
+                Score: <span className="scoreValue">{gameScorePlaceholder}</span>
             </section>
             <section className="buttonLayer">
                 <div className="buttonContainer">

@@ -11,6 +11,7 @@ import { isGameStatus, setGameStatus } from "./GameStatus";
 import { buttonArray, glowingArray } from "./GameElements";
 import { InputInfo } from "../core/InputManager";
 import { EventType } from "../core/EventTypes";
+import { runNextLevel } from "./LevelManager";
 
 export { initButtons, pushButton, releaseButton, renderButtons, sequenceTrigger };
 const _buttons: Button[] = [];
@@ -70,7 +71,7 @@ function initButtons() {
 }
 
 function pushButton(inputInfo: InputInfo) {
-    if (!isGameStatus(GameStatus.UserTurnReady)) return;
+    if (!isGameStatus(GameStatus.UserTurnNext)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     const button = buttonArray().find((b) => b.containsPoint(inputInfo.screenPosition));
     if (!button) return;
@@ -89,19 +90,22 @@ function releaseButton(inputInfo: InputInfo) {
     addUserStep(_currentlyPushedButton.index);
     _currentlyPushedButton = null;
 
-    switch (compareSequences()) {
+    const result = compareSequences();
+    switch (result) {
         case CompareResult.Match:
-            setGameStatus(GameStatus.GameOverWinner);
+            setGameStatus(GameStatus.UserTurnSuccess);
             break;
         case CompareResult.Partial:
-            setGameStatus(GameStatus.UserTurnReady);
-            break;
+            setGameStatus(GameStatus.UserTurnNext);
+            return;
         case CompareResult.Mismatch:
-            setGameStatus(GameStatus.GameOverLoser);
+            setGameStatus(GameStatus.UserTurnFailure);
             break;
         default:
-            throw new Error("Invalid comparison result");
+            throw new Error("Invalid comparison result: " + result);
     }
+
+    runNextLevel();
 }
 
 function renderButtons(): JSX.Element[] {

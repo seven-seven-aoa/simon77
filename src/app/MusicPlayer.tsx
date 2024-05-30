@@ -3,7 +3,7 @@ import { RampType, playNote } from "../core/SoundManager";
 import { delay } from "../core/TimeManager";
 
 // app //
-import { getGameStatus } from "./GameStatus";
+import { getGameStatus, isGameStatus } from "./GameStatus";
 import { GameStatus } from "./GameTypes";
 
 export { playStartupMusic, playGameOverMusic };
@@ -36,17 +36,20 @@ async function playGameOverMusic() {
     let delayValue: number = 0;
     let notes: string[] = [];
 
-    if (getGameStatus() === GameStatus.GameOverWinner) {
+    if (isGameStatus(GameStatus.GameOverWinner)) {
         delayValue = 50;
         notes = ["C3", "E3", "G3", 
                  "C4", "E4", "G4", 
                  "C5", "E5", "G5", 
                  "C6", "E6", "G6", "C7"];
     }
-    else {
+    else if (isGameStatus(GameStatus.GameOverLoser)) {
         delayValue = 75;
-        ["F#2", "F#2", "F#2", "F#1", "F#2", 
-         "F#2", "F#2", "F#1", "F#1"];
+        notes = ["F#2", "F#2", "F#2", "F#1", "F#2", 
+                 "F#2", "F#2", "F#1", "F#1"];
+    }
+    else {
+        throw new Error("Invalid game status: " + getGameStatus());
     }
 
     for (let j = 0; j < notes.length; j++) {

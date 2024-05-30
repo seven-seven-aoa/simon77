@@ -10,6 +10,7 @@ export { cacheElements,
     mainContainer, 
     restartButton, 
     scoreLayer, 
+    scoreValue,
     titleLayer 
 };
 
@@ -22,6 +23,7 @@ function cacheElements(): void {
     mainContainer();
     restartButton();
     scoreLayer();
+    scoreValue();
     titleLayer();
 }
 
@@ -61,6 +63,11 @@ function restartButton(): ElementX {
 
 function scoreLayer(): ElementX {
     const elx: ElementX = dxSingle("section.scoreLayer", { initialOpacity: 0 });
+    return elx;
+}
+
+function scoreValue(): ElementX {
+    const elx: ElementX = dxSingle("span.scoreValue", { initialOpacity: 1 });
     return elx;
 }
 
