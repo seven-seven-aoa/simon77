@@ -1,8 +1,4 @@
-import { buttonLayer } from "./GameElements";
-
-export { time };
-
-const time = {
+export const time = {
     controlLayerFadeIn: 300,
     scoreLayerFadeIn: 900,
     buttonLayerFadeIn: 1200,
