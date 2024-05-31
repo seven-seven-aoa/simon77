@@ -33,19 +33,13 @@ function initButtons() {
             index: index,
             input: {
                 press: () => {
-                    glowingArray()[index].fade({
-                        targetValue: 1,
-                        durationMs: 0,
-                    });
+                    glowingArray()[index].fade({ targetValue: 1 });
                     const audio = new MusicNoteAudio(button.sound.musicNote);
                     button.sound.audio.push(audio);
                     audio.start({ gain: 0.09 });
                 },
                 release: async () => {
-                    glowingArray()[index].fade({
-                        targetValue: 0,
-                        durationMs: time.gameButtonReleaseFadeOut,
-                    });
+                    glowingArray()[index].fade({ targetValue: 0 });
                     const audio = button.sound.audio.shift();
                     await audio!.fade({
                         targetGain: 0,

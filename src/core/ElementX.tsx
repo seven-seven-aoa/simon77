@@ -33,7 +33,7 @@ interface OpacityController {
 interface OpacityFade {
     initialValue?: number;
     targetValue: number;
-    durationMs: number;
+    durationMs?: number;
 }
 
 interface ScreenPosition {
@@ -94,8 +94,12 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
 
     elementX.fade = async (fade: OpacityFade) => {
         fade.initialValue ??= elementX.opacity.get();
+        fade.durationMs ??= 0;
+        if (fade.durationMs < 1) {
+            elementX.opacity.set(fade.targetValue);
+            return;
+        }
         const range: number = fade.targetValue - fade.initialValue;
-
         elementX.opacity.set(fade.initialValue);
         await trackProgress({
             durationMs: fade.durationMs,
