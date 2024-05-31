@@ -11,8 +11,8 @@ export { playStartupMusic, playLoserMusic, playWinnerMusic };
 
 async function playStartupMusic() {
     const notes: string[] = ["C3", "C4", "C5", "C6"];
-    let gain: number = 0.31;
-    const decrease: number = 0.1;
+    let gain: number = 0.12
+    const gainIncrement: number = 0.01;
     const hold: number = 35;
     const interval: number = 150;
     const decay: number = 100;
@@ -28,14 +28,14 @@ async function playStartupMusic() {
         note.start({ gain: gain });
         setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
         await delay(interval);
-        gain -= decrease;
+        gain += gainIncrement;
     }
 }
 
 async function playLoserMusic () {
     const notes = ["F#2", "F#2", "F#2", "F#1", "F#2", "F#2", "F#2", "F#1", "F#1"];
-    let gain: number = 0.31;
-    const decrease: number = 0.01;
+    let gain: number = 0.13;
+    const gainIncrement: number = 0.01;
     const hold: number = 35;
     const interval: number = 150;
     const decay: number = 100;
@@ -51,14 +51,14 @@ async function playLoserMusic () {
         note.start({ gain: gain });
         setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
         await delay(interval);
-        gain -= decrease;
+        gain += gainIncrement;
     }
 }
 
 async function playWinnerMusic() {
     const notes = ["C3", "E3", "G3", "C4", "E4", "G4", "C5", "E5", "G5", "C6", "E6", "G6", "C7"];
-    let gain: number = 0.39;
-    const decrease: number = 0.03;
+    let gain: number = 0.16;
+    const gainIncrement: number = 0.01;
     const hold: number = 35;
     let interval: number = 52;
     const speedUp: number = 0;
@@ -75,7 +75,7 @@ async function playWinnerMusic() {
         note.start({ gain: gain });
         setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
         await delay(interval);
-        gain -= decrease;
+        gain += gainIncrement;
         interval += speedUp;
     }
 }
