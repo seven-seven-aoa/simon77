@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { MusicNote } from "../core/SoundManager";
+import { MusicNote, MusicNoteAudio } from "../core/SoundManager";
 
 export type { Button, ButtonInput, GameLevel, SequenceStep };
 export { GameStatus, CompareResult };
@@ -13,13 +13,13 @@ interface Button {
 }
 
 interface ButtonInput {
-    push: () => void;
-    release: () => void;
+    press: () => void;
+    release: () => Promise<void>;
 }
 
 interface ButtonSound {
     musicNote: MusicNote;
-    oscillator: OscillatorNode | null;
+    audio: MusicNoteAudio[];
 }
 
 interface ButtonStyle {
@@ -42,25 +42,25 @@ interface GameLevel {
 }
 
 enum GameStatus {
-    None                 = "None",
-    FreePlay             = "FreePlay",
-    FreePlayPushedButton = "FreePlayPushedButton",
-    GameButtonInit       = "GameButtonInit",
-    GameIntro            = "GameIntro",
-    GameLevelInit        = "GameLevelInit",
-    GameOverLoser        = "GameOverLoser",
-    GameOverWinner       = "GameOverWinner",
-    Restarting           = "Restarting",
-    RestartInit          = "RestartInit",
-    Running              = "Running",
-    Starting             = "Starting",
-    Stopped              = "Stopped",
-    UserInit             = "UserInit",
-    UserInitReady        = "UserInitReady",
-    UserPushedButton     = "UserPushedButton",
-    UserTurnNext         = "UserTurnNext",
-    UserTurnSuccess      = "UserTurnSuccess",
-    UserTurnFailure      = "UserTurnFailure",
+    None                = "None",
+    FreePlay            = "FreePlay",
+    FreePlayPressButton = "FreePlayPressButton",
+    GameButtonInit      = "GameButtonInit",
+    GameIntro           = "GameIntro",
+    GameLevelInit       = "GameLevelInit",
+    GameOverLoser       = "GameOverLoser",
+    GameOverWinner      = "GameOverWinner",
+    Restarting          = "Restarting",
+    RestartInit         = "RestartInit",
+    Running             = "Running",
+    Starting            = "Starting",
+    Stopped             = "Stopped",
+    UserInit            = "UserInit",
+    UserInitReady       = "UserInitReady",
+    UserPressButton     = "UserPressButton",
+    UserTurnNext        = "UserTurnNext",
+    UserTurnSuccess     = "UserTurnSuccess",
+    UserTurnFailure     = "UserTurnFailure",
 }
 
 interface SequenceStep {

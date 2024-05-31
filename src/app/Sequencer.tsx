@@ -3,8 +3,11 @@ export { addSequenceStep, addUserStep, clearUserSequence, compareSequences, getS
 
 const _sequence: SequenceStep[] = [];
 
-function addSequenceStep(count: number = 1) {
-    for (let i = 0; i < count; i++) {
+function addSequenceStep(newNotesCount: number, initialSequenceLength: number) {
+    if (_sequence.length === 0) {
+        newNotesCount = initialSequenceLength;
+    }
+    for (let i = 0; i < newNotesCount; i++) {
         _sequence.push({ button: Math.floor(Math.random() * 4) });
     }
     gameSequence = _sequence.map((step) => step.button).join(",");

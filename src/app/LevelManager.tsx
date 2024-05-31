@@ -9,38 +9,66 @@ import { scoreValue } from "./GameElements";
 
 export { initLevels, runNextLevel };
 
-let _levelLimit: number | null = null;
-function getLevelLimit(): number {
-    if (_levelLimit !== null) {
-        return isNaN(_levelLimit) ? 0 : _levelLimit;
-    }
+interface LevelAdjust {
+    maxLevels: number;
+    skipLevels: number;
+    initialSequenceLength: number;
+    newNoteCountPerLevel: number;
+}
+function getLevelAdjust(defaultMax: number): LevelAdjust {
     const url = new URLSearchParams(window.location.search);
-    _levelLimit = Number(url.get("l"));
-    return getLevelLimit();
+    let adjust: LevelAdjust = {
+        maxLevels: defaultMax,
+        skipLevels: 0,
+        initialSequenceLength: 1,
+        newNoteCountPerLevel: 1,
+    };
+    try {
+        const json = url.get("la");
+        console.info({ json });
+        if (json) {
+            adjust = JSON.parse(json);
+        }
+    } catch (levelAdjustError) {
+        console.warn({ levelAdjustError });
+    }
+    adjust.maxLevels ??= defaultMax;
+    adjust.skipLevels ??= 0;
+    adjust.initialSequenceLength ??= 1;
+    adjust.newNoteCountPerLevel ??= 1;
+    console.info({ adjust });
+    return adjust;
 }
 
 const _levels: GameLevel[] = [];
+let _adjust: LevelAdjust;
 let _currentLevel: GameLevel | undefined;
 let _sequenceStep: number = -1;
 
 function initLevels() {
     setGameStatus(GameStatus.GameLevelInit);
-    const speeds: number[] = [150, 200, 250, 300, 350, 400, 450, 500, 550, 600].reverse();
-    const levelLimit: number = getLevelLimit();
+    const speeds: number[] = [600, 550, 500, 450, 400, 350, 300, 250, 200, 150];
+    _adjust = getLevelAdjust(speeds.length);
+    while (_adjust.maxLevels > speeds.length) {
+        speeds.push(speeds[speeds.length - 1]);
+    }
 
-    const levelArray: GameLevel[] = [];
+    let levelNum = 1;
     for (let i = 0; i < speeds.length; i++) {
         const speed = speeds[i];
-        levelArray.push({
-            levelNumber: i + 1,
+        if (i < _adjust.skipLevels) {
+            continue;
+        }
+        _levels.push({
+            levelNumber: levelNum,
             glowSpeedMs: speed * 0.65,
             playNoteSpeedMs: speed,
         });
-        if (levelArray.length === levelLimit) {
+        levelNum++;
+        if (_levels.length === _adjust.maxLevels) {
             break;
         }
     }
-    _levels.push(...levelArray.reverse());
     console.info({ _levels });
 }
 
@@ -55,17 +83,17 @@ async function runNextLevel() {
     if (isGameStatus(GameStatus.FreePlay)) {
         return;
     }
-    
+
     if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnSuccess)) {
         throw new Error("Invalid game status: " + getGameStatus());
     }
-    
+
     if (isGameStatus(GameStatus.UserTurnSuccess)) {
         scoreValue().innerHTML = _currentLevel!.levelNumber.toString();
     }
-    
+
     await delay(time.newLevelDelay);
-    _currentLevel = _levels.pop();
+    _currentLevel = _levels.shift();
     if (!_currentLevel) {
         setGameStatus(GameStatus.GameOverWinner);
         await playGameOverMusic();
@@ -73,7 +101,8 @@ async function runNextLevel() {
         return;
     }
 
-    addSequenceStep(1);
+    console.info({ _currentLevel });
+    addSequenceStep(_adjust.newNoteCountPerLevel, _adjust.initialSequenceLength);
     await sequencePlayback();
     _sequenceStep = -1;
 

@@ -68,11 +68,11 @@ section.titleLayer {
     line-height: var(--xvh);
 }
 
-section.controlLayer {
+section.settingsBarLayer {
     padding: 5rem;
 }
 
-section.controlLayer img {
+section.settingsBarLayer img {
     width: 10rem;
     float: right;
     opacity: 0;

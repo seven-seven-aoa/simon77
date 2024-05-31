@@ -4,7 +4,7 @@ import { ElementX } from "../core/ElementX";
 export { cacheElements, 
     buttonArray, 
     buttonLayer, 
-    controlLayer, 
+    settingsBarLayer, 
     glowingArray, 
     glowingLayer,
     mainContainer, 
@@ -17,7 +17,7 @@ export { cacheElements,
 function cacheElements(): void {
     buttonArray();
     buttonLayer();
-    controlLayer();
+    settingsBarLayer();
     glowingArray();
     glowingLayer();
     mainContainer();
@@ -51,13 +51,13 @@ function glowingLayer(): ElementX {
     return elx;
 }
 
-function controlLayer(): ElementX {
-    const elx: ElementX = dxSingle("section.controlLayer", { initialOpacity: 0 });
+function settingsBarLayer(): ElementX {
+    const elx: ElementX = dxSingle("section.settingsBarLayer", { initialOpacity: 0 });
     return elx;
 }
 
 function restartButton(): ElementX {
-    const elx: ElementX = dxSingle("section.controlLayer > img#restartButton", { initialOpacity: 0.15 });
+    const elx: ElementX = dxSingle("section.settingsBarLayer > img#restartButton", { initialOpacity: 0.15 });
     return elx;
 }
 

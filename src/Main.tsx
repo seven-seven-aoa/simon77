@@ -37,7 +37,7 @@ function App() {
     return (
         <main onPointerDown={inputHandler} onPointerUp={inputHandler}>
             <section className="titleLayer">Ximon '77</section>
-            <section className="controlLayer">
+            <section className="settingsBarLayer">
                 <img src={restartButtonImage} id="restartButton" />
             </section>
             <section className="scoreLayer">

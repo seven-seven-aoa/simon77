@@ -1,26 +1,66 @@
-export type { MusicNote };
-export { playNote, RampType, initAudioContext };
+import { delay } from "./TimeManager";
 
-enum RampType {
-    none        = "none",
-    exponential = "exponential",
-    liner       = "liner",
-}
+export type { MusicNote };
+export { initAudioContext, MusicNoteAudio };
 
 interface MusicNote {
-    gain?: EnvelopeNode[];
-    nostop?: boolean;
-    note?: string;
-    startGain?: number;
-    wave?: OscillatorType;
+    note: string;
+    wave: OscillatorType;
 }
 
-interface EnvelopeNode {
-    ramp?: RampType;
-    time?: number;
-    value?: number;
+interface AudioStart {
+    gain: number;
 }
 
+interface AudioFade {
+    targetGain: number;
+    durationMs: number;
+}
+
+class MusicNoteAudio {
+    private ctx: AudioContext;
+    private osc: OscillatorNode;
+    private vol: GainNode;
+    private gain: number = 0;
+
+    constructor(note: MusicNote) {
+        this.ctx = getAudioContext();
+        this.osc = this.ctx.createOscillator();
+        this.osc.type = note.wave;
+        this.osc.frequency.value = noteFreq(note.note);
+
+        this.vol = this.ctx.createGain();
+        this.vol.connect(this.ctx.destination);
+        this.osc.connect(this.vol);
+    }
+
+    start(start: AudioStart) {
+        this.gain = start.gain;
+        this.osc.start(this.ctx.currentTime);
+        this.vol.gain.setValueAtTime(this.gain, this.ctx.currentTime);
+    }
+
+    stop() {
+        this.osc.stop(this.ctx.currentTime);
+    }
+
+    async fade(fade: AudioFade) {
+        // this.vol.gain.exponentialRampToValueAtTime(
+        //     Math.max(fade.targetGain, minExponentialValue), 
+        //     this.ctx.currentTime + fade.durationMs / 1000);
+            
+        // this.vol.gain.linearRampToValueAtTime(
+        //     fade.targetGain,
+        //     this.ctx.currentTime + fade.durationMs / 1000);
+
+        this.vol.gain.setValueCurveAtTime([this.gain, fade.targetGain], this.ctx.currentTime, fade.durationMs / 1000);
+        await delay(fade.durationMs);
+        this.gain = fade.targetGain;
+
+    }
+}
+
+// const minExponentialValue: number = 0.000001;
 let ctx: AudioContext | null = null;
 
 function getAudioContext(): AudioContext {
@@ -37,60 +77,6 @@ function initAudioContext() {
     }
     ctx = new AudioContext();
 }
-
-function playNote(props: MusicNote) {
-    
-    props.note ??= "A4";
-    props.wave ??= "triangle";
-    props.gain ??= [];
-    props.nostop ??= false;
-    props.startGain ??= 0;
-
-    const ctx = getAudioContext();
-    const volume = ctx.createGain();
-
-    const startTime = ctx.currentTime;
-    volume.gain.setValueAtTime(props.startGain, startTime);
-
-    let endTime = startTime;
-    for (const node of props.gain) {
-        node.value ??= 0.33;
-        node.value = Math.max(node.value, 0);
-
-        node.time ??= 0;
-        endTime = startTime + node.time;
-
-        node.ramp ??= RampType.none;
-        switch (node.ramp) {
-            case RampType.exponential:
-                node.value = Math.max(node.value, minExponentialValue);
-                volume.gain.exponentialRampToValueAtTime(node.value, endTime);
-                break;
-            case RampType.liner:
-                volume.gain.linearRampToValueAtTime(node.value, endTime);
-                break;
-            default:
-                volume.gain.setValueAtTime(node.value, endTime);
-                break;
-        }
-    }
-
-    const osc = ctx.createOscillator();
-    osc.type = props.wave;
-    osc.frequency.value = noteFreq(props.note);
-
-    volume.connect(ctx.destination);
-    osc.connect(volume);
-    osc.start(startTime);
-    if (!props.nostop) {
-        osc.stop(endTime);
-    }
-    return osc;
-}
-
-const minExponentialValue: number = 0.000001;
-
-//    gain = Math.round((gain + Number.EPSILON) * 100) / 100;
 
 function noteFreq(note: string) {
     const octave: number = Number(note[note.length - 1]);
@@ -230,3 +216,5 @@ const notes: any = {
     Bb8: 7458.62,
     B8: 7902.13,
 };
+
+

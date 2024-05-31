@@ -20,13 +20,7 @@ interface ElementX extends HTMLElement {
     isInitiallyHidden: () => boolean;
 
     opacity: OpacityController;
-    fade: (config: FadeProps) => Promise<void>;
-}
-
-interface FadeProps {
-    initialOpacity?: number;
-    targetOpacity: number;
-    durationMs: number;
+    fade: (fade: OpacityFade) => Promise<void>;
 }
 
 interface OpacityController {
@@ -34,6 +28,12 @@ interface OpacityController {
     get: () => number;
     set: (value: number) => void;
     reset: () => void;
+}
+
+interface OpacityFade {
+    initialValue?: number;
+    targetValue: number;
+    durationMs: number;
 }
 
 interface ScreenPosition {
@@ -92,15 +92,15 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
     };
     elementX.opacity.reset();
 
-    elementX.fade = async (fprops: FadeProps) => {
-        fprops.initialOpacity ??= elementX.opacity.get();
-        const range: number = fprops.targetOpacity - fprops.initialOpacity;
+    elementX.fade = async (fade: OpacityFade) => {
+        fade.initialValue ??= elementX.opacity.get();
+        const range: number = fade.targetValue - fade.initialValue;
 
-        elementX.opacity.set(fprops.initialOpacity);
+        elementX.opacity.set(fade.initialValue);
         await trackProgress({
-            durationMs: fprops.durationMs,
+            durationMs: fade.durationMs,
             onUpdate: (progress) => {
-                elementX.opacity.set(fprops.initialOpacity! + progress * range);
+                elementX.opacity.set(fade.initialValue! + progress * range);
             },
         });
     };

@@ -1,5 +1,5 @@
 export const time = {
-    controlLayerFadeIn: 300,
+    settingsBarLayerFadeIn: 300,
     scoreLayerFadeIn: 600,
     buttonLayerFadeIn: 900,
     
@@ -13,7 +13,5 @@ export const time = {
 
     mainContainerFadeOut: 600,
     newLevelDelay: 1200,
-
-    buttonPushFadeIn: 0,
-    buttonPushFadeOut: 50,
+    gameButtonReleaseFadeOut: 3,
 };

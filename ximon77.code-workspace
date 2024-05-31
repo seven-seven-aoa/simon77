@@ -26,6 +26,7 @@
             "**/*.code-search": true,
             "**/*.code-profile": true,
             "**/*.yml": true
-        }
+        },
+        "editor.wordWrap": "on"
     }
 }

@@ -6,11 +6,12 @@ import { initAudioContext } from "../core/SoundManager";
 // app //
 import { time } from "./TimeConstants";
 import { GameStatus } from "./GameTypes";
-import { isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
+import { isGameStatus, setGameStatus } from "./GameStatus";
 import { playStartupMusic } from "./MusicPlayer";
-import { buttonLayer, cacheElements, controlLayer, mainContainer, restartButton, scoreLayer, titleLayer } from "./GameElements";
-import { pushButton, releaseButton } from "./ButtonManager";
+import { buttonLayer, cacheElements, settingsBarLayer, mainContainer, scoreLayer, titleLayer } from "./GameElements";
+import { pressButton, releaseButton } from "./ButtonManager";
 import { initLevels, runNextLevel } from "./LevelManager";
+import { triggerRestart, executeRestart } from "./SettingsManager";
 
 export { initGame };
 
@@ -19,14 +20,14 @@ function initGame(): number {
     setGameStatus(GameStatus.GameIntro);
     initInput({
         captor: mainContainer(),
-        observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart, pushButton, releaseButton],
+        observers: [triggerInitAudioContext, startGameIntro, triggerRestart, executeRestart, pressButton, releaseButton],
     });
     cacheElements();
     return setTimeout(showTitleScreen, time.beforeTitleLayerFadeIn);
 }
 
 async function showTitleScreen() {
-    await titleLayer().fade({ targetOpacity: 1, durationMs: time.titleLayerFadeIn });
+    await titleLayer().fade({ targetValue: 1, durationMs: time.titleLayerFadeIn });
     setGameStatus(GameStatus.UserInitReady);
 }
 
@@ -44,12 +45,12 @@ async function startGameIntro(inputInfo: InputInfo) {
 
     setGameStatus(GameStatus.Starting);
     playStartupMusic();
-    await titleLayer().fade({ targetOpacity: 0, durationMs: time.titleLayerFadeOut });
+    await titleLayer().fade({ targetValue: 0, durationMs: time.titleLayerFadeOut });
 
     await Promise.all([
-        controlLayer().fade({ targetOpacity: 1, durationMs: time.controlLayerFadeIn }),
-        scoreLayer().fade({ targetOpacity: 1, durationMs: time.scoreLayerFadeIn }),
-        buttonLayer().fade({ targetOpacity: 1, durationMs: time.buttonLayerFadeIn }),
+        settingsBarLayer().fade({ targetValue: 1, durationMs: time.settingsBarLayerFadeIn }),
+        scoreLayer().fade({ targetValue: 1, durationMs: time.scoreLayerFadeIn }),
+        buttonLayer().fade({ targetValue: 1, durationMs: time.buttonLayerFadeIn }),
     ]);
     runGame();
 }
@@ -57,29 +58,4 @@ async function startGameIntro(inputInfo: InputInfo) {
 async function runGame() {
     setGameStatus(GameStatus.Running);
     runNextLevel();
-}
-
-async function triggerRestart(inputInfo: InputInfo) {
-    if (!isGameStatusAny(GameStatus.Running, GameStatus.UserTurnNext, GameStatus.GameOverLoser, GameStatus.GameOverWinner)) return;
-    if (!inputInfo.isType(EventType.pointerdown)) return;
-    if (!restartButton().containsPoint(inputInfo.screenPosition)) return;
-
-    restartButton().fade({ targetOpacity: 1, durationMs: time.restartButtonFadeIn });
-    setGameStatus(GameStatus.Restarting);
-}
-
-async function executeRestart(inputInfo: InputInfo) {
-    if (!isGameStatus(GameStatus.Restarting)) return;
-    if (!inputInfo.isType(EventType.pointerup)) return;
-
-    setTimeout(
-        () =>
-            restartButton().fade({
-                targetOpacity: 0,
-                durationMs: time.restartButtonFadeOut,
-            }),
-        time.restartButtonFadeSustain,
-    );
-    await mainContainer().fade({ targetOpacity: 0, durationMs: time.mainContainerFadeOut });
-    window.location.reload();
 }

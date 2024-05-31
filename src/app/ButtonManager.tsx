@@ -1,7 +1,7 @@
 import { JSX } from "react";
 
 // core //
-import { playNote } from "../core/SoundManager";
+import { MusicNoteAudio } from "../core/SoundManager";
 import { setCSSVariable } from "../core/StyleManager";
 
 // app //
@@ -14,11 +14,11 @@ import { EventType } from "../core/EventTypes";
 import { runNextLevel } from "./LevelManager";
 import { time } from "./TimeConstants";
 
-export { initButtons, pushButton, releaseButton, renderButtons, sequenceTrigger };
+export { initButtons, pressButton, releaseButton, renderButtons, sequenceTrigger };
 const _buttons: Button[] = [];
 const _spots: string[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
 const _buttonSpots = new Map<string, Button>();
-let _currentlyPushedButton: Button | null = null;
+let _currentButton: Button | null = null;
 
 function initButtons() {
     setGameStatus(GameStatus.GameButtonInit);
@@ -32,30 +32,34 @@ function initButtons() {
         const button: Button = {
             index: index,
             input: {
-                push: () => {
+                press: () => {
                     glowingArray()[index].fade({
-                        targetOpacity: 1,
-                        durationMs: time.buttonPushFadeIn,
+                        targetValue: 1,
+                        durationMs: 0,
                     });
-                    button.sound.oscillator = playNote(button.sound.musicNote);
+                    const audio = new MusicNoteAudio(button.sound.musicNote);
+                    button.sound.audio.push(audio);
+                    audio.start({ gain: 1 });
                 },
-                release: () => {
+                release: async () => {
                     glowingArray()[index].fade({
-                        targetOpacity: 0,
-                        durationMs: time.buttonPushFadeOut,
+                        targetValue: 0,
+                        durationMs: time.gameButtonReleaseFadeOut,
                     });
-                    button.sound.oscillator!.stop();
+                    const audio = button.sound.audio.shift();
+                    await audio!.fade({
+                        targetGain: 0,
+                        durationMs: time.gameButtonReleaseFadeOut,
+                    });
                 },
             },
             spot: _spots[index],
             sound: {
                 musicNote: {
-                    nostop: true,
                     note: musicNotes[index],
-                    startGain: 0.4,
                     wave: "triangle",
                 },
-                oscillator: null,
+                audio: [],
             },
             style: {
                 cssProperties: {
@@ -77,32 +81,32 @@ function initButtons() {
     }
 }
 
-function pushButton(inputInfo: InputInfo) {
+function pressButton(inputInfo: InputInfo) {
     if (!isGameStatusAny(GameStatus.UserTurnNext, GameStatus.FreePlay)) return;
     if (!inputInfo.isType(EventType.pointerdown)) return;
     const button = buttonArray().find((b) => b.containsPoint(inputInfo.screenPosition));
     if (!button) return;
 
-    _currentlyPushedButton = _buttonSpots.get(button.key)!;
-    _currentlyPushedButton.input.push();
+    _currentButton = _buttonSpots.get(button.key)!;
+    _currentButton.input.press();
 
-    setGameStatus(isGameStatus(GameStatus.FreePlay) ? GameStatus.FreePlayPushedButton : GameStatus.UserPushedButton);
+    setGameStatus(isGameStatus(GameStatus.FreePlay) ? GameStatus.FreePlayPressButton : GameStatus.UserPressButton);
 }
 
 function releaseButton(inputInfo: InputInfo) {
-    if (!isGameStatusAny(GameStatus.UserPushedButton, GameStatus.FreePlayPushedButton)) return;
+    if (!isGameStatusAny(GameStatus.UserPressButton, GameStatus.FreePlayPressButton)) return;
     if (!inputInfo.isType(EventType.pointerup)) return;
-    if (!_currentlyPushedButton) return;
+    if (!_currentButton) return;
 
-    _currentlyPushedButton.input.release();
-    if (isGameStatus(GameStatus.FreePlayPushedButton)) {
-        _currentlyPushedButton = null;
+    _currentButton.input.release();
+    if (isGameStatus(GameStatus.FreePlayPressButton)) {
+        _currentButton = null;
         setGameStatus(GameStatus.FreePlay);
         return;
     }
 
-    addUserStep(_currentlyPushedButton.index);
-    _currentlyPushedButton = null;
+    addUserStep(_currentButton.index);
+    _currentButton = null;
 
     const result = compareSequences();
     switch (result) {
@@ -135,7 +139,7 @@ function renderButtons(): JSX.Element[] {
 
 function sequenceTrigger(buttonIndex: number, glowSpeed: number) {
     const button = _buttons[buttonIndex];
-    button.input.push();
+    button.input.press();
     setTimeout(() => {
         button.input.release();
     }, glowSpeed);
