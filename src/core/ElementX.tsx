@@ -120,6 +120,6 @@ function toElementX(element: HTMLElement, xprops?: XProps): ElementX {
         return position.x >= rect.left && position.x <= rect.right && position.y >= rect.top && position.y <= rect.bottom;
     };
 
-    console.debug({ elementX });
+    // console.debug({ elementX });
     return elementX;
 }

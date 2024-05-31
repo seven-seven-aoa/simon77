@@ -36,7 +36,6 @@ class MusicNoteAudio {
 
     start(start: AudioStart) {
         this.gain = start.gain;
-        console.info({ start });
         this.osc.start(this.ctx.currentTime);
         this.vol.gain.setValueAtTime(this.gain, this.ctx.currentTime);
     }

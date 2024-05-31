@@ -44,7 +44,7 @@ const inputHandler: PointerEventHandler<HTMLElement> = (pe: React.PointerEvent<H
             y: pe.clientY,
         },
     };
-    console.debug({ inputInfo });
+    // console.debug({ inputInfo });
     pe.preventDefault();
     _config.observers.forEach((observer) => observer(inputInfo));
     return false;

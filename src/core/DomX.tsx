@@ -10,7 +10,7 @@ function dxSingle(query: string, xprops?: XProps): ElementX {
     }
 
     const element = document.querySelector(query);
-    console.debug({ query, type: typeof element, element });
+    // console.debug({ query, type: typeof element, element });
     if (!element) {
         throw new Error(noElementsError(query));
     }

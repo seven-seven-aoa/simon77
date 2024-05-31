@@ -9,7 +9,7 @@ function getGameStatus(): GameStatus {
 
 function setGameStatus(value: GameStatus): GameStatus {
     _value = value;
-    console.info({ GameStatus: _value });
+    // console.debug({ GameStatus: _value });
     return _value;
 }
 

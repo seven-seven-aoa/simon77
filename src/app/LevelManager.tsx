@@ -25,7 +25,6 @@ function getLevelAdjust(defaultMax: number): LevelAdjust {
     };
     try {
         const json = url.get("la");
-        console.info({ json });
         if (json) {
             adjust = JSON.parse(json);
         }
@@ -36,7 +35,6 @@ function getLevelAdjust(defaultMax: number): LevelAdjust {
     adjust.skipLevels ??= 0;
     adjust.initialSequenceLength ??= 1;
     adjust.newNoteCountPerLevel ??= 1;
-    console.info({ adjust });
     return adjust;
 }
 
@@ -69,7 +67,7 @@ function initLevels() {
             break;
         }
     }
-    console.info({ _levels });
+    console.debug({ _levels });
 }
 
 async function runNextLevel() {
@@ -101,7 +99,6 @@ async function runNextLevel() {
         return;
     }
 
-    console.info({ _currentLevel });
     addSequenceStep(_adjust.newNoteCountPerLevel, _adjust.initialSequenceLength);
     await sequencePlayback();
     _sequenceStep = -1;
