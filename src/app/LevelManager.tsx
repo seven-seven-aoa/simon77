@@ -3,7 +3,7 @@ import { addSequenceStep, clearUserSequence, getSequenceStep } from "./Sequencer
 import { GameLevel, GameStatus, SequenceStep } from "./GameTypes";
 import { sequenceTrigger } from "./ButtonManager";
 import { getGameStatus, isGameStatus, isGameStatusAny, setGameStatus } from "./GameStatus";
-import { playGameOverMusic } from "./MusicPlayer";
+import { playLoserMusic, playWinnerMusic } from "./MusicPlayer";
 import { time } from "./TimeConstants";
 import { scoreValue } from "./GameElements";
 
@@ -75,7 +75,7 @@ function initLevels() {
 async function runNextLevel() {
     if (isGameStatus(GameStatus.UserTurnFailure)) {
         setGameStatus(GameStatus.GameOverLoser);
-        await playGameOverMusic();
+        await playLoserMusic();
         setGameStatus(GameStatus.FreePlay);
         return;
     }
@@ -96,7 +96,7 @@ async function runNextLevel() {
     _currentLevel = _levels.shift();
     if (!_currentLevel) {
         setGameStatus(GameStatus.GameOverWinner);
-        await playGameOverMusic();
+        await playWinnerMusic();
         setGameStatus(GameStatus.FreePlay);
         return;
     }

@@ -1,59 +1,81 @@
 // core //
 
+import { MusicNoteAudio } from "../core/SoundManager";
+import { delay } from "../core/TimeManager";
+
 // app //
 // import { getGameStatus, isGameStatus } from "./GameStatus";
 // import { GameStatus } from "./GameTypes";
 
-export { playStartupMusic, playGameOverMusic };
+export { playStartupMusic, playLoserMusic, playWinnerMusic };
 
-function playStartupMusic() {
-    // const notes: string[] = ["C3", "C4", "C5", "C6"];
-    // const gains: number[] = [0.62, 0.42, 0.24, 0.12];
+async function playStartupMusic() {
+    const notes: string[] = ["C3", "C4", "C5", "C6"];
+    let gain: number = 0.31;
+    const decrease: number = 0.1;
+    const hold: number = 35;
+    const interval: number = 150;
+    const decay: number = 100;
 
-    // let time: number = 0;
-    // const duration: number = 2.2;
-    // const space: number = 0.11;
-    // const ramp: RampType = RampType.exponential;
-    // const wave: OscillatorType = "sine";
+    const wave: OscillatorType = "sine";
 
-    // for (let i = 0; i < notes.length; i++) {
-    //     playNote({
-    //         wave,
-    //         note: notes[i],
-    //     });
-    //     time += space;
-    // }
+    const seq: MusicNoteAudio[] = [];
+    while (notes.length > 0) {
+        seq.push(new MusicNoteAudio({ note: notes.shift()!, wave }));
+    }
+    while (seq.length > 0) {
+        const note = seq.shift()!;
+        note.start({ gain: gain });
+        setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
+        await delay(interval);
+        gain -= decrease;
+    }
 }
 
-async function playGameOverMusic() {
+async function playLoserMusic () {
+    const notes = ["F#2", "F#2", "F#2", "F#1", "F#2", "F#2", "F#2", "F#1", "F#1"];
+    let gain: number = 0.31;
+    const decrease: number = 0.01;
+    const hold: number = 35;
+    const interval: number = 150;
+    const decay: number = 100;
 
-    return;
-    // let delayValue: number = 0;
-    // let notes: string[] = [];
+    const wave: OscillatorType = "sawtooth";
 
-    // if (isGameStatus(GameStatus.GameOverWinner)) {
-    //     delayValue = 50;
-    //     notes = ["C3", "E3", "G3", 
-    //              "C4", "E4", "G4", 
-    //              "C5", "E5", "G5", 
-    //              "C6", "E6", "G6", "C7"];
-    // }
-    // else if (isGameStatus(GameStatus.GameOverLoser)) {
-    //     delayValue = 75;
-    //     notes = ["F#2", "F#2", "F#2", "F#1", "F#2", 
-    //              "F#2", "F#2", "F#1", "F#1"];
-    // }
-    // else {
-    //     throw new Error("Invalid game status: " + getGameStatus());
-    // }
+    const seq: MusicNoteAudio[] = [];
+    while (notes.length > 0) {
+        seq.push(new MusicNoteAudio({ note: notes.shift()!, wave }));
+    }
+    while (seq.length > 0) {
+        const note = seq.shift()!;
+        note.start({ gain: gain });
+        setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
+        await delay(interval);
+        gain -= decrease;
+    }
+}
 
-    // for (let j = 0; j < notes.length; j++) {
-    //     // const osc = hitNote({
-    //     //     wave: "sawtooth",
-    //     //     note: notes[j],
-    //     // });
-    //     // await delay(delayValue);
-    //     // // osc.stop();
-    //     // await delay(delayValue);
-    // }
+async function playWinnerMusic() {
+    const notes = ["C3", "E3", "G3", "C4", "E4", "G4", "C5", "E5", "G5", "C6", "E6", "G6", "C7"];
+    let gain: number = 0.39;
+    const decrease: number = 0.03;
+    const hold: number = 35;
+    let interval: number = 52;
+    const speedUp: number = 0;
+    const decay: number = 44;
+
+    const wave: OscillatorType = "sawtooth";
+
+    const seq: MusicNoteAudio[] = [];
+    while (notes.length > 0) {
+        seq.push(new MusicNoteAudio({ note: notes.shift()!, wave }));
+    }
+    while (seq.length > 0) {
+        const note = seq.shift()!;
+        note.start({ gain: gain });
+        setTimeout(() => note.fade({ targetGain: 0, durationMs: decay }), hold);
+        await delay(interval);
+        gain -= decrease;
+        interval += speedUp;
+    }
 }

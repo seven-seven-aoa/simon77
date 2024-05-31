@@ -44,14 +44,18 @@ async function startGameIntro(inputInfo: InputInfo) {
     if (!inputInfo.isType(EventType.pointerup)) return;
 
     setGameStatus(GameStatus.Starting);
-    playStartupMusic();
-    await titleLayer().fade({ targetValue: 0, durationMs: time.titleLayerFadeOut });
+
+    await Promise.all([
+        playStartupMusic(), 
+        titleLayer().fade({ targetValue: 0, durationMs: time.titleLayerFadeOut })
+    ]);
 
     await Promise.all([
         settingsBarLayer().fade({ targetValue: 1, durationMs: time.settingsBarLayerFadeIn }),
         scoreLayer().fade({ targetValue: 1, durationMs: time.scoreLayerFadeIn }),
         buttonLayer().fade({ targetValue: 1, durationMs: time.buttonLayerFadeIn }),
     ]);
+    
     runGame();
 }
 

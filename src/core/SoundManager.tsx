@@ -13,7 +13,7 @@ interface AudioStart {
 }
 
 interface AudioFade {
-    targetGain: number;
+    targetGain?: number;
     durationMs: number;
 }
 
@@ -36,6 +36,7 @@ class MusicNoteAudio {
 
     start(start: AudioStart) {
         this.gain = start.gain;
+        console.info({ start });
         this.osc.start(this.ctx.currentTime);
         this.vol.gain.setValueAtTime(this.gain, this.ctx.currentTime);
     }
@@ -46,17 +47,17 @@ class MusicNoteAudio {
 
     async fade(fade: AudioFade) {
         // this.vol.gain.exponentialRampToValueAtTime(
-        //     Math.max(fade.targetGain, minExponentialValue), 
+        //     Math.max(fade.targetGain, minExponentialValue),
         //     this.ctx.currentTime + fade.durationMs / 1000);
-            
+
         // this.vol.gain.linearRampToValueAtTime(
         //     fade.targetGain,
         //     this.ctx.currentTime + fade.durationMs / 1000);
 
+        fade.targetGain ??= this.gain;
         this.vol.gain.setValueCurveAtTime([this.gain, fade.targetGain], this.ctx.currentTime, fade.durationMs / 1000);
         await delay(fade.durationMs);
         this.gain = fade.targetGain;
-
     }
 }
 
@@ -216,5 +217,3 @@ const notes: any = {
     Bb8: 7458.62,
     B8: 7902.13,
 };
-
-

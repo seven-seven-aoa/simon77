@@ -39,7 +39,7 @@ function initButtons() {
                     });
                     const audio = new MusicNoteAudio(button.sound.musicNote);
                     button.sound.audio.push(audio);
-                    audio.start({ gain: 1 });
+                    audio.start({ gain: 0.09 });
                 },
                 release: async () => {
                     glowingArray()[index].fade({
