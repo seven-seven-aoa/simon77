@@ -7,8 +7,8 @@ export const time = {
     restartButtonFadeSustain: 75,
     restartButtonFadeOut: 50,
     
-    beforeTitleLayerFadeIn: 400,
-    titleLayerFadeIn: 600,
+    beforeTitleLayerFadeIn: 200,
+    titleLayerFadeIn: 300,
     titleLayerFadeOut: 600,
 
     mainContainerFadeOut: 600,

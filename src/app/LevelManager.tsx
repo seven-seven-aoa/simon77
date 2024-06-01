@@ -87,7 +87,7 @@ async function runNextLevel() {
     }
 
     if (isGameStatus(GameStatus.UserTurnSuccess)) {
-        scoreValue().innerHTML = _currentLevel!.levelNumber.toString();
+        scoreValue().innerHTML = _currentLevel!.levelNumber.toString().padStart(2, "0");
     }
 
     await delay(time.newLevelDelay);

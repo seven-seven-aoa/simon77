@@ -86,6 +86,7 @@ section.scoreLayer {
 
 span.scoreValue {
     color: #ffffff;
+    margin-left: 2rem;
 }
 
 section.buttonLayer,

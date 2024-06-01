@@ -1,8 +1,8 @@
 import { JSX } from "react";
 
 // core //
-import { MusicNoteAudio } from "../core/SoundManager";
 import { setCSSVariable } from "../core/StyleManager";
+import { MusicNoteAudio } from "../core/AudioMusic";
 
 // app //
 import { addUserStep, compareSequences } from "./Sequencer";
@@ -26,7 +26,7 @@ function initButtons() {
     const musicNotes: string[] = ["C4", "Eb4", "G4", "Bb4"];
     const glowColors = ["#FFA0A0", "#A0FFA0", "#A0A0FF", "#FFFFA0"];
     const borderColors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
-    const backColors: string[] = ["#BB0000", "#00BB00", "#0000AA", "#CCCC00"];
+    const backColors: string[] = ["#CC0000", "#00CC00", "#0000CC", "#CCCC00"];
 
     for (let index = 0; index < buttonCount; index++) {
         const button: Button = {

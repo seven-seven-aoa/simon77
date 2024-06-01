@@ -1,7 +1,7 @@
 // core //
 import { initInput, InputInfo } from "../core/InputManager";
 import { EventType } from "../core/EventTypes";
-import { initAudioContext } from "../core/SoundManager";
+import { initAudioContext } from "../core/Audio";
 
 // app //
 import { time } from "./TimeConstants";

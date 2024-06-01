@@ -1,20 +1,29 @@
+import { AudioFade, AudioStart, getAudioContext } from "./Audio";
 import { delay } from "./TimeManager";
 
-export type { MusicNote };
-export { initAudioContext, MusicNoteAudio };
+export { MusicNoteAudio, generateMusicSequence, playMusicPhrase };
+export type { MusicNote, MusicSequence, MusicPhrase, MusicPhraseAudio };
 
 interface MusicNote {
     note: string;
     wave: OscillatorType;
 }
 
-interface AudioStart {
-    gain: number;
+interface MusicSequence {
+    notes: string[];
+    wave: OscillatorType;
 }
 
-interface AudioFade {
-    targetGain?: number;
-    durationMs: number;
+interface MusicPhrase {
+    props: MusicPhraseAudio;
+    evolution: MusicPhraseAudio;
+}
+
+interface MusicPhraseAudio {
+    gain: number;
+    holdMs: number;
+    decayMs: number;
+    intervalMs: number;
 }
 
 class MusicNoteAudio {
@@ -27,7 +36,7 @@ class MusicNoteAudio {
         this.ctx = getAudioContext();
         this.osc = this.ctx.createOscillator();
         this.osc.type = note.wave;
-        this.osc.frequency.value = noteFreq(note.note);
+        this.osc.frequency.value = getNoteFrequency(note.note);
 
         this.vol = this.ctx.createGain();
         this.vol.connect(this.ctx.destination);
@@ -45,14 +54,6 @@ class MusicNoteAudio {
     }
 
     async fade(fade: AudioFade) {
-        // this.vol.gain.exponentialRampToValueAtTime(
-        //     Math.max(fade.targetGain, minExponentialValue),
-        //     this.ctx.currentTime + fade.durationMs / 1000);
-
-        // this.vol.gain.linearRampToValueAtTime(
-        //     fade.targetGain,
-        //     this.ctx.currentTime + fade.durationMs / 1000);
-
         fade.targetGain ??= this.gain;
         this.vol.gain.setValueCurveAtTime([this.gain, fade.targetGain], this.ctx.currentTime, fade.durationMs / 1000);
         await delay(fade.durationMs);
@@ -60,25 +61,37 @@ class MusicNoteAudio {
     }
 }
 
-// const minExponentialValue: number = 0.000001;
-let ctx: AudioContext | null = null;
-
-function getAudioContext(): AudioContext {
-    if (ctx === null) {
-        throw new Error("AudioContext not initialized");
+function generateMusicSequence(noteSeq: MusicSequence): MusicNoteAudio[] {
+    const seq: MusicNoteAudio[] = [];
+    while (noteSeq.notes.length > 0) {
+        seq.push(new MusicNoteAudio({ note: noteSeq.notes.shift()!, wave: noteSeq.wave }));
     }
-    ctx.resume();
-    return ctx;
+    return seq;
 }
 
-function initAudioContext() {
-    if (ctx !== null) {
-        throw new Error("AudioContext already initialized");
+async function playMusicPhrase(phrase: MusicPhrase, seq: MusicNoteAudio[]) {
+    while (seq.length > 0) {
+        const note = seq.shift()!;
+
+        note.start({ gain: phrase.props.gain });
+        setTimeout(
+            () =>
+                note.fade({
+                    targetGain: 0,
+                    durationMs: phrase.props.decayMs,
+                }),
+            phrase.props.holdMs,
+        );
+
+        await delay(phrase.props.intervalMs);
+        phrase.props.gain += phrase.evolution.gain;
+        phrase.props.holdMs += phrase.evolution.holdMs;
+        phrase.props.decayMs += phrase.evolution.decayMs;
+        phrase.props.intervalMs += phrase.evolution.intervalMs;
     }
-    ctx = new AudioContext();
 }
 
-function noteFreq(note: string) {
+function getNoteFrequency(note: string) {
     const octave: number = Number(note[note.length - 1]);
     if (note.length === 1) note += "_";
     if (note.indexOf("C#") === 0) note = "Db" + octave;
@@ -86,10 +99,10 @@ function noteFreq(note: string) {
     if (note.indexOf("F#") === 0) note = "Gb" + octave;
     if (note.indexOf("G#") === 0) note = "Ab" + octave;
     if (note.indexOf("A#") === 0) note = "Bb" + octave;
-    return notes[note];
+    return noteFrequencies[note];
 }
 
-const notes: any = {
+const noteFrequencies: any = {
     // Octave 0
     C0: 16.35,
     Db0: 17.32,
