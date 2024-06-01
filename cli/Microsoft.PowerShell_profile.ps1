@@ -1,3 +1,5 @@
+Remove-Alias gc -force;
+
 function c { Clear-Host }
 function gc { git clean -fdxn }
 function gcx { git clean -fdx }
